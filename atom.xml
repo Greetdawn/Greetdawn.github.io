@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>派 | Pyker</title>
+  <title>Mr.zhang&#39;s Blog</title>
   
-  
+  <subtitle>The God love people</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://Greetdawn.github.io/"/>
@@ -10,7 +10,7 @@
   <id>https://Greetdawn.github.io/</id>
   
   <author>
-    <name>丨Pyker丨</name>
+    <name>丨Mr.zhang丨</name>
     
   </author>
   
