@@ -281,8 +281,8 @@ span.exturl {
 }
 a:hover,
 span.exturl:hover {
-  color: #222;
-  border-bottom-color: #222;
+  color: #495a80;
+  border-bottom-color: #495a80;
 }
 video {
   max-width: 100%;
@@ -956,7 +956,7 @@ pre .javascript .function {
   font-size: 14px;
   color: #555;
   background: transparent;
-  border: 2px solid #222;
+  border: 2px solid #495a80;
   text-decoration: none;
   border-radius: 0;
   transition-property: background-color;
@@ -966,8 +966,8 @@ pre .javascript .function {
   line-height: 2;
 }
 .btn:hover {
-  border-color: #222;
-  color: #222;
+  border-color: #495a80;
+  color: #495a80;
   background: #fff;
 }
 .btn +.btn {
@@ -1025,7 +1025,7 @@ pre .javascript .function {
 .pagination .prev:hover,
 .pagination .next:hover,
 .pagination .page-number:hover {
-  border-top-color: #222;
+  border-top-color: #495a80;
 }
 .pagination .space {
   padding: 0;
@@ -1057,7 +1057,7 @@ pre .javascript .function {
   .pagination .prev:hover,
   .pagination .next:hover,
   .pagination .page-number:hover {
-    border-bottom-color: #222;
+    border-bottom-color: #495a80;
   }
 }
 .comments {
@@ -1066,7 +1066,7 @@ pre .javascript .function {
 .back-to-top {
   visibility: hidden;
   margin: 8px -10px -20px;
-  background: #222;
+  background: #495a80;
   font-size: 12px;
   opacity: 1;
   cursor: pointer;
@@ -1089,7 +1089,7 @@ pre .javascript .function {
 }
 .headband {
   height: 3px;
-  background: #222;
+  background: #495a80;
 }
 .site-meta {
   margin: 0;
@@ -1104,12 +1104,12 @@ pre .javascript .function {
   position: relative;
   display: inline-block;
   padding: 0 40px;
-  color: #222;
-  background: #222;
+  color: #495a80;
+  background: #495a80;
   border-bottom: none;
 }
 .brand:hover {
-  color: #222;
+  color: #495a80;
 }
 .logo {
   display: inline-block;
@@ -1205,7 +1205,7 @@ pre .javascript .function {
 }
 .menu .menu-item a:hover,
 .menu .menu-item span.exturl:hover {
-  border-bottom-color: #222;
+  border-bottom-color: #495a80;
 }
 .menu .menu-item .fa {
   margin-right: 5px;
@@ -1478,7 +1478,7 @@ pre .javascript .function {
   border-bottom-color: #666;
 }
 .posts-collapse .post-header:hover::before {
-  background: #222;
+  background: #495a80;
 }
 .posts-collapse .post-meta {
   position: absolute;
@@ -1632,7 +1632,7 @@ pre .javascript .function {
   border-bottom: none;
 }
 .post-nav-item a:hover {
-  color: #222;
+  color: #495a80;
   border-bottom: none;
 }
 .post-nav-item a:active {
@@ -1812,7 +1812,7 @@ pre .javascript .function {
   width: 14px;
   height: 14px;
   padding: 5px;
-  background: #222;
+  background: #495a80;
   line-height: 0;
   z-index: 1050;
   cursor: pointer;
@@ -1880,7 +1880,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #467503;
+  background: #ffe2ff;
 }
 .feed-link,
 .chat {
@@ -2473,7 +2473,7 @@ ul.breadcrumb li+li:last-child {
   margin: 10px;
 }
 .tag-cloud a:hover {
-  color: #222 !important;
+  color: #495a80 !important;
 }
 a {
   border-bottom-color: #ccc;
@@ -2558,7 +2558,7 @@ hr {
   position: relative;
   display: block;
   height: 2px;
-  background: #222;
+  background: #495a80;
 }
 @media (max-width: 767px) {
   .logo-line-before i,
@@ -2712,7 +2712,7 @@ hr {
   }
 }
 .posts-expand .post-title:hover:before {
-  background: #222;
+  background: #495a80;
 }
 @media (max-width: 767px) {
   .posts-expand .post-body {
@@ -2759,7 +2759,7 @@ hr {
   }
 }
 .post-button a:hover {
-  border-bottom-color: #222;
+  border-bottom-color: #495a80;
 }
 .links-of-blogroll-inline .links-of-blogroll-item {
   display: inline-block;
