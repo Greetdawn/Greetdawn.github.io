@@ -5,9 +5,9 @@
   <subtitle>The God love people</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="https://Greetdawn.github.io/"/>
+  <link href="https://www.greetdawn.top/"/>
   <updated>2020-03-09T06:04:05.225Z</updated>
-  <id>https://Greetdawn.github.io/</id>
+  <id>https://www.greetdawn.top/</id>
   
   <author>
     <name>丨Mr.zhang丨</name>
@@ -18,8 +18,8 @@
   
   <entry>
     <title>高级注入（三）</title>
-    <link href="https://Greetdawn.github.io/2020/03/09/%E9%AB%98%E7%BA%A7%E6%B3%A8%E5%85%A5%EF%BC%88%E4%B8%89%EF%BC%89.html"/>
-    <id>https://Greetdawn.github.io/2020/03/09/高级注入（三）.html</id>
+    <link href="https://www.greetdawn.top/2020/03/09/%E9%AB%98%E7%BA%A7%E6%B3%A8%E5%85%A5%EF%BC%88%E4%B8%89%EF%BC%89.html"/>
+    <id>https://www.greetdawn.top/2020/03/09/高级注入（三）.html</id>
     <published>2020-03-09T05:35:41.000Z</published>
     <updated>2020-03-09T06:04:05.225Z</updated>
     
@@ -35,17 +35,17 @@
     
     </summary>
     
-      <category term="Web安全" scheme="https://Greetdawn.github.io/categories/Web%E5%AE%89%E5%85%A8/"/>
+      <category term="Web安全" scheme="https://www.greetdawn.top/categories/Web%E5%AE%89%E5%85%A8/"/>
     
     
-      <category term="SQL注入" scheme="https://Greetdawn.github.io/tags/SQL%E6%B3%A8%E5%85%A5/"/>
+      <category term="SQL注入" scheme="https://www.greetdawn.top/tags/SQL%E6%B3%A8%E5%85%A5/"/>
     
   </entry>
   
   <entry>
     <title>高级注入（二）</title>
-    <link href="https://Greetdawn.github.io/2020/03/09/%E9%AB%98%E7%BA%A7%E6%B3%A8%E5%85%A5%EF%BC%88%E4%BA%8C%EF%BC%89.html"/>
-    <id>https://Greetdawn.github.io/2020/03/09/高级注入（二）.html</id>
+    <link href="https://www.greetdawn.top/2020/03/09/%E9%AB%98%E7%BA%A7%E6%B3%A8%E5%85%A5%EF%BC%88%E4%BA%8C%EF%BC%89.html"/>
+    <id>https://www.greetdawn.top/2020/03/09/高级注入（二）.html</id>
     <published>2020-03-09T01:41:11.000Z</published>
     <updated>2020-03-09T02:12:32.873Z</updated>
     
@@ -61,17 +61,17 @@
     
     </summary>
     
-      <category term="Web安全" scheme="https://Greetdawn.github.io/categories/Web%E5%AE%89%E5%85%A8/"/>
+      <category term="Web安全" scheme="https://www.greetdawn.top/categories/Web%E5%AE%89%E5%85%A8/"/>
     
     
-      <category term="SQL注入" scheme="https://Greetdawn.github.io/tags/SQL%E6%B3%A8%E5%85%A5/"/>
+      <category term="SQL注入" scheme="https://www.greetdawn.top/tags/SQL%E6%B3%A8%E5%85%A5/"/>
     
   </entry>
   
   <entry>
     <title>高级注入（一）</title>
-    <link href="https://Greetdawn.github.io/2020/03/08/%E9%AB%98%E7%BA%A7%E6%B3%A8%E5%85%A5%EF%BC%88%E4%B8%80%EF%BC%89.html"/>
-    <id>https://Greetdawn.github.io/2020/03/08/高级注入（一）.html</id>
+    <link href="https://www.greetdawn.top/2020/03/08/%E9%AB%98%E7%BA%A7%E6%B3%A8%E5%85%A5%EF%BC%88%E4%B8%80%EF%BC%89.html"/>
+    <id>https://www.greetdawn.top/2020/03/08/高级注入（一）.html</id>
     <published>2020-03-08T11:32:54.000Z</published>
     <updated>2020-03-08T12:07:48.432Z</updated>
     
@@ -87,17 +87,17 @@
     
     </summary>
     
-      <category term="Web安全" scheme="https://Greetdawn.github.io/categories/Web%E5%AE%89%E5%85%A8/"/>
+      <category term="Web安全" scheme="https://www.greetdawn.top/categories/Web%E5%AE%89%E5%85%A8/"/>
     
     
-      <category term="SQL注入" scheme="https://Greetdawn.github.io/tags/SQL%E6%B3%A8%E5%85%A5/"/>
+      <category term="SQL注入" scheme="https://www.greetdawn.top/tags/SQL%E6%B3%A8%E5%85%A5/"/>
     
   </entry>
   
   <entry>
     <title>基于sql布尔盲注的python脚本开发</title>
-    <link href="https://Greetdawn.github.io/2020/03/07/%E5%9F%BA%E4%BA%8Esql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8%E7%9A%84python%E8%84%9A%E6%9C%AC%E5%BC%80%E5%8F%91.html"/>
-    <id>https://Greetdawn.github.io/2020/03/07/基于sql布尔盲注的python脚本开发.html</id>
+    <link href="https://www.greetdawn.top/2020/03/07/%E5%9F%BA%E4%BA%8Esql%E5%B8%83%E5%B0%94%E7%9B%B2%E6%B3%A8%E7%9A%84python%E8%84%9A%E6%9C%AC%E5%BC%80%E5%8F%91.html"/>
+    <id>https://www.greetdawn.top/2020/03/07/基于sql布尔盲注的python脚本开发.html</id>
     <published>2020-03-07T08:04:26.000Z</published>
     <updated>2020-03-08T11:45:51.461Z</updated>
     
@@ -113,10 +113,10 @@
     
     </summary>
     
-      <category term="Web安全" scheme="https://Greetdawn.github.io/categories/Web%E5%AE%89%E5%85%A8/"/>
+      <category term="Web安全" scheme="https://www.greetdawn.top/categories/Web%E5%AE%89%E5%85%A8/"/>
     
     
-      <category term="SQL注入" scheme="https://Greetdawn.github.io/tags/SQL%E6%B3%A8%E5%85%A5/"/>
+      <category term="SQL注入" scheme="https://www.greetdawn.top/tags/SQL%E6%B3%A8%E5%85%A5/"/>
     
   </entry>
   
