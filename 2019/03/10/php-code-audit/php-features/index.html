@@ -1,0 +1,485 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#0078E7"><meta name="author" content="丨Mr.zhang丨"><meta name="copyright" content="丨Mr.zhang丨"><meta name="generator" content="Hexo 5.4.0"><meta name="theme" content="hexo-theme-yun"><title>php语言特性类型讲解 | Mr.zhang's Blog</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@900&amp;display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/star-markdown-css@0.1.24/dist/yun/yun-markdown.min.css"><script src="//at.alicdn.com/t/font_1140697_ed8vp4atwoj.js" async></script><script src="https://cdn.jsdelivr.net/npm/scrollreveal/dist/scrollreveal.min.js" defer></script><script>document.addEventListener("DOMContentLoaded", () => {
+  [".post-card",".post-content img"].forEach((target)=> {
+    ScrollReveal().reveal(target);
+  })
+});
+</script><link id="light-prism-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@latest/themes/prism.css" media="(prefers-color-scheme: light)"><link id="dark-prism-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@latest/themes/prism-tomorrow.css" media="(prefers-color-scheme: dark)"><link rel="shortcut icon" type="image/svg+xml" href="/yun.svg"><link rel="mask-icon" href="/yun.svg" color="#0078E7"><link rel="alternate icon" href="/yun.ico"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="preload" href="/js/utils.js" as="script"><link rel="preload" href="/js/hexo-theme-yun.js" as="script"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><script id="yun-config">
+    const Yun = window.Yun || {};
+    window.CONFIG = {"hostname":"www.greetdawn.top","root":"/","title":"群哥的博客","version":"1.5.2","mode":"auto","copycode":true,"page":{"isPost":true},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）"},"anonymous_image":"https://cdn.jsdelivr.net/gh/YunYouJun/cdn/img/avatar/none.jpg","say":{"api":"https://el-bot-api.vercel.app/api/words/young"},"fireworks":{"colors":["102, 167, 221","62, 131, 225","33, 78, 194"]}};
+  </script><link rel="stylesheet" href="/css/hexo-theme-yun.css"><script src="/js/utils.js"></script><script src="/js/hexo-theme-yun.js"></script><link rel="alternate" href="/atom.xml" title="Mr.zhang's Blog" type="application/atom+xml"><link rel="preconnect" href="https://www.google-analytics.com" crossorigin><script async src="https://www.googletagmanager.com/gtag/js?id=UA-121354150-1"></script><script>if (CONFIG.hostname === location.hostname) {
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-121354150-1');
+}</script><script data-ad-client="ca-pub-2245427233262012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(function(){
+  var bp = document.createElement('script');
+  var curProtocol = window.location.protocol.split(':')[0];
+  if (curProtocol === 'https') {
+    bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else {
+    bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(bp, s);
+})();</script><!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-M9KWR9L');</script><!-- End Google Tag Manager --><meta property="og:type" content="article">
+<meta property="og:title" content="php语言特性类型讲解">
+<meta property="og:url" content="http://www.greetdawn.top/2019/03/10/php-code-audit/php-features/index.html">
+<meta property="og:site_name" content="Mr.zhang&#39;s Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/aaa.jpg">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/20201224152749.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/20201225091551.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/20201225150821.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/20201225155527.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/20201225164056.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/20201228135450.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/20201228140800.png">
+<meta property="article:published_time" content="2019-03-10T01:19:57.000Z">
+<meta property="article:modified_time" content="2021-01-29T08:04:16.200Z">
+<meta property="article:author" content="丨Mr.zhang丨">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="PHP语言特性">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/aaa.jpg"><script src="/js/ui/mode.js"></script></head><body><script defer src="https://cdn.jsdelivr.net/npm/animejs@latest"></script><script defer src="/js/ui/fireworks.js"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script src="/js/sidebar.js"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="文章目录"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-list-ordered"></use></svg></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="站点概览"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-passport-line"></use></svg></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info fix-top"><a class="site-author-avatar" href="/about/" title="丨Mr.zhang丨"><img width="96" loading="lazy" src="/images/avatar.jpg" alt="丨Mr.zhang丨"><span class="site-author-status" title="不想上班">😭</span></a><div class="site-author-name"><a href="/about/">丨Mr.zhang丨</a></div><a class="site-name" href="/about/site.html">Mr.zhang's Blog</a><sub class="site-subtitle">The God love people</sub><div class="site-desciption">Love coding,Love life!</div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="首页"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home-4-line"></use></svg></span></a><div class="site-state-item"><a href="/archives/" title="归档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-archive-line"></use></svg></span><span class="site-state-item-count">28</span></a></div><div class="site-state-item"><a href="/categories/" title="分类"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-2-line"></use></svg></span><span class="site-state-item-count">10</span></a></div><div class="site-state-item"><a href="/tags/" title="标签"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="site-state-item-count">33</span></a></div><a class="site-state-item hty-icon-button" href="/about/#comment" title="留言板"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-clipboard-line"></use></svg></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://wpa.qq.com/msgrd?v=3&amp;uin=910426929&amp;site=qq&amp;menu=yes" title="QQ" target="_blank" style="color:#12B7F5"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-qq-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://github.com/greetdawn" title="GitHub" target="_blank" style="color:#181717"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-github-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="mailto:953640552@qq.com" title="E-Mail" target="_blank" style="color:#8E71C1"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-mail-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://weibo.com/" title="微博" target="_blank" style="color:#E6162D"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-weibo-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://music.163.com/#/user/home?id=372656460" title="网易云音乐" target="_blank" style="color:#C10D0C"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-netease-cloud-music-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://www.zhihu.com/" title="知乎" target="_blank" style="color:#0084FF"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-zhihu-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://space.bilibili.com/478304087" title="哔哩哔哩动画" target="_blank" style="color:#FF8EB3"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-bilibili-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://twitter.com/" title="Twitter" target="_blank" style="color:#1da1f2"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-twitter-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://t.me/" title="Telegram" target="_blank" style="color:#0088CC"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-telegram-line"></use></svg></a></div><hr style="margin:0.5rem 1rem"><div class="links"><a class="links-item hty-icon-button" href="/links/" title="我的小伙伴们" style="color:dodgerblue"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-genderless-line"></use></svg></a><a class="links-item hty-icon-button" href="/girls/" title="喜欢的女孩子" style="color:hotpink"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-women-line"></use></svg></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-contrast-2-line"></use></svg></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#PHP%E8%AF%AD%E8%A8%80%E7%89%B9%E6%80%A7"><span class="toc-number">1.</span> <span class="toc-text">PHP语言特性</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#extract%E5%8F%98%E9%87%8F%E8%A6%86%E7%9B%96"><span class="toc-number">1.1.</span> <span class="toc-text">extract变量覆盖</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%BA%90%E7%A0%81"><span class="toc-number">1.1.1.</span> <span class="toc-text">漏洞源码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90"><span class="toc-number">1.1.2.</span> <span class="toc-text">漏洞分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="toc-number">1.1.3.</span> <span class="toc-text">漏洞利用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%95%E8%BF%87%E8%BF%87%E6%BB%A4%E7%9A%84%E7%A9%BA%E7%99%BD%E5%AD%97%E7%AC%A6"><span class="toc-number">1.2.</span> <span class="toc-text">绕过过滤的空白字符</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%BA%90%E7%A0%81-1"><span class="toc-number">1.2.1.</span> <span class="toc-text">漏洞源码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90-1"><span class="toc-number">1.2.2.</span> <span class="toc-text">漏洞分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8-1"><span class="toc-number">1.2.3.</span> <span class="toc-text">漏洞利用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ereg%E6%AD%A3%E5%88%99%E7%BB%95%E8%BF%87"><span class="toc-number">1.3.</span> <span class="toc-text">ereg正则绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%BA%90%E7%A0%81-2"><span class="toc-number">1.3.1.</span> <span class="toc-text">漏洞源码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90-2"><span class="toc-number">1.3.2.</span> <span class="toc-text">漏洞分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8-2"><span class="toc-number">1.3.3.</span> <span class="toc-text">漏洞利用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#strcmp%E6%AF%94%E8%BE%83%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-number">1.4.</span> <span class="toc-text">strcmp比较字符串</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%BA%90%E7%A0%81-3"><span class="toc-number">1.4.1.</span> <span class="toc-text">漏洞源码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90-3"><span class="toc-number">1.4.2.</span> <span class="toc-text">漏洞分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8-3"><span class="toc-number">1.4.3.</span> <span class="toc-text">漏洞利用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sha-%E5%87%BD%E6%95%B0%E6%AF%94%E8%BE%83%E7%BB%95%E8%BF%87"><span class="toc-number">1.5.</span> <span class="toc-text">sha()函数比较绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%BA%90%E7%A0%81-4"><span class="toc-number">1.5.1.</span> <span class="toc-text">漏洞源码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90-4"><span class="toc-number">1.5.2.</span> <span class="toc-text">漏洞分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8-4"><span class="toc-number">1.5.3.</span> <span class="toc-text">漏洞利用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#session%E9%AA%8C%E8%AF%81%E7%BB%95%E8%BF%87"><span class="toc-number">1.6.</span> <span class="toc-text">session验证绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%BA%90%E7%A0%81-5"><span class="toc-number">1.6.1.</span> <span class="toc-text">漏洞源码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90-5"><span class="toc-number">1.6.2.</span> <span class="toc-text">漏洞分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8-5"><span class="toc-number">1.6.3.</span> <span class="toc-text">漏洞利用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#md5%E6%AF%94%E8%BE%83%E7%BB%95%E8%BF%87"><span class="toc-number">1.7.</span> <span class="toc-text">md5比较绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%BA%90%E7%A0%81-6"><span class="toc-number">1.7.1.</span> <span class="toc-text">漏洞源码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90-6"><span class="toc-number">1.7.2.</span> <span class="toc-text">漏洞分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8-6"><span class="toc-number">1.7.3.</span> <span class="toc-text">漏洞利用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#md5%E5%8A%A0%E5%AF%86%E7%9B%B8%E7%AD%89%E7%BB%95%E8%BF%87"><span class="toc-number">1.8.</span> <span class="toc-text">md5加密相等绕过</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%BA%90%E7%A0%81-7"><span class="toc-number">1.8.1.</span> <span class="toc-text">漏洞源码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90-7"><span class="toc-number">1.8.2.</span> <span class="toc-text">漏洞分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8-7"><span class="toc-number">1.8.3.</span> <span class="toc-text">漏洞利用</span></a></li></ol></li></ol></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="hty-card post-block" itemscope itemtype="https://schema.org/Article"><link itemprop="mainEntityOfPage" href="http://www.greetdawn.top/2019/03/10/php-code-audit/php-features/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="丨Mr.zhang丨"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="Mr.zhang's Blog"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">php语言特性类型讲解<a class="post-edit-link" href="https://github.com/greetdawn/_posts/php-code-audit/php-features.md" target="_blank" title="编辑" rel="noopener"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-edit-line"></use></svg></a></h1><div class="post-meta"><div class="post-time" style="display:block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <time title="创建时间：2019-03-10 09:19:57" itemprop="dateCreated datePublished" datetime="2019-03-10T09:19:57+08:00">2019-03-10</time><span class="post-meta-divider">-</span><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-2-line"></use></svg></span> <time title="修改时间：2021-01-29 16:04:16" itemprop="dateModified" datetime="2021-01-29T16:04:16+08:00">2021-01-29</time></div><span class="post-count"><span class="post-symbolcount"><span class="post-meta-item-icon" title="本文字数"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-file-word-line"></use></svg></span> <span title="本文字数">2.2k</span><span class="post-meta-divider">-</span><span class="post-meta-item-icon" title="阅读时长"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-timer-line"></use></svg></span> <span title="阅读时长">10m</span></span></span><span class="leancloud_visitors" id="/2019/03/10/php-code-audit/php-features/" data-flag-title="php语言特性类型讲解"><span class="post-meta-divider">-</span><span class="post-meta-item-icon" title="阅读次数"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-eye-line"></use></svg> <span class="leancloud-visitors-count"></span></span></span><div class="post-classify"><span class="post-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-line"></use></svg></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category" href="/categories/PHP%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="--text-color:#FB7299" itemprop="url" rel="index"><span itemprop="text">PHP代码审计</span></a></span></span><span class="post-tag"><span class="post-meta-divider">-</span><a class="tag" href="/tags/CTF/" style="--text-color:#4fc08d"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">CTF</span></a><a class="tag" href="/tags/PHP%E8%AF%AD%E8%A8%80%E7%89%B9%E6%80%A7/" style="--text-color:#F14E32"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">PHP语言特性</span></a></span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body" style="--smc-primary:#0078E7;"><p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/aaa.jpg" loading="lazy"></p>
+<span id="more"></span>
+
+<h1 id="PHP语言特性"><a href="#PHP语言特性" class="headerlink" title="PHP语言特性"></a>PHP语言特性</h1><h2 id="extract变量覆盖"><a href="#extract变量覆盖" class="headerlink" title="extract变量覆盖"></a>extract变量覆盖</h2><h3 id="漏洞源码"><a href="#漏洞源码" class="headerlink" title="漏洞源码"></a>漏洞源码</h3><pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span> 
+<span class="token variable">$flag</span><span class="token operator">=</span><span class="token string single-quoted-string">'cimer'</span><span class="token punctuation">;</span> 
+<span class="token function">extract</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token keyword">isset</span><span class="token punctuation">(</span><span class="token variable">$shiyan</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span> 
+    <span class="token variable">$content</span><span class="token operator">=</span><span class="token function">trim</span><span class="token punctuation">(</span><span class="token function">file_get_contents</span><span class="token punctuation">(</span><span class="token variable">$flag</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token variable">$shiyan</span><span class="token operator">==</span><span class="token variable">$content</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span> 
+        <span class="token keyword">echo</span><span class="token string single-quoted-string">'ctf&#123;cimer_2021_come_on&#125;'</span><span class="token punctuation">;</span> 
+    <span class="token punctuation">&#125;</span>
+   <span class="token keyword">else</span>
+   <span class="token punctuation">&#123;</span> 
+    <span class="token keyword">echo</span><span class="token string single-quoted-string">'Oh.no'</span><span class="token punctuation">;</span>
+   <span class="token punctuation">&#125;</span> 
+<span class="token punctuation">&#125;</span>
+<span class="token delimiter important">?></span></span></code></pre>
+
+
+
+<h3 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h3><p><code>extract()</code>函数</p>
+<ul>
+<li><p>从数组中将变量导入到当前的符号表</p>
+</li>
+<li><p>该函数使用数组键名作为变量名，使用数组键值作为变量值。针对数组中的每个元素，将在当前符号表中创建对应的一个变量</p>
+</li>
+<li><p>语法：extract(array,extract_rules,prefix)</p>
+</li>
+<li><p>array,必需，要使用的数组</p>
+</li>
+</ul>
+<p>GET传参或者POST传参时，带入到extact函数中，直接传入同名变量名，即可覆盖原有变量值。</p>
+<p>flag变量值为cimer</p>
+<p>extract()通过GET方式接受一个数组，键名作为变量名，值为变量值</p>
+<p>如果变量$shiyan为空，则$flag值通过file_get_contents()赋值给变量$content</p>
+<p>如果变量$shiyan与$content值相同，则输出flag</p>
+<h3 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h3><p>payload构造<code>index.php?shiyan=&amp;flag=</code></p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/20201224152749.png" loading="lazy"></p>
+<h2 id="绕过过滤的空白字符"><a href="#绕过过滤的空白字符" class="headerlink" title="绕过过滤的空白字符"></a>绕过过滤的空白字符</h2><h3 id="漏洞源码-1"><a href="#漏洞源码-1" class="headerlink" title="漏洞源码"></a>漏洞源码</h3><pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token keyword">include</span> <span class="token string single-quoted-string">'flag.php'</span><span class="token punctuation">;</span> 
+<span class="token variable">$info</span> <span class="token operator">=</span> <span class="token string double-quoted-string">""</span><span class="token punctuation">;</span> 
+<span class="token variable">$req</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+ 
+<span class="token function">ini_set</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"display_error"</span><span class="token punctuation">,</span> <span class="token constant boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span class="token function">error_reporting</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+ 
+<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span><span class="token keyword">isset</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'number'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+   <span class="token function">header</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"hint:26966dc52e85af40f59b4fe73d8c323a.txt"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+   <span class="token keyword">die</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"have a fun!!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+ 
+<span class="token keyword">foreach</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token variable">$_GET</span><span class="token punctuation">,</span> <span class="token variable">$_POST</span><span class="token punctuation">]</span> <span class="token keyword">as</span> <span class="token variable">$global_var</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>  
+    <span class="token keyword">foreach</span><span class="token punctuation">(</span><span class="token variable">$global_var</span> <span class="token keyword">as</span> <span class="token variable">$key</span> <span class="token operator">=></span> <span class="token variable">$value</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+        <span class="token variable">$value</span> <span class="token operator">=</span> <span class="token function">trim</span><span class="token punctuation">(</span><span class="token variable">$value</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+        <span class="token function">is_string</span><span class="token punctuation">(</span><span class="token variable">$value</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token variable">$req</span><span class="token punctuation">[</span><span class="token variable">$key</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">addslashes</span><span class="token punctuation">(</span><span class="token variable">$value</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+    <span class="token punctuation">&#125;</span> 
+<span class="token punctuation">&#125;</span> 
+ 
+<span class="token keyword">function</span> <span class="token function-definition function">is_palindrome_number</span><span class="token punctuation">(</span><span class="token variable">$number</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+    <span class="token variable">$number</span> <span class="token operator">=</span> <span class="token function">strval</span><span class="token punctuation">(</span><span class="token variable">$number</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+    <span class="token variable">$i</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> 
+    <span class="token variable">$j</span> <span class="token operator">=</span> <span class="token function">strlen</span><span class="token punctuation">(</span><span class="token variable">$number</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token variable">$i</span> <span class="token operator">&lt;</span> <span class="token variable">$j</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token variable">$number</span><span class="token punctuation">[</span><span class="token variable">$i</span><span class="token punctuation">]</span> <span class="token operator">!==</span> <span class="token variable">$number</span><span class="token punctuation">[</span><span class="token variable">$j</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span> 
+            <span class="token keyword">return</span> <span class="token constant boolean">false</span><span class="token punctuation">;</span> 
+        <span class="token punctuation">&#125;</span> 
+        <span class="token variable">$i</span><span class="token operator">++</span><span class="token punctuation">;</span> 
+        <span class="token variable">$j</span><span class="token operator">--</span><span class="token punctuation">;</span> 
+    <span class="token punctuation">&#125;</span> 
+    <span class="token keyword">return</span> <span class="token constant boolean">true</span><span class="token punctuation">;</span> 
+<span class="token punctuation">&#125;</span>
+ 
+<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">is_numeric</span><span class="token punctuation">(</span><span class="token variable">$_REQUEST</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'number'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+   <span class="token variable">$info</span><span class="token operator">=</span><span class="token string double-quoted-string">"sorry, you cann't input a number!"</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">elseif</span><span class="token punctuation">(</span><span class="token variable">$req</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'number'</span><span class="token punctuation">]</span><span class="token operator">!=</span><span class="token function">strval</span><span class="token punctuation">(</span><span class="token function">intval</span><span class="token punctuation">(</span><span class="token variable">$req</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'number'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> 
+<span class="token punctuation">&#123;</span>
+     <span class="token variable">$info</span> <span class="token operator">=</span> <span class="token string double-quoted-string">"number must be equal to it's integer!! "</span><span class="token punctuation">;</span>  
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">else</span>
+<span class="token punctuation">&#123;</span>
+     <span class="token variable">$value1</span> <span class="token operator">=</span> <span class="token function">intval</span><span class="token punctuation">(</span><span class="token variable">$req</span><span class="token punctuation">[</span><span class="token string double-quoted-string">"number"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token variable">$value2</span> <span class="token operator">=</span> <span class="token function">intval</span><span class="token punctuation">(</span><span class="token function">strrev</span><span class="token punctuation">(</span><span class="token variable">$req</span><span class="token punctuation">[</span><span class="token string double-quoted-string">"number"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+     <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token variable">$value1</span><span class="token operator">!=</span><span class="token variable">$value2</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+          <span class="token variable">$info</span><span class="token operator">=</span><span class="token string double-quoted-string">"no, this is not a palindrome number!"</span><span class="token punctuation">;</span>
+     <span class="token punctuation">&#125;</span>
+     <span class="token keyword">else</span>
+     <span class="token punctuation">&#123;</span>
+          <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">is_palindrome_number</span><span class="token punctuation">(</span><span class="token variable">$req</span><span class="token punctuation">[</span><span class="token string double-quoted-string">"number"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+              <span class="token variable">$info</span> <span class="token operator">=</span> <span class="token string double-quoted-string">"nice! <span class="token interpolation"><span class="token punctuation">&#123;</span><span class="token variable">$value1</span><span class="token punctuation">&#125;</span></span> is a palindrome number!"</span><span class="token punctuation">;</span> 
+     <span class="token punctuation">&#125;</span>
+          <span class="token keyword">else</span><span class="token punctuation">&#123;</span>
+             <span class="token variable">$info</span><span class="token operator">=</span><span class="token variable">$flag</span><span class="token punctuation">;</span>
+          <span class="token punctuation">&#125;</span>
+     <span class="token punctuation">&#125;</span>
+ 
+<span class="token punctuation">&#125;</span> 
+<span class="token keyword">echo</span> <span class="token variable">$info</span><span class="token punctuation">;</span>
+<span class="token delimiter important">?></span></span></code></pre>
+
+
+
+<h3 id="漏洞分析-1"><a href="#漏洞分析-1" class="headerlink" title="漏洞分析"></a>漏洞分析</h3><p>函数分析</p>
+<ul>
+<li>trim — 去除字符串首尾处的空白字符（或者其他字符）</li>
+<li>is_string — 检测变量是否是字符串，addslashes — 使用反斜线引用字符串</li>
+<li>strval — 获取变量的字符串值</li>
+<li>strlen — 获取字符串长度</li>
+<li>is_numeric — 检测变量是否为数字或数字字符串 </li>
+<li>intval — 获取变量的整数值</li>
+<li>is_palindrome_number —— 自定义函数判断数字是否为非回文数</li>
+</ul>
+<p>逻辑分析</p>
+<p>number为get接受参数变量；</p>
+<p>第一个判断如果变量number为空值，则设置header有hint字段，并die出一句话;</p>
+<p>条件一：<code>if(is_numeric($_REQUEST[&#39;number&#39;]))</code> 检测变量是否为数字或者数字字符串，条件是false；</p>
+<p>条件二：<code>elseif($req[&#39;number&#39;]!=strval(intval($req[&#39;number&#39;])))</code>检测变量是否为回文数；</p>
+<p>条件三：<code>if(is_palindrome_number($req[&quot;number&quot;]))</code>调用函数<code>is_palindrome_number</code>判断当前数字为非回文数</p>
+<p>绕过条件一的方式是：%00为空字符，不会影响后面的数值；</p>
+<p>咋眼一看条件二和条件三是冲突的，这边我们必须想法子绕过；为了同时满足条件二和绕过函数<code>is_palindrome_number</code>。可以对源代码进行相关简化，得到如下简化代码：</p>
+<pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token keyword">function</span> <span class="token function-definition function">is_palindrome_number</span><span class="token punctuation">(</span><span class="token variable">$number</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token variable">$number</span> <span class="token operator">=</span> <span class="token function">strval</span><span class="token punctuation">(</span><span class="token variable">$number</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//strval — 获取变量的字符串值</span>
+    <span class="token variable">$i</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token variable">$j</span> <span class="token operator">=</span> <span class="token function">strlen</span><span class="token punctuation">(</span><span class="token variable">$number</span><span class="token punctuation">)</span> <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token comment">//strlen — 获取字符串长度</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token variable">$i</span> <span class="token operator">&lt;</span> <span class="token variable">$j</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token variable">$number</span><span class="token punctuation">[</span><span class="token variable">$i</span><span class="token punctuation">]</span> <span class="token operator">!==</span> <span class="token variable">$number</span><span class="token punctuation">[</span><span class="token variable">$j</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">return</span> <span class="token constant boolean">false</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token variable">$i</span><span class="token operator">++</span><span class="token punctuation">;</span>
+        <span class="token variable">$j</span><span class="token operator">--</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">return</span> <span class="token constant boolean">true</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token variable">$a</span> <span class="token operator">=</span> <span class="token function">trim</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'number'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">var_dump</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token variable">$a</span><span class="token operator">==</span><span class="token function">strval</span><span class="token punctuation">(</span><span class="token function">intval</span><span class="token punctuation">(</span><span class="token variable">$a</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">&amp;</span><span class="token punctuation">(</span><span class="token function">intval</span><span class="token punctuation">(</span><span class="token variable">$a</span><span class="token punctuation">)</span><span class="token operator">==</span><span class="token function">intval</span><span class="token punctuation">(</span><span class="token function">strrev</span><span class="token punctuation">(</span><span class="token variable">$a</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">&amp;</span><span class="token operator">!</span><span class="token function">is_palindrome_number</span><span class="token punctuation">(</span><span class="token variable">$a</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token delimiter important">?></span></span>
+</code></pre>
+
+<p>fuzzing代码如下：</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/local/env python2</span>
+<span class="token comment">#conding:utf-8</span>
+
+<span class="token keyword">import</span> requests
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">256</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+	rq <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span><span class="token string">"http://192.168.1.191:32776/stage/2/index2.php?number=%s191"</span><span class="token operator">%</span><span class="token punctuation">(</span><span class="token string">"%%%02X"</span><span class="token operator">%</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span>
+	<span class="token comment">#print(rq.text)</span>
+	<span class="token keyword">if</span> <span class="token string">'1'</span> <span class="token keyword">in</span> rq<span class="token punctuation">.</span>text<span class="token punctuation">:</span>
+		<span class="token keyword">print</span> <span class="token string">"%%%02X"</span><span class="token operator">%</span>i
+      
+output<span class="token punctuation">:</span>
+    <span class="token operator">%</span><span class="token number">0C</span>
+	<span class="token operator">%</span><span class="token number">2B</span></code></pre>
+
+
+
+<h3 id="漏洞利用-1"><a href="#漏洞利用-1" class="headerlink" title="漏洞利用"></a>漏洞利用</h3><p>payload:<code>http://192.168.1.191:32776/stage/2/index2.php?number=%00%0C191</code></p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/20201225091551.png" loading="lazy"></p>
+<h2 id="ereg正则绕过"><a href="#ereg正则绕过" class="headerlink" title="ereg正则绕过"></a>ereg正则绕过</h2><h3 id="漏洞源码-2"><a href="#漏洞源码-2" class="headerlink" title="漏洞源码"></a>漏洞源码</h3><pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span> 
+
+<span class="token keyword">include</span> <span class="token string single-quoted-string">'flag.php'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">isset</span> <span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'password'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> 
+<span class="token punctuation">&#123;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">ereg</span> <span class="token punctuation">(</span><span class="token string double-quoted-string">"^[a-zA-Z0-9]+$"</span><span class="token punctuation">,</span> <span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'password'</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token constant boolean">FALSE</span><span class="token punctuation">)</span>
+  <span class="token punctuation">&#123;</span>
+    <span class="token keyword">echo</span> <span class="token string single-quoted-string">'&lt;p>You password must be alphanumeric&lt;/p>'</span><span class="token punctuation">;</span>
+  <span class="token punctuation">&#125;</span>
+  <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">strlen</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'password'</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">8</span> <span class="token operator">&amp;&amp;</span> <span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'password'</span><span class="token punctuation">]</span> <span class="token operator">></span> <span class="token number">9999999</span><span class="token punctuation">)</span>
+   <span class="token punctuation">&#123;</span>
+     <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">strpos</span> <span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'password'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string single-quoted-string">'*-*'</span><span class="token punctuation">)</span> <span class="token operator">!==</span> <span class="token constant boolean">FALSE</span><span class="token punctuation">)</span> 
+      <span class="token punctuation">&#123;</span>
+      <span class="token keyword">die</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'Flag: '</span> <span class="token operator">.</span> <span class="token variable">$flag</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">&#125;</span>
+      <span class="token keyword">else</span>
+      <span class="token punctuation">&#123;</span>
+        <span class="token keyword">echo</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'&lt;p>*-* have not been found&lt;/p>'</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+       <span class="token punctuation">&#125;</span>
+      <span class="token punctuation">&#125;</span>
+     <span class="token keyword">else</span> 
+     <span class="token punctuation">&#123;</span>
+        <span class="token keyword">echo</span> <span class="token string single-quoted-string">'&lt;p>Invalid password&lt;/p>'</span><span class="token punctuation">;</span> 
+      <span class="token punctuation">&#125;</span>
+   <span class="token punctuation">&#125;</span> 
+<span class="token delimiter important">?></span></span></code></pre>
+
+
+
+<h3 id="漏洞分析-2"><a href="#漏洞分析-2" class="headerlink" title="漏洞分析"></a>漏洞分析</h3><p>ereg函数:函数用指定的模式搜索一个字符串中指定的字符串,如果匹配成功返回true,否则,则返回false。搜索字母的字符是大小写敏感的。此函数存在%00截断问题，只要遇到%00就停止匹配。</p>
+<p>条件一：首先erge正则匹配使得变量password必须满足数字字母组成；</p>
+<p>条件二：限制password长度必须小于8，并且值要大于9999999；</p>
+<p>条件三：密码中必须要含有字符*-*;</p>
+<h3 id="漏洞利用-2"><a href="#漏洞利用-2" class="headerlink" title="漏洞利用"></a>漏洞利用</h3><p>绕过条件一使用%00截断；</p>
+<p>绕过条件而使用科学计数法1e9;</p>
+<p>满足条件三%00后面拼接*-*;</p>
+<p>payload:?password=1e9%00*-*</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/20201225150821.png" loading="lazy"></p>
+<h2 id="strcmp比较字符串"><a href="#strcmp比较字符串" class="headerlink" title="strcmp比较字符串"></a>strcmp比较字符串</h2><h3 id="漏洞源码-3"><a href="#漏洞源码-3" class="headerlink" title="漏洞源码"></a>漏洞源码</h3><pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token keyword">include</span> <span class="token string single-quoted-string">'flag.php'</span><span class="token punctuation">;</span>
+<span class="token function">highlight_file</span><span class="token punctuation">(</span><span class="token constant">__FILE__</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">isset</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'a'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>  
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">strcmp</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'a'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token variable">$flag</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> 
+        <span class="token keyword">die</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'Flag: '</span><span class="token operator">.</span><span class="token variable">$flag</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+    <span class="token keyword">else</span>  
+        <span class="token keyword">print</span> <span class="token string single-quoted-string">'No'</span><span class="token punctuation">;</span>  
+<span class="token punctuation">&#125;</span>
+
+<span class="token delimiter important">?></span></span></code></pre>
+
+
+
+<h3 id="漏洞分析-3"><a href="#漏洞分析-3" class="headerlink" title="漏洞分析"></a>漏洞分析</h3><p>strcmp()</p>
+<p>这个函数用于字符串比较</p>
+<pre class="language-php" data-language="php"><code class="language-php"><span class="token keyword type-declaration">int</span> <span class="token function">strcmp</span> <span class="token punctuation">(</span> <span class="token keyword type-hint">string</span> <span class="token variable">$str1</span> <span class="token punctuation">,</span> <span class="token keyword type-hint">string</span> <span class="token variable">$str2</span> <span class="token punctuation">)</span>
+<span class="token comment">// 参数 str1第一个字符串。str2第二个字符串。如果 str1 小于 str2 返回 &lt; 0； 如果 str1 大于 str2 返回 > 0；如果两者相等，返回 0。</span></code></pre>
+
+<p>可知，传入的期望类型是字符串类型的数据，但是如果我们传入非字符串类型的数据的时候，这个函数将会有怎么样的行为呢？实际上，当这个函数接受到了不符合的类型，这个函数将发生错误，但是在<code>5.3</code>之前的php中，显示了报错的警告信息后，将<code>return 0</code> !!!! 也就是虽然报了错，但却判定其相等了。这对于使用这个函数来做选择语句中的判断的代码来说简直是一个致命的漏洞，当然，php官方在后面的版本中修复了这个漏洞，使得报错的时候函数不返回任何值。<code>strcmp</code>只会处理字符串参数，如果给个数组的话呢，就会返回<code>NULL</code>,而判断使用的是<code>==</code>，<code>NULL==0</code>是 <code>bool(true)</code></p>
+<h3 id="漏洞利用-3"><a href="#漏洞利用-3" class="headerlink" title="漏洞利用"></a>漏洞利用</h3><p>payload:?a[]=1</p>
+<h2 id="sha-函数比较绕过"><a href="#sha-函数比较绕过" class="headerlink" title="sha()函数比较绕过"></a>sha()函数比较绕过</h2><h3 id="漏洞源码-4"><a href="#漏洞源码-4" class="headerlink" title="漏洞源码"></a>漏洞源码</h3><pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token keyword">include</span> <span class="token string single-quoted-string">'flag.php'</span><span class="token punctuation">;</span>
+<span class="token function">highlight_file</span><span class="token punctuation">(</span><span class="token constant">__FILE__</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">isset</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'name'</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">and</span> <span class="token keyword">isset</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'password'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> 
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'name'</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'password'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+        <span class="token keyword">echo</span> <span class="token string single-quoted-string">'&lt;p>Your password can not be your name!&lt;/p>'</span><span class="token punctuation">;</span>
+    <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">sha1</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'name'</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token function">sha1</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'password'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+      <span class="token keyword">die</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'Flag: '</span><span class="token operator">.</span><span class="token variable">$flag</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">else</span>
+        <span class="token keyword">echo</span> <span class="token string single-quoted-string">'&lt;p>Invalid password.&lt;/p>'</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">else</span>
+    <span class="token keyword">echo</span> <span class="token string single-quoted-string">'&lt;p>Login first!&lt;/p>'</span><span class="token punctuation">;</span>
+
+<span class="token delimiter important">?></span></span></code></pre>
+
+
+
+<h3 id="漏洞分析-4"><a href="#漏洞分析-4" class="headerlink" title="漏洞分析"></a>漏洞分析</h3><p>sha1()函数计算字符串sha-1散列，接受参数位字符串类型</p>
+<p>=== 为恒等式会对变量类型进行比较</p>
+<p>若传入变量为数组类型，就会使sha1函数返回错误，即false；都报错的情况下， 恒等式即成立</p>
+<h3 id="漏洞利用-4"><a href="#漏洞利用-4" class="headerlink" title="漏洞利用"></a>漏洞利用</h3><p>payload:?name[]=1&amp;passwordp[]=2</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/20201225155527.png" loading="lazy"></p>
+<h2 id="session验证绕过"><a href="#session验证绕过" class="headerlink" title="session验证绕过"></a>session验证绕过</h2><h3 id="漏洞源码-5"><a href="#漏洞源码-5" class="headerlink" title="漏洞源码"></a>漏洞源码</h3><pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token keyword">include</span> <span class="token string single-quoted-string">'flag.php'</span><span class="token punctuation">;</span>
+<span class="token function">highlight_file</span><span class="token punctuation">(</span><span class="token constant">__FILE__</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token function">session_start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">isset</span> <span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'password'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'password'</span><span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token variable">$_SESSION</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'password'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+        <span class="token keyword">die</span> <span class="token punctuation">(</span><span class="token string single-quoted-string">'Flag: '</span><span class="token operator">.</span><span class="token variable">$flag</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">else</span>
+        <span class="token keyword">print</span> <span class="token string single-quoted-string">'&lt;p>Wrong guess.&lt;/p>'</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token function">mt_srand</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token function">microtime</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">^</span> <span class="token function">rand</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">%</span> <span class="token function">rand</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">10000</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token function">rand</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token delimiter important">?></span></span></code></pre>
+
+
+
+<h3 id="漏洞分析-5"><a href="#漏洞分析-5" class="headerlink" title="漏洞分析"></a>漏洞分析</h3><p>若session里的password的值和get传参进去的值相等，则会输出flag；</p>
+<p>对其$_SESSION[‘password’]进行输出发现结果为null，所以这里构造password传入空值，使其相等；</p>
+<h3 id="漏洞利用-5"><a href="#漏洞利用-5" class="headerlink" title="漏洞利用"></a>漏洞利用</h3><p>payload:?password=</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/20201225164056.png" loading="lazy"></p>
+<h2 id="md5比较绕过"><a href="#md5比较绕过" class="headerlink" title="md5比较绕过"></a>md5比较绕过</h2><h3 id="漏洞源码-6"><a href="#漏洞源码-6" class="headerlink" title="漏洞源码"></a>漏洞源码</h3><pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+	<span class="token keyword">include</span> <span class="token string single-quoted-string">'flag.php'</span><span class="token punctuation">;</span>
+
+	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token variable">$_POST</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'user'</span><span class="token punctuation">]</span> <span class="token operator">&amp;&amp;</span> <span class="token variable">$_POST</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'pass'</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token variable">$conn</span> <span class="token operator">=</span> <span class="token function">mysql_connect</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"localhost"</span><span class="token punctuation">,</span> <span class="token string double-quoted-string">"ctf"</span><span class="token punctuation">,</span> <span class="token string double-quoted-string">"ctf"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token function">mysql_select_db</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"md5bypass"</span><span class="token punctuation">)</span> <span class="token keyword">or</span> <span class="token keyword">die</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"Could not select database"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$conn</span><span class="token operator">-></span><span class="token property">connect_error</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+			<span class="token keyword">die</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"Connection failed: "</span> <span class="token operator">.</span> <span class="token function">mysql_error</span><span class="token punctuation">(</span><span class="token variable">$conn</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span> 
+	<span class="token variable">$user</span> <span class="token operator">=</span> <span class="token variable">$_POST</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'user'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+	<span class="token variable">$pass</span> <span class="token operator">=</span> <span class="token function">md5</span><span class="token punctuation">(</span><span class="token variable">$_POST</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'pass'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token variable">$sql</span> <span class="token operator">=</span> <span class="token string double-quoted-string">"select pw from php where user='<span class="token interpolation"><span class="token variable">$user</span></span>'"</span><span class="token punctuation">;</span>
+	<span class="token variable">$query</span> <span class="token operator">=</span> <span class="token function">mysql_query</span><span class="token punctuation">(</span><span class="token variable">$sql</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token variable">$query</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"Error: %s\n"</span><span class="token punctuation">,</span> <span class="token function">mysql_error</span><span class="token punctuation">(</span><span class="token variable">$conn</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">exit</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token variable">$row</span> <span class="token operator">=</span> <span class="token function">mysql_fetch_array</span><span class="token punctuation">(</span><span class="token variable">$query</span><span class="token punctuation">,</span> <span class="token constant">MYSQL_ASSOC</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token variable">$row</span><span class="token punctuation">[</span>pw<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">strcasecmp</span><span class="token punctuation">(</span><span class="token variable">$pass</span><span class="token punctuation">,</span> <span class="token variable">$row</span><span class="token punctuation">[</span>pw<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">echo</span> <span class="token string double-quoted-string">"&lt;p>Logged in!"</span> <span class="token operator">.</span> <span class="token variable">$flag</span> <span class="token operator">.</span> <span class="token string double-quoted-string">"&lt;/p>"</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">echo</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"&lt;p>Log in failure!&lt;/p>"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	  <span class="token punctuation">&#125;</span>
+	<span class="token punctuation">&#125;</span>
+<span class="token delimiter important">?></span></span></code></pre>
+
+
+
+<h3 id="漏洞分析-6"><a href="#漏洞分析-6" class="headerlink" title="漏洞分析"></a>漏洞分析</h3><p>strcasecmp(string1, string2) 函数比较两个字符串。如果相等返回0，如果string1&lt;string2返回&lt;0,如果string1&gt;string2返回&gt;0</p>
+<p>提示：strcasecmp() 函数是二进制安全的，且不区分大小写。</p>
+<p>根据代码只要让$row[pw]与变量$pass相等即可输出flag；</p>
+<p>$pass是经过md5之后的值，这个值用户可以通过输入控制；</p>
+<p>$row[pw]的值是通过sql查询获取到；</p>
+<p>通过代码很明显可以看出来，在user变量处没有任何过滤存在，是明显存在注入的；</p>
+<p>通过注入构造控制$row[pw]为用户自己输入的md5值即可，pass的值可控，直接输入对应md5的明文即可；</p>
+<h3 id="漏洞利用-6"><a href="#漏洞利用-6" class="headerlink" title="漏洞利用"></a>漏洞利用</h3><p>payload:<code>admin&#39; AND 0=1 union select &#39;202cb962ac59075b964b07152d234b70&#39;#</code>&amp;pass=123</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/20201228135450.png" loading="lazy"></p>
+<h2 id="md5加密相等绕过"><a href="#md5加密相等绕过" class="headerlink" title="md5加密相等绕过"></a>md5加密相等绕过</h2><h3 id="漏洞源码-7"><a href="#漏洞源码-7" class="headerlink" title="漏洞源码"></a>漏洞源码</h3><pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token keyword">include</span> <span class="token string single-quoted-string">'flag.php'</span><span class="token punctuation">;</span>
+<span class="token function">highlight_file</span><span class="token punctuation">(</span><span class="token constant">__FILE__</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token variable">$md51</span> <span class="token operator">=</span> <span class="token function">md5</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'QNKCDZO'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$a</span> <span class="token operator">=</span> @<span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'a'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token variable">$md52</span> <span class="token operator">=</span> @<span class="token function">md5</span><span class="token punctuation">(</span><span class="token variable">$a</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token keyword">isset</span><span class="token punctuation">(</span><span class="token variable">$a</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$a</span> <span class="token operator">!=</span> <span class="token string single-quoted-string">'QNKCDZO'</span> <span class="token operator">&amp;&amp;</span> <span class="token variable">$md51</span> <span class="token operator">==</span> <span class="token variable">$md52</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">echo</span> <span class="token string double-quoted-string">"flag:"</span> <span class="token operator">.</span> <span class="token variable">$flag</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">echo</span> <span class="token string double-quoted-string">"false!!!"</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span>
+<span class="token keyword">else</span><span class="token punctuation">&#123;</span><span class="token keyword">echo</span> <span class="token string double-quoted-string">"please input a"</span><span class="token punctuation">;</span><span class="token punctuation">&#125;</span>
+
+<span class="token delimiter important">?></span></span></code></pre>
+
+
+
+<h3 id="漏洞分析-7"><a href="#漏洞分析-7" class="headerlink" title="漏洞分析"></a>漏洞分析</h3><p>php中md5值若是0e开头，那么与其他的0e开头的md5值相等，这也成为md5碰撞</p>
+<pre class="language-none"><code class="language-none">s878926199a
+0e545993274517709034328855841020
+s155964671a
+0e342768416822451524974117254469
+s214587387a
+0e848240448830537924465865611904
+s214587387a
+0e848240448830537924465865611904
+s878926199a
+0e545993274517709034328855841020
+s1091221200a
+0e940624217856561557816327384675
+s1885207154a
+0e509367213418206700842008763514
+s1502113478a
+0e861580163291561247404381396064
+s1885207154a
+0e509367213418206700842008763514
+s1836677006a
+0e481036490867661113260034900752
+s155964671a
+0e342768416822451524974117254469
+s1184209335a
+0e072485820392773389523109082030
+s1665632922a
+0e731198061491163073197128363787
+s1502113478a
+0e861580163291561247404381396064
+s1836677006a
+0e481036490867661113260034900752
+s1091221200a
+0e940624217856561557816327384675
+s155964671a
+0e342768416822451524974117254469
+s1502113478a
+0e861580163291561247404381396064
+s155964671a
+0e342768416822451524974117254469
+s1665632922a
+0e731198061491163073197128363787
+s155964671a
+0e342768416822451524974117254469
+s1091221200a
+0e940624217856561557816327384675
+s1836677006a
+0e481036490867661113260034900752
+s1885207154a
+0e509367213418206700842008763514
+s532378020a
+0e220463095855511507588041205815
+s878926199a
+0e545993274517709034328855841020
+s1091221200a
+0e940624217856561557816327384675
+s214587387a
+0e848240448830537924465865611904
+s1502113478a
+0e861580163291561247404381396064
+s1091221200a
+0e940624217856561557816327384675
+s1665632922a
+0e731198061491163073197128363787
+s1885207154a
+0e509367213418206700842008763514
+s1836677006a
+0e481036490867661113260034900752
+s1665632922a
+0e731198061491163073197128363787
+s878926199a
+所以随便挑一个0e开头的md5对应的原码 构造 playload即可</code></pre>
+
+
+
+<h3 id="漏洞利用-7"><a href="#漏洞利用-7" class="headerlink" title="漏洞利用"></a>漏洞利用</h3><p>payload:?a=s878926199a</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/20201228140800.png" loading="lazy"></p>
+</div><div id="reward-container"><span class="hty-icon-button button-glow" id="reward-button" title="打赏" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === &quot;none&quot;) ? &quot;block&quot; : &quot;none&quot;;"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-hand-coin-line"></use></svg></span><div id="reward-comment">钱是万能的</div><div id="qr" style="display:none;"><div style="display:inline-block"><a target="_blank" rel="noopener" href="https://gitee.com/greetdawn/blogImages/raw/master/img/qr-wechat.png"><img loading="lazy" src="https://gitee.com/greetdawn/blogImages/raw/master/img/qr-wechat.png" alt="支付宝" title="支付宝"></a><div><span style="color:#00A3EE"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-alipay-line"></use></svg></span></div></div><div style="display:inline-block"><a target="_blank" rel="noopener" href="https://gitee.com/greetdawn/blogImages/raw/master/img/qr-alipay.png"><img loading="lazy" src="https://gitee.com/greetdawn/blogImages/raw/master/img/qr-alipay.png" alt="微信支付" title="微信支付"></a><div><span style="color:#2DC100"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-wechat-pay-line"></use></svg></span></div></div></div></div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong>丨Mr.zhang丨</li><li class="post-copyright-link"><strong>本文链接：</strong><a href="http://www.greetdawn.top/2019/03/10/php-code-audit/php-features/" title="php语言特性类型讲解">http://www.greetdawn.top/2019/03/10/php-code-audit/php-features/</a></li><li class="post-copyright-license"><strong>版权声明：</strong>本博客所有文章除特别声明外，均默认采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 "><svg class="icon"><use xlink:href="#icon-creative-commons-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-by-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-nc-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-sa-line"></use></svg></a> 许可协议。</li></ul></section></article><div class="post-nav"><div class="post-nav-item"><a class="post-nav-prev" href="/2019/05/14/php-code-audit/php-unserialize-vul/" rel="prev" title="php反序列化漏洞解析"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-left-s-line"></use></svg><span class="post-nav-text">php反序列化漏洞解析</span></a></div><div class="post-nav-item"><a class="post-nav-next" href="/2019/03/07/php-code-audit/php-audit-thinkphp5-readfile/" rel="next" title="thinkphp5文件包含漏洞分析"><span class="post-nav-text">thinkphp5文件包含漏洞分析</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-right-s-line"></use></svg></a></div></div></div><div class="hty-card" id="comment"><div class="comment-tooltip text-center"><span>尝试使用 Disqus 评论系统。</span><br><span>您可以点击下方按钮切换对应评论系统。</span><br><a class="hty-button hty-button--raised" id="github-issues" target="_blank" rel="noopener" href="https://github.com/greetdawn/greetdawn.github.io/issues?q=is:issue+php语言特性类型讲解">GitHub Issues</a></div><div class="toggle-comment-system" style="margin: 1rem auto"><a class="toggle-comment-btn hty-button hty-button--raised text-uppercase" data-target="#valine-container" onclick="showComment(this.dataset.target)">valine</a><style>#disqus_thread {
+  display: none;
+}</style><a class="toggle-comment-btn hty-button hty-button--raised text-uppercase" data-target="#disqus_thread" onclick="showComment(this.dataset.target)">disqusjs</a><script>function hideAllComment() {
+  //- hide all
+  document.querySelectorAll('.toggle-comment-btn').forEach((btn) => {
+    const container = document.querySelector(btn.dataset.target);
+    if (container) {
+      container.style.display = "none";
+    }
+  });
+}
+function showComment(target) {
+  hideAllComment();
+  //- show target
+  const targetContainer = document.querySelector(target);
+  if (targetContainer) {
+    targetContainer.style.display = "block";
+  }
+}
+</script></div><div id="disqus_thread"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/disqusjs@latest/dist/disqusjs.css"><script src="https://cdn.jsdelivr.net/npm/disqusjs@latest/dist/disqus.js"></script><script>const disqusjsConfig = {"enable":true,"shortname":"yunyoujun","apikey":"ouoGQCaamOKdJgyZU5DKcpFnRIg3SNzvk0nwygPtlcTRJuE68c8igvrZGW4wAJoN"}
+function loadDisqus() {
+  const dsqjs = new DisqusJS(disqusjsConfig)
+}</script><script src="/js/comments/disqus.js"></script><div id="valine-container"></div><script>Yun.utils.getScript("https://cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js", () => {
+  const valineConfig = {"enable":true,"appId":"4x0IwQ1sy95mOGQDTO8MYCeA-gzGzoHsz","appKey":"9loqwF3UDklPDHaP9IN2uwN8","placeholder":"大佬求指教&nbsp_(:з」∠)_ （填写邮箱可以收到回复通知～）","avatar":null,"pageSize":10,"visitor":true,"highlight":true,"recordIP":true,"enableQQ":true,"serverURLs":"https://lncld.yunyoujun.cn","requiredFields":["nick","mail"],"emojiCDN":"//i0.hdslb.com/bfs/emote/","emojiMaps":{"tv_doge":"6ea59c827c414b4a2955fe79e0f6fd3dcd515e24.png","tv_亲亲":"a8111ad55953ef5e3be3327ef94eb4a39d535d06.png","tv_偷笑":"bb690d4107620f1c15cff29509db529a73aee261.png","tv_再见":"180129b8ea851044ce71caf55cc8ce44bd4a4fc8.png","tv_冷漠":"b9cbc755c2b3ee43be07ca13de84e5b699a3f101.png","tv_发怒":"34ba3cd204d5b05fec70ce08fa9fa0dd612409ff.png","tv_发财":"34db290afd2963723c6eb3c4560667db7253a21a.png","tv_可爱":"9e55fd9b500ac4b96613539f1ce2f9499e314ed9.png","tv_吐血":"09dd16a7aa59b77baa1155d47484409624470c77.png","tv_呆":"fe1179ebaa191569b0d31cecafe7a2cd1c951c9d.png","tv_呕吐":"9f996894a39e282ccf5e66856af49483f81870f3.png","tv_困":"241ee304e44c0af029adceb294399391e4737ef2.png","tv_坏笑":"1f0b87f731a671079842116e0991c91c2c88645a.png","tv_大佬":"093c1e2c490161aca397afc45573c877cdead616.png","tv_大哭":"23269aeb35f99daee28dda129676f6e9ea87934f.png","tv_委屈":"d04dba7b5465779e9755d2ab6f0a897b9b33bb77.png","tv_害羞":"a37683fb5642fa3ddfc7f4e5525fd13e42a2bdb1.png","tv_尴尬":"7cfa62dafc59798a3d3fb262d421eeeff166cfa4.png","tv_微笑":"70dc5c7b56f93eb61bddba11e28fb1d18fddcd4c.png","tv_思考":"90cf159733e558137ed20aa04d09964436f618a1.png","tv_惊吓":"0d15c7e2ee58e935adc6a7193ee042388adc22af.png","tv_打脸":"56ab10b624063e966bfcb76ea5dc4794d87dfd47.png","tv_抓狂":"fe31c08edad661d63762b04e17b8d5ae3c71a757.png","tv_抠鼻":"c666f55e88d471e51bbd9fab9bb308110824a6eb.png","tv_斜眼笑":"911f987aa8bc1bee12d52aafe62bc41ef4474e6c.png","tv_无奈":"ea8ed89ee9878f2fece2dda0ea8a5dbfe21b5751.png","tv_晕":"5443c22b4d07fb1907ccc610c8e6db254f2461b7.png","tv_流汗":"cead1c351ab8d79e9f369605beb90148db0fbed3.png","tv_流泪":"7e71cde7858f0cd50d74b0264aa26db612a8a167.png","tv_流鼻血":"c32d39db2737f89b904ca32700d140a9241b0767.png","tv_点赞":"f85c354995bd99e28fc76c869bfe42ba6438eff4.png","tv_生气":"26702dcafdab5e8225b43ffd23c94ac1ff932654.png","tv_生病":"8b0ec90e6b86771092a498c54f09fc94621c1900.png","tv_疑问":"0793d949b18d7be716078349c202c15ff166f314.png","tv_白眼":"c1d59f439e379ee50eef488bcb5e5378e5044ea4.png","tv_皱眉":"72ccad6679fea0d14cce648b4d818e09b8ffea2d.png","tv_目瞪口呆":"0b8cb81a68de5d5365212c99375e7ace3e7891b7.png","tv_睡着":"8b196675b53af58264f383c50ad0945048290b33.png","tv_笑哭":"1abc628f6d4f4caf9d0e7800878f4697abbc8273.png","tv_腼腆":"89712c0d4af73e67f89e35cbc518420380a7f6f4.png","tv_色":"61822c7e9aae5da76475e7892534545336b23a6f.png","tv_调侃":"4bc022533ef31544ca0d72c12c808cf4a1cce3e3.png","tv_调皮":"b9c41de8e82dd7a8515ae5e3cb63e898bf245186.png","tv_鄙视":"6e72339f346a692a495b123174b49e4e8e781303.png","tv_闭嘴":"c9e990da7f6e93975e25fd8b70e2e290aa4086ef.png","tv_难过":"87f46748d3f142ebc6586ff58860d0e2fc8263ba.png","tv_馋":"fc7e829b845c43c623c8b490ee3602b7f0e76a31.png","tv_鬼脸":"0ffbbddf8a94d124ca2f54b360bbc04feb6bbfea.png","tv_黑人问号":"45821a01f51bc867da9edbaa2e070410819a95b2.png","tv_鼓掌":"1d21793f96ef4e6f48b23e53e3b9e42da833a0f6.png"},"el":"#valine-container","lang":"zh-cn"}
+  valineConfig.path = "/2019/03/10/php-code-audit/php-features/"
+  new Valine(valineConfig)
+}, window.Valine);</script></div></main><footer class="sidebar-translate" id="footer"><div class="beian"><a rel="noopener" href="https://beian.miit.gov.cn/" target="_blank">greetdawn</a></div><div class="copyright"><span>&copy; 2018 – 2021 </span><span class="with-love" id="animate"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-cloud-line"></use></svg></span><span class="author"> 丨Mr.zhang丨</span></div><div class="powered"><span>由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v5.4.0</span><span class="footer-separator">|</span><span>主题 - <a rel="noopener" href="https://github.com/YunYouJun/hexo-theme-yun" target="_blank"><span>Yun</span></a> v1.5.2</span></div><div class="live_time"><span>本博客已萌萌哒地运行</span><span id="display_live_time"></span><span class="moe-text">(●'◡'●)</span><script>function blog_live_time() {
+  setTimeout(blog_live_time, 1000);
+  const start = new Date('2019-04-12T00:00:00');
+  const now = new Date();
+  const timeDiff = (now.getTime() - start.getTime());
+  const msPerMinute = 60 * 1000;
+  const msPerHour = 60 * msPerMinute;
+  const msPerDay = 24 * msPerHour;
+  const passDay = Math.floor(timeDiff / msPerDay);
+  const passHour = Math.floor((timeDiff % msPerDay) / 60 / 60 / 1000);
+  const passMinute = Math.floor((timeDiff % msPerHour) / 60 / 1000);
+  const passSecond = Math.floor((timeDiff % msPerMinute) / 1000);
+  display_live_time.innerHTML = " " + passDay + " 天 " + passHour + " 小时 " + passMinute + " 分 " + passSecond + " 秒";
+}
+blog_live_time();
+</script></div></footer><a class="hty-icon-button" id="goUp" aria-label="back-to-top" href="#"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-up-s-line"></use></svg><svg class="progress-circle-container" viewBox="0 0 100 100"><circle class="progress-circle" id="progressCircle" cx="50" cy="50" r="48" fill="none" stroke="#0078E7" stroke-width="2" stroke-linecap="round"></circle></svg></a></div></body></html>
