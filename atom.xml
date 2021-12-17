@@ -6,7 +6,7 @@
   <link href="http://www.greetdawn.top/atom.xml" rel="self"/>
   
   <link href="http://www.greetdawn.top/"/>
-  <updated>2021-12-17T03:39:22.007Z</updated>
+  <updated>2021-12-16T10:48:28.062Z</updated>
   <id>http://www.greetdawn.top/</id>
   
   <author>
@@ -15,30 +15,6 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
-  
-  <entry>
-    <title>记confluence的一次溯源</title>
-    <link href="http://www.greetdawn.top/2021/12/17/%E8%AE%B0confluence%E7%9A%84%E4%B8%80%E6%AC%A1%E6%BA%AF%E6%BA%90/"/>
-    <id>http://www.greetdawn.top/2021/12/17/%E8%AE%B0confluence%E7%9A%84%E4%B8%80%E6%AC%A1%E6%BA%AF%E6%BA%90/</id>
-    <published>2021-12-17T03:33:39.000Z</published>
-    <updated>2021-12-17T03:39:22.007Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="记一次confluence挖矿溯源"><a href="#记一次confluence挖矿溯源" class="headerlink" title="记一次confluence挖矿溯源"></a>记一次confluence挖矿溯源</h1><h1 id="1、背景概述"><a href="#1、背景概述" class="headerlink" title="1、背景概述"></a>1、背景概述</h1><aside>🔥 前天接到某客户阿里云响应报警存在门罗币挖矿病毒，虎盾攻防实验室人员立即对该事件进行应急响应处理。</aside><p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled.png" alt="Untitled" loading="lazy"></p><h1 id="2、事件分析"><a href="#2、事件分析" class="headerlink" title="2、事件分析"></a>2、事件分析</h1><p>该阿里云的系统客户部署一套了线上的confluence系统，且该系统是部署于我司的虎盾零信任安全访问系统内的，对其公网应用接口的暴露面进行了严格收敛。据得知客户在前天刚好将该收敛系统短暂暴露在公网中，增加其被攻击的可能性，导致最后被注入挖矿病毒。</p><p>前期获取客户某员工用户登录账户，获取当前使用的版本为<strong>Confluence 7.9.3</strong></p><p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%201.png" alt="Untitled" loading="lazy"></p><p>根据该系统版本，在互联网中发现该系统存在远程代码执行漏洞（CVE-2021-26084），且该系统漏洞在八月底被黑产大规模利用执行挖矿程序。</p><p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%202.png" alt="Untitled" loading="lazy"></p><p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%203.png" alt="Untitled" loading="lazy"></p><h1 id="3、攻击分析"><a href="#3、攻击分析" class="headerlink" title="3、攻击分析"></a>3、攻击分析</h1><p>查看系统进程，发现恶意运行进程 ps -ef</p><p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%204.png" alt="Untitled" loading="lazy"></p><p>根据阿里云告警提示的路径该文件创建的时间为 Dec 13 12:42</p><p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%205.png" alt="Untitled" loading="lazy"></p><p>下载该路径文件获取矿池地址<a href="http://j0llychic.com:9999/">j0llychic.com:9999</a></p><p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%206.png" alt="Untitled" loading="lazy"></p><p>获取该矿池的IP地址165.232.129.60定位为美国的一个矿池地址</p><p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%207.png" alt="Untitled" loading="lazy"></p><p>用户名和密码：</p><p>“user”: “47W42XBUVVm3Nwc1h6dqN9YJm8XiCR5yzBpeiWjpUdAdJdpxT4bHVnoczTDvdG1xtsF3YSD1hJviq5bLFNTPVMcj7sNKvs4”,<br>“pass”: “82b1ee75afa6”,</p><p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%208.png" alt="Untitled" loading="lazy"></p><p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%209.png" alt="Untitled" loading="lazy"></p><p>查看了一下目前恶意进程trace运行情况，该进程cpu占用率为15%，并未太高</p><p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%2010.png" alt="Untitled" loading="lazy"></p><p>系统日志中目前并未发现其他的可疑连接及运行进程</p><p>且confluence日志中也并未发现可疑的请求日志记录</p><p>目前大概率怀疑黑产是通过CVE-2021-26084漏洞部署的远程挖矿程序，且清空了相应的请求记录</p><h1 id="4、病毒清理"><a href="#4、病毒清理" class="headerlink" title="4、病毒清理"></a>4、病毒清理</h1><h2 id="杀死进程"><a href="#杀死进程" class="headerlink" title="杀死进程"></a>杀死进程</h2><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">ps</span> -ef <span class="token operator">|</span> <span class="token function">grep</span> trace<span class="token function">kill</span> -9 <span class="token number">14387</span></code></pre><p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%2011.png" alt="Untitled" loading="lazy"></p><h2 id="文件清理"><a href="#文件清理" class="headerlink" title="文件清理"></a>文件清理</h2><p>rm -rf /root/c3pool/</p><p>恶意进程不存在</p><p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%2012.png" alt="Untitled" loading="lazy"></p><p>矿池连接已不存在</p><p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%2013.png" alt="Untitled" loading="lazy"></p><h1 id="5、漏洞复现"><a href="#5、漏洞复现" class="headerlink" title="5、漏洞复现"></a>5、漏洞复现</h1><p>漏洞验证，该系统存在<code>CVE-2021-26084</code></p><p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211217113141317.png" alt="image-20211217113141317" loading="lazy"></p><p>无虎盾收敛，应用面暴露，直接利用</p><p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211217112917496.png" alt="image-20211217112917496" loading="lazy"></p><p>虎盾收敛应用暴露面，已知应用和版本漏洞的情况下，未达成利用</p><p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211217112939883.png" alt="image-20211217112939883" loading="lazy"></p><p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211217112948533.png" alt="image-20211217112948533" loading="lazy"></p><h1 id="6、总结分析"><a href="#6、总结分析" class="headerlink" title="6、总结分析"></a>6、总结分析</h1><p>该客户系统部署于虎盾零信任安全产品体系下，并未遭受任何攻击，很好的对应用在公网的访问权限进行了严格限制和收敛。由于系统的短暂公网暴露，且该系统存在较新的版本漏洞，而遭受了此次严重的攻击，被黑客部署了挖矿病毒。</p><h1 id="7、防范措施"><a href="#7、防范措施" class="headerlink" title="7、防范措施"></a>7、防范措施</h1><h2 id="部署虎盾零信任安全访问系统"><a href="#部署虎盾零信任安全访问系统" class="headerlink" title="部署虎盾零信任安全访问系统"></a>部署虎盾零信任安全访问系统</h2><p>基于“零信任”为理念，收敛企业公网应用的暴露面，构建应用层虚拟可信身份网络（颠覆性重构），帮助企业有效解决访问安全、身份管控、流量管控、设备管控、资源管控等问题。</p><h2 id="升级系统版本"><a href="#升级系统版本" class="headerlink" title="升级系统版本"></a>升级系统版本</h2><p>目前官方已在高版本中修复了该漏洞，请受影响的用户升级至安全版本。</p><p><a href="https://www.atlassian.com/software/confluence/download-archives">https://www.atlassian.com/software/confluence/download-archives</a></p><p>安全版本列表</p><ul><li>Atlassian Confluence Server/Data Center 6.13.23</li><li>Atlassian Confluence Server/Data Center 7.4.11</li><li>Atlassian Confluence Server/Data Center 7.11.6</li><li>Atlassian Confluence Server/Data Center 7.12.5</li><li>Atlassian Confluence Server/Data Center 7.13.0</li></ul><h1 id="虎盾实验室"><a href="#虎盾实验室" class="headerlink" title="虎盾实验室"></a>虎盾实验室</h1><aside>👉 虎盾攻防实验室团队成员大多来自于二进制漏洞挖掘、攻防渗透研究出身的高级技术专家和渗透测试工程师,技术功底坚实，注重攻防知识体系完善。在二进制漏洞挖掘、攻防对抗、代码审计、web渗透测试、入侵检测、应急响应、安全评估检测、安全培训、安全竞赛等方面，积累了丰富的技术和经验。</aside>]]></content>
-    
-    
-      
-      
-    <summary type="html">&lt;h1 id=&quot;记一次confluence挖矿溯源&quot;&gt;&lt;a href=&quot;#记一次confluence挖矿溯源&quot; class=&quot;headerlink&quot; title=&quot;记一次confluence挖矿溯源&quot;&gt;&lt;/a&gt;记一次confluence挖矿溯源&lt;/h1&gt;&lt;h1 id=&quot;1、背景概</summary>
-      
-    
-    
-    
-    <category term="Security" scheme="http://www.greetdawn.top/categories/Security/"/>
-    
-    
-    <category term="溯源分析" scheme="http://www.greetdawn.top/tags/%E6%BA%AF%E6%BA%90%E5%88%86%E6%9E%90/"/>
-    
-  </entry>
   
   <entry>
     <title>第三期cfs靶场练习</title>
@@ -480,6 +456,27 @@
     <category term="thinkphp3" scheme="http://www.greetdawn.top/tags/thinkphp3/"/>
     
     <category term="74cms" scheme="http://www.greetdawn.top/tags/74cms/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>eval(2020NSSC)</title>
+    <link href="http://www.greetdawn.top/2020/12/04/php-code-audit/php-code-audit-eval-2020NSSC/"/>
+    <id>http://www.greetdawn.top/2020/12/04/php-code-audit/php-code-audit-eval-2020NSSC/</id>
+    <published>2020-12-04T10:53:30.000Z</published>
+    <updated>2021-01-29T08:02:51.035Z</updated>
+    
+    <content type="html"><![CDATA[<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/road-5903402_1920.jpg" alt="road-5903402_1920" loading="lazy"></p><span id="more"></span><h2 id="eval-2020NSSC"><a href="#eval-2020NSSC" class="headerlink" title="eval(2020NSSC)"></a>eval(2020NSSC)</h2><h3 id="题目源码"><a href="#题目源码" class="headerlink" title="题目源码"></a>题目源码</h3><pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span><span class="token function">error_reporting</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//flag is located in flag.php</span><span class="token keyword">if</span><span class="token punctuation">(</span> <span class="token keyword">isset</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'a'</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">&#123;</span>    <span class="token variable">$a</span> <span class="token operator">=</span> <span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'a'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>    <span class="token keyword">if</span><span class="token punctuation">(</span> <span class="token function">strlen</span><span class="token punctuation">(</span><span class="token variable">$a</span><span class="token punctuation">)</span><span class="token operator">></span><span class="token number">27</span> <span class="token punctuation">)</span><span class="token punctuation">&#123;</span>        <span class="token keyword">die</span><span class="token punctuation">(</span><span class="token function">strval</span><span class="token punctuation">(</span><span class="token function">strlen</span><span class="token punctuation">(</span><span class="token variable">$a</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">.</span> <span class="token string double-quoted-string">" Long."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token punctuation">&#125;</span>    <span class="token keyword">if</span><span class="token punctuation">(</span> <span class="token function">preg_match</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"/[A-Zb-z0-9_$.&amp;;|^~![\]()&#123;&#125;\$@\*]+/"</span><span class="token punctuation">,</span> <span class="token variable">$a</span><span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">&#123;</span>        <span class="token keyword">die</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"NO."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token punctuation">&#125;</span>   <span class="token keyword">eval</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"echo '"</span> <span class="token operator">.</span> <span class="token variable">$a</span> <span class="token operator">.</span><span class="token string double-quoted-string">"';"</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>    <span class="token function">show_source</span><span class="token punctuation">(</span><span class="token constant">__FILE__</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">&#125;</span><span class="token delimiter important">?></span></span></code></pre><h3 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h3><p>分析正则匹配发现字母a未过滤,特殊字符?未过滤;菊花一紧，想到铁铁的通配符绕过啊;</p><p>在当前目录下有flag.php</p><p>所以构造/bin/cat flag.php 即可读取文件内容</p><p>对于eval当中的拼接符号. 可以使用，绕过；并且利用反引号执行命令;</p><h3 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h3><p>payload:<code>?a=&#39;,\</code>/???/?a?%20??a?????`,’`</p><p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/20210104140830.png" loading="lazy"></p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;img src=&quot;https://gitee.com/greetdawn/blogImages/raw/master/img/road-5903402_1920.jpg&quot; alt=&quot;road-5903402_1920&quot;&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    <category term="PHP代码审计" scheme="http://www.greetdawn.top/categories/PHP%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/"/>
+    
+    
+    <category term="CTF" scheme="http://www.greetdawn.top/tags/CTF/"/>
     
   </entry>
   
