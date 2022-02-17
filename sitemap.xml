@@ -424,13 +424,6 @@
   </url>
   
   <url>
-    <loc>http://www.greetdawn.top/tags/SCTF2021/</loc>
-    <lastmod>2022-02-17</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://www.greetdawn.top/tags/%E7%BD%91%E9%BC%8E%E6%9D%AF/</loc>
     <lastmod>2022-02-17</lastmod>
     <changefreq>daily</changefreq>
@@ -439,6 +432,13 @@
   
   <url>
     <loc>http://www.greetdawn.top/tags/CTF/</loc>
+    <lastmod>2022-02-17</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.greetdawn.top/tags/SCTF2021/</loc>
     <lastmod>2022-02-17</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
