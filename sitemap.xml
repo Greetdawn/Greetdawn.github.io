@@ -683,13 +683,6 @@
   </url>
   
   <url>
-    <loc>http://www.greetdawn.top/tags/sql-injection/</loc>
-    <lastmod>2022-02-17</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.6</priority>
-  </url>
-  
-  <url>
     <loc>http://www.greetdawn.top/tags/redis/</loc>
     <lastmod>2022-02-17</lastmod>
     <changefreq>daily</changefreq>
@@ -698,6 +691,13 @@
   
   <url>
     <loc>http://www.greetdawn.top/tags/SSRF/</loc>
+    <lastmod>2022-02-17</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.6</priority>
+  </url>
+  
+  <url>
+    <loc>http://www.greetdawn.top/tags/sql-injection/</loc>
     <lastmod>2022-02-17</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
