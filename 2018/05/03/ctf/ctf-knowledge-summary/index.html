@@ -1,114 +1,427 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
-  <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="author" content="viggo" />
-  <title>greetdawn&#39;s Blog - The God love people</title>
-  <meta name="keywords" content="Web安全,Linux,Python,Life">
-  <meta name="description" content="Love coding,Love life!">
-  <link rel="shortcut icon" href="/favicon.ico">
   
-<link rel="stylesheet" href="/css/hclonely.css">
-<link rel="stylesheet" href="//fonts.loli.net/css?family=Arimo:400,700,400italic.css">
-<link rel="stylesheet" href="/css/fonts/linecons/css/linecons.min.css">
-<link rel="stylesheet" href="/css/fonts/fontawesome/css/all.min.css">
-<link rel="stylesheet" href="/css/bootstrap.min.css">
-<link rel="stylesheet" href="/css/xenon-core.min.css">
-<link rel="stylesheet" href="/css/xenon-components.min.css">
-<link rel="stylesheet" href="/css/xenon-skins.min.css">
-<link rel="stylesheet" href="/css/nav.min.css">
-
+  <title>CTF知识点总结 | greetdawn&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="常见CTF知识点的总结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CTF知识点总结">
+<meta property="og:url" content="http://www.greetdawn.top/2018/05/03/ctf/ctf-knowledge-summary/index.html">
+<meta property="og:site_name" content="greetdawn&#39;s Blog">
+<meta property="og:description" content="常见CTF知识点的总结">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/man-5941332_1920.jpg">
+<meta property="article:published_time" content="2018-05-03T02:37:20.000Z">
+<meta property="article:modified_time" content="2021-03-19T07:48:55.394Z">
+<meta property="article:author" content="丨greetdawn丨">
+<meta property="article:tag" content="CTF">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/man-5941332_1920.jpg">
   
-<script src="/js/jquery-1.11.1.min.js"></script>
-
-  <script>
-    var userDefinedSearchData = {"custom":false,"thisSearch":"https://www.baidu.com/s?wd=","thisSearchIcon":"url(https://www.baidu.com/favicon.ico)","hotStatus":true,"data":[{"name":"百度","img":"url(https://www.baidu.com/favicon.ico)","url":"https://www.baidu.com/s?wd="}]};
-    var expandAll = false;
-  </script>
-  
-<script src="/js/header.js"></script>
-
-  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!--[if lt IE 9]>
-        
-<script src="/js/html5shiv.min.js"></script>
-
-        
-<script src="/js/respond.min.js"></script>
-
-    <![endif]-->
-  <!-- / FB Open Graph -->
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="http://www.greetdawn.top/2018/05/03/ctf/ctf-knowledge-summary/index.html">
-  <meta property="og:title" content="greetdawn&#39;s Blog - The God love people">
-  <meta property="og:description" content="Love coding,Love life!">
-  <meta property="og:site_name" content="greetdawn&#39;s Blog - The God love people">
-  
-  <meta property="og:image" content="/images/webstack_banner_cn.png">
-  
-  <!-- / Twitter Cards -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="greetdawn&#39;s Blog - The God love people">
-  <meta name="twitter:description" content="Love coding,Love life!">
-  
-  <meta name="twitter:image" content="/images/webstack_banner_cn.png">
+    <link rel="alternate" href="/atom.xml" title="greetdawn's Blog" type="application/atom+xml">
   
   
-  <!-- 直接添加html内容即可 -->
-<!-- 可设置多行 -->
+    <link rel="shortcut icon" href="/favicon.ico">
   
-<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="greetdawn's Blog" type="application/atom+xml">
-</head>
+  
+<link rel="stylesheet" href="/css/typing.css">
 
-</head>
+  
+<link rel="stylesheet" href="/css/donate.css">
 
-
-
-
-  <footer class="main-footer sticky footer-type-1">
-  <div class="footer-inner">
-    <!-- Add your copyright text here -->
-    <p>
-      
-      &copy; 2020 - 2022
-      <a href="javascript:void(0);"><strong>丨greetdawn丨</strong></a> | Design by <a href="http://viggoz.com" target="_blank"><strong>Viggo</strong></a> | Power by <a href="https://hexo.io/" target="_blank"><strong>Hexo</strong></a> & <a href="https://github.com/HCLonely/hexo-theme-webstack/" target="_blank"><strong>hexo-theme-webstack</strong></a>
-    </p>
+  
+  
     
-    <div class="go-up">
-      <a href="#" rel="go-top">
-        <i class="fas fa-angle-up"></i>
-      </a>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+  
+    
+      <body>
+    
+  
+      <div id="container" class="container">
+        <article id="post-ctf/ctf-knowledge-summary" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <header id="header" class="header">
+  <nav class="mobile-nav">
+    <h1 class="nickname">NickName</h1>
+    <ul class="mobile-nav-menu">
+      <label for="mobile-menu-toggle"><a id="menu-button">&#9776; Menu</a></label>
+      <input type="checkbox" id="mobile-menu-toggle"/>
+      <ul class="mobile-nav-link">
+        
+        <a href="/">Home</a>
+        
+        <a href="/archives">Archives</a>
+        
+        <a href="/about">About</a>
+        
+      </ul>
+    </ul>
+  </nav>
+	
+		<nav id="main-nav" class="main-nav nav-left">
+	
+	
+	  <a class="main-nav-link" href="/">Home</a>
+	
+	  <a class="main-nav-link" href="/archives">Archives</a>
+	
+	  <a class="main-nav-link" href="/about">About</a>
+	
+  </nav>
+</header>
+
+  <hr/>
+  <div class="article-inner">
+    
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      CTF知识点总结
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry typo" itemprop="articleBody">
+      
+        <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/man-5941332_1920.jpg"></p>
+<blockquote>
+<p>常见CTF知识点的总结</p>
+</blockquote>
+<span id="more"></span>
+
+
+
+<h2 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h2><h3 id="常见的信息收集手段"><a href="#常见的信息收集手段" class="headerlink" title="常见的信息收集手段"></a>常见的信息收集手段</h3><p>​    web扫描器：御剑、awvs 收集站点目录，获取重要站点信息文件。如后台、爬虫文件。</p>
+<p>​    nmap扫描：站点服务器端口、服务开放情况、所用中间件的版本详情</p>
+<p>​        </p>
+<h3 id="做题技巧"><a href="#做题技巧" class="headerlink" title="做题技巧"></a>做题技巧</h3><p>​    源码分析，查看源码是否有什么可疑的注释信息。</p>
+<p>​    扫描器收集信息。</p>
+<p>​    访问可以文件或者页面。</p>
+<p>​        </p>
+<h2 id="CMS站点"><a href="#CMS站点" class="headerlink" title="CMS站点"></a>CMS站点</h2><p>常见cms存在的一些文件，安装完成后为及时删除，造成站点被篡改。</p>
+<p>​    如：install/install.php  data/install.lock</p>
+<p>​        </p>
+<h2 id="弱口令爆破"><a href="#弱口令爆破" class="headerlink" title="弱口令爆破"></a>弱口令爆破</h2><p>常见的：admin、admin123、admin123456、1q2w3e4r。。。</p>
+<p>​    使用butpsuite抓包爆破。intruder</p>
+<p>​    </p>
+<h2 id="sql注入"><a href="#sql注入" class="headerlink" title="sql注入"></a>sql注入</h2><h3 id="sql注入的产生原因："><a href="#sql注入的产生原因：" class="headerlink" title="sql注入的产生原因："></a>sql注入的产生原因：</h3><p>​    由于服务器接收用户数据并且拼接了用户的可疑sql代码。并且没有进行严格的过滤，将sql语句带入查询。</p>
+<h3 id="了解其中的危害性："><a href="#了解其中的危害性：" class="headerlink" title="了解其中的危害性："></a>了解其中的危害性：</h3><p>​    数据库信息泄露，用户重要的饮食数据。</p>
+<p>​    网页篡改</p>
+<p>​    网站被挂马</p>
+<p>​    数据库被恶意操作</p>
+<p>​    服务器被远程控制</p>
+<h3 id="常见的注入类型："><a href="#常见的注入类型：" class="headerlink" title="常见的注入类型："></a>常见的注入类型：</h3><p>​    寻找注入点：动态页面与数据库交互。</p>
+<p>​    方法：单引号法，判断是否有错误返回and 1=1 和 and 1=2    </p>
+<p>​    基于时间类型的盲注：测试方法，查看页面返回延时</p>
+<p>​    做题：首先基本的判断注入,执行注入语句，进行注入操作，可以手注，可自动化注入</p>
+<p>​    POST型注入</p>
+<p>​                </p>
+<h3 id="sqlmap跑出注入点时，爆库、表、字段、内容的步骤"><a href="#sqlmap跑出注入点时，爆库、表、字段、内容的步骤" class="headerlink" title="sqlmap跑出注入点时，爆库、表、字段、内容的步骤"></a>sqlmap跑出注入点时，爆库、表、字段、内容的步骤</h3><p>​    python sqlmap.py -u “<a target="_blank" rel="noopener" href="http://172.16.5.107/stage/5/get_info.php?title=xiaoshiniudao&amp;id=1&quot;">http://172.16.5.107/stage/5/get_info.php?title=xiaoshiniudao&amp;id=1&quot;</a></p>
+<p>​    爆库： –dbs</p>
+<p>​    爆表： -D databasename –tables</p>
+<p>​    爆字段： -D databasename -T tablename –columns</p>
+<p>​    爆字段的内容： -D databasename -T tablename -C “——，——” –dump</p>
+<p>​    </p>
+<h3 id="union联合查询猜解库，表，名，字段"><a href="#union联合查询猜解库，表，名，字段" class="headerlink" title="union联合查询猜解库，表，名，字段"></a>union联合查询猜解库，表，名，字段</h3><blockquote>
+<p>1 union select table_name from information_schema.schemata 库</p>
+<p>1 union select table_name from information_schema.tables where table_schema=’xxxxx’ 库中的表</p>
+<p>1 union select column_name from information_schema.columns where table_schema=’xxxxx’ and table_name=’xxxx’</p>
+<p>1 union select xxxx from xxxx</p>
+<p>常见查询函数</p>
+<p>version() MySQL 版本</p>
+<p>user() 数据库用户名</p>
+<p>database() 数据库名</p>
+<p>@@datadir 数据库路径</p>
+<p>@@version_compile_os 操作系统版本</p>
+<p>hex() 把十进制转为十六进制</p>
+<p>concat() 连接字符串</p>
+<p>ascii() ascii编码</p>
+<p>length（) 获取长度</p>
+<p>substring() mid（） 取出字符串</p>
+<p>group_concat() 连接一个组的所有字符串 以逗号分隔每一条数据</p>
+<p>updatexml()、extractvalue() 用于报错注入</p>
+<p>sleep（） 休眠</p>
+</blockquote>
+<h2 id="xss-跨站脚本攻击（cross-site-scripting）"><a href="#xss-跨站脚本攻击（cross-site-scripting）" class="headerlink" title="xss 跨站脚本攻击（cross-site scripting）"></a>xss 跨站脚本攻击（cross-site scripting）</h2><p>​    出现于web应用程序的安全漏洞。对用户输入过滤不足。插入恶意脚本。</p>
+<h3 id="危害"><a href="#危害" class="headerlink" title="危害"></a>危害</h3><p>cookie劫持、会话劫持、钓鱼欺骗</p>
+<h3 id="攻击条件"><a href="#攻击条件" class="headerlink" title="攻击条件"></a>攻击条件</h3><p>a) 需要向web页面注入恶意代码</p>
+<p>b）这些恶意代码能够被浏览器成功执行</p>
+<h3 id="分类"><a href="#分类" class="headerlink" title="分类"></a>分类</h3><p>​    反射型：也称非持久型、参数型跨站脚本</p>
+<p>​        恶意代码没有保存在目标站点，通过引诱用户点击一个链接到目标网站的恶意链接来实施攻击。</p>
+<p>​    存储型：</p>
+<p>​        XSS存储型攻击，恶意代码被保存到目标网站的服务器中，这种攻        击具有较强的稳定性和持久性，比较常见场景是在博客，论坛等社交网        站上，但OA系统，和CRM系统上也能看到它身影，比如：某CRM系        统的客户投诉功能上存在XSS存储型漏洞，黑客提交了恶意攻击代码，        当系统管理员查看投诉信息时恶意代码执行，窃取了客户的资料，然而        管理员毫不知情，这就是典型的XSS存储型攻击。</p>
+<p>DOM型：</p>
+<h2 id="文件包含"><a href="#文件包含" class="headerlink" title="文件包含"></a>文件包含</h2><h3 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h3><p>代码通过php函数来包含其他php的代码文件，并且当成php代码来执行，使得代码重复利用，降低开发的开发成本。</p>
+<h3 id="常见文件包含函数"><a href="#常见文件包含函数" class="headerlink" title="常见文件包含函数"></a>常见文件包含函数</h3><p>include()、include_once()、require()、require_once()</p>
+<h3 id="漏洞产生原因"><a href="#漏洞产生原因" class="headerlink" title="漏洞产生原因"></a>漏洞产生原因</h3><p>文件包含函数加载的参数没有经过严格过滤活或者严格定义，可以被用户控制包含其他恶意文件，导致执行了非预期的代码。</p>
+<h3 id="本地文件包含漏洞"><a href="#本地文件包含漏洞" class="headerlink" title="本地文件包含漏洞"></a>本地文件包含漏洞</h3><p>​    a）无限制本地文件包含</p>
+<p>​    b) 常见的敏感信息路径</p>
+<blockquote>
+<p>windows：</p>
+<p>c:\boot.ini // 查看系统版本</p>
+<p>c:\windows\system32\inetsrv\MetaBase.xml // IIS配置文件</p>
+<p>c:\windows\repair\sam // 存储Windows系统初次安装的密码</p>
+<p>c:\ProgramFiles\mysql\my.ini // MySQL配置</p>
+<p>c:\ProgramFiles\mysql\data\mysql\user.MYD // MySQL root密码</p>
+<p>c:\windows\php.ini // php 配置信息</p>
+<p>Linux：</p>
+<p>/etc/passwd // 账户信息</p>
+<p>/etc/shadow // 账户密码文件</p>
+<p>/usr/local/app/apache2/conf/httpd.conf // Apache2默认配置文件</p>
+<p>/usr/local/app/apache2/conf/extra/httpd-vhost.conf // 虚拟网站配置</p>
+<p>/usr/local/app/php5/lib/php.ini // PHP相关配置</p>
+<p>/etc/httpd/conf/httpd.conf // Apache配置文件</p>
+<p>/etc/my.conf // mysql 配置文件</p>
+<p>/var/log/</p>
+</blockquote>
+<p>​    c）session文件包含</p>
+<p>​    d) 有限制本地文件包含漏洞绕过</p>
+<p>​        %00截断</p>
+<p>​        条件：magic_quotes_gpc = Off php版本&lt;5.3.4</p>
+<h3 id="远程文件包含"><a href="#远程文件包含" class="headerlink" title="远程文件包含"></a>远程文件包含</h3><p><a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/wrappers.php">支持的协议和封装协议</a> //官方文档</p>
+<blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/wrappers.file.php">file://</a> — 访问本地文件系统</li>
+<li><a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/wrappers.http.php">http://</a> — 访问 HTTP(s) 网址</li>
+<li><a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/wrappers.ftp.php">ftp://</a> — 访问 FTP(s) URLs</li>
+<li><a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/wrappers.php.php">php://</a> — 访问各个输入/输出流（I/O streams）</li>
+<li><a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/wrappers.compression.php">zlib://</a> — 压缩流</li>
+<li><a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/wrappers.data.php">data://</a> — 数据（RFC 2397）</li>
+<li><a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/wrappers.glob.php">glob://</a> — 查找匹配的文件路径模式</li>
+<li><a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/wrappers.phar.php">phar://</a> — PHP 归档</li>
+<li><a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/wrappers.ssh2.php">ssh2://</a> — Secure Shell 2</li>
+<li><a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/wrappers.rar.php">rar://</a> — RAR</li>
+<li><a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/wrappers.audio.php">ogg://</a> — 音频流</li>
+<li><a target="_blank" rel="noopener" href="https://www.php.net/manual/zh/wrappers.expect.php">expect://</a> — 处理交互式的流</li>
+</ul>
+</blockquote>
+<p>​        </p>
+<p>​        </p>
+<h2 id="任意文件上传"><a href="#任意文件上传" class="headerlink" title="任意文件上传"></a>任意文件上传</h2><h3 id="前端js上传检测绕过"><a href="#前端js上传检测绕过" class="headerlink" title="前端js上传检测绕过"></a>前端js上传检测绕过</h3><p>​    判断方法：使用bp抓包，直接上传后缀为php的文件，发现bp没有抓到包，但是已经弹窗显示上传文件格式不允许。</p>
+<p>​    绕过方法：</p>
+<p>​        1）上传合法后缀的文件。使用bp截包改后缀名。即可绕过。</p>
+<p>​        2）审查元素，修改js验证代码的</p>
+<p>​        3）删除对js验证脚本的调用</p>
+<h3 id="服务器端MIME类型检测绕过"><a href="#服务器端MIME类型检测绕过" class="headerlink" title="服务器端MIME类型检测绕过"></a>服务器端MIME类型检测绕过</h3><p>​    检测原理：当用户上传文件至服务端时，服务端程序会获取上传文件的MIME类型</p>
+<p>​    绕过方法:MIME类型在HTTP请求字段里的Content-type字段，修改该字段的值即可绕过    </p>
+<h3 id="黑名单绕过"><a href="#黑名单绕过" class="headerlink" title="黑名单绕过"></a>黑名单绕过</h3><p>​    检测原理：服务器端根据一份后缀名的名单来判断是否允许当前文件上传到服务器，若在名单中，就禁止该文件上传</p>
+<p>​    绕过方法：</p>
+<p>​        1）文件名大小写绕过。（pHP Asp）</p>
+<p>​        2）名单列表绕过</p>
+<p>​        3）特殊文件名绕过。 windows可以自动修改。 但是linux|unix没有这个特性 1.jpg 1.jpg.  1.jpg.abc</p>
+<p>​        4）0x00截断绕过</p>
+<p>​        5）.htaccess文件攻击</p>
+<p>​        6）解析调用/漏洞绕过</p>
+<h3 id="白名单绕过"><a href="#白名单绕过" class="headerlink" title="白名单绕过"></a>白名单绕过</h3><h3 id="服务端文件内容绕过"><a href="#服务端文件内容绕过" class="headerlink" title="服务端文件内容绕过"></a>服务端文件内容绕过</h3><h3 id="web应用程序解析绕过"><a href="#web应用程序解析绕过" class="headerlink" title="web应用程序解析绕过"></a>web应用程序解析绕过</h3><p>​        1）apache解析漏洞</p>
+<p>​        解析：test.php.(任意不属于黑名单且也不属于Apache解析白名单的名称)，比如test.php.lala</p>
+<p>​        描述：一个文件名为test.x1.x2.x3的文件，apache会从x3的位置开始尝试解析，如果x3不属于apache能够解析的扩展名，那么apache会尝试去解析x2，直到能够解析到能够解析的为止，否则就会报错。</p>
+<p>​        2）ISS解析漏洞</p>
+<p>​        解析：test.asp/(任意文件名)|test.asp；(任意文件名) | (任意文件名)/(任意文件名).php</p>
+<p>​        描述：IIS6.0在解析asp格式的时候有两个解析漏洞，一个是如果目录名包含”.asp”字符串，那么这个目录下所有的文件都会按照asp去解析，另一个是只要文件名中含有”.asp;”会优先按asp来解析;IIS7.0/7.5是对php解析时有一个类似于Nginx的解析漏洞，对任意文件名只要在URL后面追加上字符串”/任意文件名.php”就会按照php的方式去解析；</p>
+<p>​        3）nginx解析漏洞****</p>
+<p>​        解析： (任意文件名)/(任意文件名).php | (任意文件名)%00.php</p>
+<p>​        描述：目前Nginx主要有这两种漏洞，一个是对任意文件名，在后面添加/任意文件名.php的解析漏洞，比如原本文件名是test.jpg，可以添加为test.jpg/x.php进行解析攻击。还有一种是对低版本的Nginx可以在任意文件名后面添加%00.php进行解析攻击。 </p>
+<h2 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h2><h3 id="常见shell拼接符（-amp-、-amp-amp-、-、-）"><a href="#常见shell拼接符（-amp-、-amp-amp-、-、-）" class="headerlink" title="常见shell拼接符（&amp;、&amp;&amp;、|、||）"></a>常见shell拼接符（&amp;、&amp;&amp;、|、||）</h3><p>A&amp;B:　顺序执行多条命令，而不管命令是否执行成功</p>
+<p>A&amp;&amp;B: 顺序执行多条命令，当碰到执行出错的命令后将不执行后面的命令</p>
+<p>A|B: 管道命令，如：dir <em>.</em> /s/a | find /c &quot;.exe&quot; 表示：先执行 dir 命令，对其输出的结果执行后面的 find 命令</p>
+<p>A||B: 顺序执行多条命令，当碰到执行正确的命令后将不执行后面的命令</p>
+<h3 id="常见绕过方式"><a href="#常见绕过方式" class="headerlink" title="常见绕过方式"></a>常见绕过方式</h3><p>空格绕过</p>
+<pre class="language-shell" data-language="shell"><code class="language-shell"><span class="token environment constant">$IFS</span>
+<span class="token environment constant">$IFS</span><span class="token variable">$1</span>
+<span class="token variable">$&#123;<span class="token environment constant">IFS</span>&#125;</span>
+<span class="token environment constant">$IFS</span><span class="token variable">$9</span>
+<span class="token operator">&lt;</span>	 比如cat<span class="token operator">&lt;</span>a.tct:表示cat a.txt
+<span class="token operator">&lt;></span>
+<span class="token punctuation">&#123;</span>cat,flag.php<span class="token punctuation">&#125;</span>  //用逗号实现了空格功能，需要用<span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>括起来
+%20
+%09</code></pre>
+
+<p>绕过关键字</p>
+<pre class="language-shell" data-language="shell"><code class="language-shell">wh<span class="token punctuation">\</span>o<span class="token punctuation">\</span>ami    //反斜线绕过
+<span class="token function">who</span><span class="token string">"a"</span>mi    //双引号绕过
+whoa<span class="token string">'m'</span>i    //单引号绕过
+whoam`<span class="token variable"><span class="token variable">`</span>i    //反引号绕过
+<span class="token builtin class-name">echo</span> d2hvYW1p<span class="token operator">|</span>base64 -d<span class="token operator">|</span><span class="token function">sh</span>  //base64绕过,其中d2hvYW1p是whoami的base64编码
+<span class="token builtin class-name">echo</span> d2hvYW1p<span class="token operator">|</span>base64 -d<span class="token operator">|</span>bash//base64绕过,其中d2hvYW1p是whoami的base64编码
+<span class="token variable">`</span></span><span class="token builtin class-name">echo</span> d2hvYW1p<span class="token operator">|</span>base64 -d` //将其base64解码,然后用反引号来执行命令
+<span class="token builtin class-name">echo</span> 77686F616D69 <span class="token operator">|</span> xxd -r -p <span class="token operator">|</span> <span class="token function">bash</span> //hex绕过,其中77686F616D69是whoami的hex编码
+//<span class="token variable">$*</span>和<span class="token variable">$@</span>，<span class="token variable">$x</span><span class="token punctuation">(</span>x 代表 <span class="token number">1</span>-9<span class="token punctuation">)</span>,<span class="token variable">$&#123;x&#125;</span><span class="token punctuation">(</span>x<span class="token operator">>=</span><span class="token number">10</span><span class="token punctuation">)</span> :比如ca<span class="token variable">$&#123;21&#125;</span>t a.txt表示cat a.txt    在没有传入参数的情况下,这些特殊字符默认为空,如下:
+wh<span class="token variable">$1oami</span>
+<span class="token function">who</span><span class="token variable">$@</span>ami
+whoa<span class="token variable">$*</span>mi</code></pre>
+
+<p>任意字符插入执行（可绕过命令和文件名）</p>
+<pre class="language-none"><code class="language-none">cat &#x2F;f&#96;who&#96;la&#96;ks&#96;g	反斜杠之间的字符会作为命令执行
+w&#96;\f1hgb&#96;ho&#96;\f1hgb&#96;am&#96;\f1hgb&#96;i  &#x2F;&#x2F;这个反斜线作用就是平时的那种连接,反引号的作用是把括起来的字符当做命令执行
+wh$(f1hgb)oa$(f1hgb)mi            &#x2F;&#x2F;和上面的差不多,都说执行和拼接</code></pre>
+
+<p>只可绕过文件名</p>
+<pre class="language-none"><code class="language-none">cat fl[abc]g.php                                 &#x2F;&#x2F;匹配[abc]中的任何一个
+cat f[a-z]ag.txt                                 &#x2F;&#x2F;匹配a-z范围的任何字符
+cat fla*                                         &#x2F;&#x2F;用*匹配任意
+a&#x3D;f;d&#x3D;ag;c&#x3D;l;cat $a$c$d.php 表示cat flag.php       &#x2F;&#x2F;内联执行</code></pre>
+
+<p>文件名绕过</p>
+<pre class="language-shell" data-language="shell"><code class="language-shell">利用正则:比如要读取etc/passwd
+<span class="token function">cat</span> /???/??????
+<span class="token function">cat</span> /???/pass*
+<span class="token function">cat</span> /etc<span class="token variable">$u</span>/passwd</code></pre>
+
+<p>命令执行函数绕过</p>
+<pre class="language-none"><code class="language-none">system(&quot;cat &#x2F;etc&#x2F;passwd&quot;)
+&lt;&#x3D;&gt;
+&quot;\x73\x79\x73\x74\x65\x6d&quot;(&quot;cat &#x2F;etc&#x2F;passwd&quot;);
+&lt;&#x3D;&gt;
+(sy.(st).em)(&quot;cat &#x2F;etc&#x2F;passwd&quot;);
+&lt;&#x3D;&gt;还可以用注释方法绕过
+&quot;system&#x2F;*fthgb666*&#x2F;(&quot;cat &#x2F;etc&#x2F;passwd);&quot;
+&lt;&#x3D;&gt;
+&quot;system&#x2F;*fthgb666*&#x2F;(wh.&#x2F;*fthgb666*&#x2F;(oa)&#x2F;*fthgb666*&#x2F;.mi);&quot;
+&lt;&#x3D;&gt;
+&quot;(sy.&#x2F;*fthgb666*&#x2F;(st)&#x2F;*fthgb666*&#x2F;.em)&#x2F;*fthgb666*&#x2F;(wh.&#x2F;*fthgb666*&#x2F;(oa)&#x2F;*fthgb666*&#x2F;.mi);&quot;</code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+      
     </div>
+    <footer class="article-footer">
+      <ul class="article-meta">
+        <li>
+          <span class="label">Published Date:</span>
+          <a href="/2018/05/03/ctf/ctf-knowledge-summary/" class="article-date">
+  <time class="dt-published" datetime="2018-05-03T02:37:20.000Z" itemprop="datePublished">2018-05-03</time>
+</a>
+
+        </li>
+        
+          <li>
+            <span class="label">Category:</span>
+            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/web%E5%AE%89%E5%85%A8/">web安全</a>
   </div>
-</footer>
-</div>
-</div>
-
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/TweenMax.min.js"></script>
-<script src="/js/resizeable.min.js"></script>
-<script src="/js/joinable.js"></script>
-<script src="/js/xenon-api.min.js"></script>
-<script src="/js/xenon-toggles.min.js"></script>
-<script src="/js/xenon-custom.min.js"></script>
 
 
-<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+          </li>
+        
+        
+          <li>
+            <span class="label">Tag:</span>
+            
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li></ul>
+
+
+          </li>
+        
+        <hr/>
+      </ul>
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav" class="article-nav">
+  
+    <a href="/2018/06/17/linux/ubuntu-install-docker/" id="article-nav-newer" class="article-nav-link-wrap newer">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          ubuntu安装docker
+        
+      </div>
+    </a>
+  
+  
+    <span id="article-nav-older" class="article-nav-link-wrap older"></span>
+  
+</nav>
+
+
+  
+</article>
 
 
 
-<script src="/js/lozad.min.js"></script>
+
+
+
+
+
+
+
+      </div>
+      
+    <footer id="footer" class="post-footer footer">
+      
+      <hr/>
+      <div id="footerContent" class="footer-content">
+        <p>ipsum dolor sit amet, <strong>consectetur adipiscing elit.</strong> Fusce eget urna vitae velit <em>eleifend interdum at ac nisi. In nec ligula lacus. Cum sociis natoque</em> penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed eu cursus erat, ut dapibus quam. Post</p>
+
+
+      </div>
+    </footer>
+
+      
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 
 
 
   
-  <!-- 直接添加html内容即可 -->
-<!-- 可设置多行 -->
-  
-</body>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
 
+
+
+
+<script src="/js/typing.js"></script>
+
+<!--[if lt IE 9]>
+<script src="https://cdn.jsdelivr.net/npm/html5shiv@3/dist/html5shiv.min.js"></script>
+<![endif]-->
+
+
+
+
+
+
+
+    </div>
+  </body>
 </html>

@@ -1,114 +1,253 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
-  <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="author" content="viggo" />
-  <title>greetdawn&#39;s Blog - The God love people</title>
-  <meta name="keywords" content="Web安全,Linux,Python,Life">
-  <meta name="description" content="Love coding,Love life!">
-  <link rel="shortcut icon" href="/favicon.ico">
   
-<link rel="stylesheet" href="/css/hclonely.css">
-<link rel="stylesheet" href="//fonts.loli.net/css?family=Arimo:400,700,400italic.css">
-<link rel="stylesheet" href="/css/fonts/linecons/css/linecons.min.css">
-<link rel="stylesheet" href="/css/fonts/fontawesome/css/all.min.css">
-<link rel="stylesheet" href="/css/bootstrap.min.css">
-<link rel="stylesheet" href="/css/xenon-core.min.css">
-<link rel="stylesheet" href="/css/xenon-components.min.css">
-<link rel="stylesheet" href="/css/xenon-skins.min.css">
-<link rel="stylesheet" href="/css/nav.min.css">
-
-  
-<script src="/js/jquery-1.11.1.min.js"></script>
-
-  <script>
-    var userDefinedSearchData = {"custom":false,"thisSearch":"https://www.baidu.com/s?wd=","thisSearchIcon":"url(https://www.baidu.com/favicon.ico)","hotStatus":true,"data":[{"name":"百度","img":"url(https://www.baidu.com/favicon.ico)","url":"https://www.baidu.com/s?wd="}]};
-    var expandAll = false;
-  </script>
-  
-<script src="/js/header.js"></script>
-
-  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!--[if lt IE 9]>
-        
-<script src="/js/html5shiv.min.js"></script>
-
-        
-<script src="/js/respond.min.js"></script>
-
-    <![endif]-->
-  <!-- / FB Open Graph -->
+  <title>bypass_strpos | greetdawn&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="http://www.greetdawn.top/2018/07/04/web-security/php-code-audit/php-code-audit-bypass-strpos/index.html">
-  <meta property="og:title" content="greetdawn&#39;s Blog - The God love people">
-  <meta property="og:description" content="Love coding,Love life!">
-  <meta property="og:site_name" content="greetdawn&#39;s Blog - The God love people">
+<meta property="og:title" content="bypass_strpos">
+<meta property="og:url" content="http://www.greetdawn.top/2018/07/04/web-security/php-code-audit/php-code-audit-bypass-strpos/index.html">
+<meta property="og:site_name" content="greetdawn&#39;s Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/sunset-5575264_1920.jpg">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/20210104112407.png">
+<meta property="article:published_time" content="2018-07-04T10:49:45.000Z">
+<meta property="article:modified_time" content="2021-01-29T07:57:59.483Z">
+<meta property="article:author" content="丨greetdawn丨">
+<meta property="article:tag" content="CTF">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/sunset-5575264_1920.jpg">
   
-  <meta property="og:image" content="/images/webstack_banner_cn.png">
-  
-  <!-- / Twitter Cards -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="greetdawn&#39;s Blog - The God love people">
-  <meta name="twitter:description" content="Love coding,Love life!">
-  
-  <meta name="twitter:image" content="/images/webstack_banner_cn.png">
+    <link rel="alternate" href="/atom.xml" title="greetdawn's Blog" type="application/atom+xml">
   
   
-  <!-- 直接添加html内容即可 -->
-<!-- 可设置多行 -->
+    <link rel="shortcut icon" href="/favicon.ico">
   
-<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="greetdawn's Blog" type="application/atom+xml">
-</head>
+  
+<link rel="stylesheet" href="/css/typing.css">
 
-</head>
+  
+<link rel="stylesheet" href="/css/donate.css">
 
-
-
-
-  <footer class="main-footer sticky footer-type-1">
-  <div class="footer-inner">
-    <!-- Add your copyright text here -->
-    <p>
-      
-      &copy; 2020 - 2022
-      <a href="javascript:void(0);"><strong>丨greetdawn丨</strong></a> | Design by <a href="http://viggoz.com" target="_blank"><strong>Viggo</strong></a> | Power by <a href="https://hexo.io/" target="_blank"><strong>Hexo</strong></a> & <a href="https://github.com/HCLonely/hexo-theme-webstack/" target="_blank"><strong>hexo-theme-webstack</strong></a>
-    </p>
+  
+  
     
-    <div class="go-up">
-      <a href="#" rel="go-top">
-        <i class="fas fa-angle-up"></i>
-      </a>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+  
+    
+      <body>
+    
+  
+      <div id="container" class="container">
+        <article id="post-web-security/php-code-audit/php-code-audit-bypass-strpos" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <header id="header" class="header">
+  <nav class="mobile-nav">
+    <h1 class="nickname">NickName</h1>
+    <ul class="mobile-nav-menu">
+      <label for="mobile-menu-toggle"><a id="menu-button">&#9776; Menu</a></label>
+      <input type="checkbox" id="mobile-menu-toggle"/>
+      <ul class="mobile-nav-link">
+        
+        <a href="/">Home</a>
+        
+        <a href="/archives">Archives</a>
+        
+        <a href="/about">About</a>
+        
+      </ul>
+    </ul>
+  </nav>
+	
+		<nav id="main-nav" class="main-nav nav-left">
+	
+	
+	  <a class="main-nav-link" href="/">Home</a>
+	
+	  <a class="main-nav-link" href="/archives">Archives</a>
+	
+	  <a class="main-nav-link" href="/about">About</a>
+	
+  </nav>
+</header>
+
+  <hr/>
+  <div class="article-inner">
+    
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      bypass_strpos
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry typo" itemprop="articleBody">
+      
+        <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/sunset-5575264_1920.jpg" alt="sunset-5575264_1920"></p>
+<span id="more"></span>
+
+<h2 id="bypass-strpos"><a href="#bypass-strpos" class="headerlink" title="bypass_strpos"></a>bypass_strpos</h2><h3 id="题目源码"><a href="#题目源码" class="headerlink" title="题目源码"></a>题目源码</h3><pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token keyword">include</span> <span class="token string single-quoted-string">'flag.php'</span><span class="token punctuation">;</span>
+<span class="token function">header</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'referer:$_GET[\'100fc9da60f9ae9d6488451decdc0742\']'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token keyword">isset</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'52384'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+    <span class="token function">show_source</span><span class="token punctuation">(</span><span class="token constant">__FILE__</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">else</span> <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token keyword">isset</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'a'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">md5</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'a'</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token function">md5</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'s155964671a'</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token function">substr</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'a'</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">8</span><span class="token punctuation">)</span>
+	<span class="token punctuation">&#123;</span>
+		<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">preg_match</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"/goodjob/"</span><span class="token punctuation">,</span> <span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'b'</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">===</span> <span class="token constant boolean">FALSE</span> <span class="token operator">&amp;&amp;</span> <span class="token function">strpos</span> <span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'b'</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token string single-quoted-string">'goodjob'</span><span class="token punctuation">)</span> <span class="token operator">!==</span> <span class="token constant boolean">FALSE</span><span class="token punctuation">)</span>
+		<span class="token punctuation">&#123;</span>
+			<span class="token variable">$text</span> <span class="token operator">=</span> @<span class="token variable">$_REQUEST</span><span class="token punctuation">[</span><span class="token string single-quoted-string">'d'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+     		@<span class="token keyword">eval</span><span class="token punctuation">(</span><span class="token string double-quoted-string">"var_dump(<span class="token interpolation"><span class="token variable">$text</span></span>);"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">&#125;</span>
+		<span class="token keyword">else</span>
+			<span class="token keyword">die</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'no,no,no'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">else</span>
+		<span class="token keyword">die</span><span class="token punctuation">(</span><span class="token string single-quoted-string">'no,no,no'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">else</span>
+	<span class="token keyword">echo</span> <span class="token string single-quoted-string">'welcome'</span><span class="token punctuation">;</span>
+<span class="token delimiter important">?></span></span></code></pre>
+
+
+
+<h3 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h3><p>首先通过GET传参接收一个md5的加密值；</p>
+<p>抓包后在,在响应头信息中可以发现referer:$_GET[&#39;100fc9da60f9ae9d6488451decdc0742&#39;]’;</p>
+<p>炸眼一看,确定是一串加密值，首先对这个进行get传参，发现没有，说明不是直接传入md5加密值。尝试对该md5值进行明文爆破，得到其明文为52384,get传入该值直接获取源码;</p>
+<p>分析源码第一个判断是变量a的md5值与给定明文的md5值相等，并且要保证其值的最后一位为8；那么直接md5碰撞呗，找到其值为240610708；</p>
+<p>第二个判断是参数b经过strpos函数，strpos函数是用户字符串查找的;这里可以直接用空数组绕过,即b[]=;</p>
+<p>最后传入变量d经过eval函数,变量在var_dump函数中，直接传入$flag;</p>
+<h3 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h3><p>payload:<code>?a=240610708&amp;b[]=&amp;d=$flag</code></p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/20210104112407.png"></p>
+
+      
+      
     </div>
+    <footer class="article-footer">
+      <ul class="article-meta">
+        <li>
+          <span class="label">Published Date:</span>
+          <a href="/2018/07/04/web-security/php-code-audit/php-code-audit-bypass-strpos/" class="article-date">
+  <time class="dt-published" datetime="2018-07-04T10:49:45.000Z" itemprop="datePublished">2018-07-04</time>
+</a>
+
+        </li>
+        
+          <li>
+            <span class="label">Category:</span>
+            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/PHP%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">PHP代码审计</a>
   </div>
-</footer>
-</div>
-</div>
-
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/TweenMax.min.js"></script>
-<script src="/js/resizeable.min.js"></script>
-<script src="/js/joinable.js"></script>
-<script src="/js/xenon-api.min.js"></script>
-<script src="/js/xenon-toggles.min.js"></script>
-<script src="/js/xenon-custom.min.js"></script>
 
 
-<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+          </li>
+        
+        
+          <li>
+            <span class="label">Tag:</span>
+            
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li></ul>
+
+
+          </li>
+        
+        <hr/>
+      </ul>
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav" class="article-nav">
+  
+    <a href="/2018/07/04/web-security/php-code-audit/php-code-audit-bypass-exit/" id="article-nav-newer" class="article-nav-link-wrap newer">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          bypass_exit
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2018/06/21/linux/Linux-ubuntu-apt-source/" id="article-nav-older" class="article-nav-link-wrap older">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">ubuntu修改apt源</div>
+    </a>
+  
+</nav>
+
+
+  
+</article>
 
 
 
-<script src="/js/lozad.min.js"></script>
+
+
+
+
+
+
+
+      </div>
+      
+    <footer id="footer" class="post-footer footer">
+      
+      <hr/>
+      <div id="footerContent" class="footer-content">
+        <p>ipsum dolor sit amet, <strong>consectetur adipiscing elit.</strong> Fusce eget urna vitae velit <em>eleifend interdum at ac nisi. In nec ligula lacus. Cum sociis natoque</em> penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed eu cursus erat, ut dapibus quam. Post</p>
+
+
+      </div>
+    </footer>
+
+      
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 
 
 
   
-  <!-- 直接添加html内容即可 -->
-<!-- 可设置多行 -->
-  
-</body>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
 
+
+
+
+<script src="/js/typing.js"></script>
+
+<!--[if lt IE 9]>
+<script src="https://cdn.jsdelivr.net/npm/html5shiv@3/dist/html5shiv.min.js"></script>
+<![endif]-->
+
+
+
+
+
+
+
+    </div>
+  </body>
 </html>

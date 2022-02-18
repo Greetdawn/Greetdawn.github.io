@@ -1,114 +1,283 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
-  <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="author" content="viggo" />
-  <title>greetdawn&#39;s Blog - The God love people</title>
-  <meta name="keywords" content="Web安全,Linux,Python,Life">
-  <meta name="description" content="Love coding,Love life!">
-  <link rel="shortcut icon" href="/favicon.ico">
   
-<link rel="stylesheet" href="/css/hclonely.css">
-<link rel="stylesheet" href="//fonts.loli.net/css?family=Arimo:400,700,400italic.css">
-<link rel="stylesheet" href="/css/fonts/linecons/css/linecons.min.css">
-<link rel="stylesheet" href="/css/fonts/fontawesome/css/all.min.css">
-<link rel="stylesheet" href="/css/bootstrap.min.css">
-<link rel="stylesheet" href="/css/xenon-core.min.css">
-<link rel="stylesheet" href="/css/xenon-components.min.css">
-<link rel="stylesheet" href="/css/xenon-skins.min.css">
-<link rel="stylesheet" href="/css/nav.min.css">
-
+  <title>记confluence的一次溯源 | greetdawn&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="记一次confluence挖矿溯源1、背景概述 2、事件分析该阿里云的系统客户部署一套了线上的confluence系统，且该系统是部署于我司的虎盾零信任安全访问系统内的，对其公网应用接口的暴露面进行了严格收敛。据得知客户在前天刚好将该收敛系统短暂暴露在公网中，增加其被攻击的可能性，导致最后被注入挖矿病毒。 前期获取客户某员工用户登录账户，获取当前使用的版本为Confluence 7.9.3  根据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记confluence的一次溯源">
+<meta property="og:url" content="http://www.greetdawn.top/2021/12/17/web-security/%E8%AE%B0confluence%E7%9A%84%E4%B8%80%E6%AC%A1%E6%BA%AF%E6%BA%90/index.html">
+<meta property="og:site_name" content="greetdawn&#39;s Blog">
+<meta property="og:description" content="记一次confluence挖矿溯源1、背景概述 2、事件分析该阿里云的系统客户部署一套了线上的confluence系统，且该系统是部署于我司的虎盾零信任安全访问系统内的，对其公网应用接口的暴露面进行了严格收敛。据得知客户在前天刚好将该收敛系统短暂暴露在公网中，增加其被攻击的可能性，导致最后被注入挖矿病毒。 前期获取客户某员工用户登录账户，获取当前使用的版本为Confluence 7.9.3  根据">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%201.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%202.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%203.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%204.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%205.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%206.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%207.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%208.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%209.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%2010.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%2011.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%2012.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%2013.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211217113141317.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211217112917496.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211217112939883.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211217112948533.png">
+<meta property="article:published_time" content="2021-12-17T03:33:39.000Z">
+<meta property="article:modified_time" content="2021-12-23T07:38:01.911Z">
+<meta property="article:author" content="丨greetdawn丨">
+<meta property="article:tag" content="溯源分析">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled.png">
   
-<script src="/js/jquery-1.11.1.min.js"></script>
-
-  <script>
-    var userDefinedSearchData = {"custom":false,"thisSearch":"https://www.baidu.com/s?wd=","thisSearchIcon":"url(https://www.baidu.com/favicon.ico)","hotStatus":true,"data":[{"name":"百度","img":"url(https://www.baidu.com/favicon.ico)","url":"https://www.baidu.com/s?wd="}]};
-    var expandAll = false;
-  </script>
-  
-<script src="/js/header.js"></script>
-
-  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!--[if lt IE 9]>
-        
-<script src="/js/html5shiv.min.js"></script>
-
-        
-<script src="/js/respond.min.js"></script>
-
-    <![endif]-->
-  <!-- / FB Open Graph -->
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="http://www.greetdawn.top/2021/12/17/web-security/%E8%AE%B0confluence%E7%9A%84%E4%B8%80%E6%AC%A1%E6%BA%AF%E6%BA%90/index.html">
-  <meta property="og:title" content="greetdawn&#39;s Blog - The God love people">
-  <meta property="og:description" content="Love coding,Love life!">
-  <meta property="og:site_name" content="greetdawn&#39;s Blog - The God love people">
-  
-  <meta property="og:image" content="/images/webstack_banner_cn.png">
-  
-  <!-- / Twitter Cards -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="greetdawn&#39;s Blog - The God love people">
-  <meta name="twitter:description" content="Love coding,Love life!">
-  
-  <meta name="twitter:image" content="/images/webstack_banner_cn.png">
+    <link rel="alternate" href="/atom.xml" title="greetdawn's Blog" type="application/atom+xml">
   
   
-  <!-- 直接添加html内容即可 -->
-<!-- 可设置多行 -->
+    <link rel="shortcut icon" href="/favicon.ico">
   
-<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="greetdawn's Blog" type="application/atom+xml">
-</head>
+  
+<link rel="stylesheet" href="/css/typing.css">
 
-</head>
+  
+<link rel="stylesheet" href="/css/donate.css">
 
-
-
-
-  <footer class="main-footer sticky footer-type-1">
-  <div class="footer-inner">
-    <!-- Add your copyright text here -->
-    <p>
-      
-      &copy; 2020 - 2022
-      <a href="javascript:void(0);"><strong>丨greetdawn丨</strong></a> | Design by <a href="http://viggoz.com" target="_blank"><strong>Viggo</strong></a> | Power by <a href="https://hexo.io/" target="_blank"><strong>Hexo</strong></a> & <a href="https://github.com/HCLonely/hexo-theme-webstack/" target="_blank"><strong>hexo-theme-webstack</strong></a>
-    </p>
+  
+  
     
-    <div class="go-up">
-      <a href="#" rel="go-top">
-        <i class="fas fa-angle-up"></i>
-      </a>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+  
+    
+      <body>
+    
+  
+      <div id="container" class="container">
+        <article id="post-web-security/记confluence的一次溯源" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <header id="header" class="header">
+  <nav class="mobile-nav">
+    <h1 class="nickname">NickName</h1>
+    <ul class="mobile-nav-menu">
+      <label for="mobile-menu-toggle"><a id="menu-button">&#9776; Menu</a></label>
+      <input type="checkbox" id="mobile-menu-toggle"/>
+      <ul class="mobile-nav-link">
+        
+        <a href="/">Home</a>
+        
+        <a href="/archives">Archives</a>
+        
+        <a href="/about">About</a>
+        
+      </ul>
+    </ul>
+  </nav>
+	
+		<nav id="main-nav" class="main-nav nav-left">
+	
+	
+	  <a class="main-nav-link" href="/">Home</a>
+	
+	  <a class="main-nav-link" href="/archives">Archives</a>
+	
+	  <a class="main-nav-link" href="/about">About</a>
+	
+  </nav>
+</header>
+
+  <hr/>
+  <div class="article-inner">
+    
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      记confluence的一次溯源
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry typo" itemprop="articleBody">
+      
+        <h1 id="记一次confluence挖矿溯源"><a href="#记一次confluence挖矿溯源" class="headerlink" title="记一次confluence挖矿溯源"></a>记一次confluence挖矿溯源</h1><h1 id="1、背景概述"><a href="#1、背景概述" class="headerlink" title="1、背景概述"></a>1、背景概述</h1><p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled.png" alt="Untitled"></p>
+<h1 id="2、事件分析"><a href="#2、事件分析" class="headerlink" title="2、事件分析"></a>2、事件分析</h1><p>该阿里云的系统客户部署一套了线上的confluence系统，且该系统是部署于我司的虎盾零信任安全访问系统内的，对其公网应用接口的暴露面进行了严格收敛。据得知客户在前天刚好将该收敛系统短暂暴露在公网中，增加其被攻击的可能性，导致最后被注入挖矿病毒。</p>
+<p>前期获取客户某员工用户登录账户，获取当前使用的版本为<strong>Confluence 7.9.3</strong></p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%201.png" alt="Untitled"></p>
+<p>根据该系统版本，在互联网中发现该系统存在远程代码执行漏洞（CVE-2021-26084），且该系统漏洞在八月底被黑产大规模利用执行挖矿程序。</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%202.png" alt="Untitled"></p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%203.png" alt="Untitled"></p>
+<h1 id="3、攻击分析"><a href="#3、攻击分析" class="headerlink" title="3、攻击分析"></a>3、攻击分析</h1><p>查看系统进程，发现恶意运行进程 ps -ef</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%204.png" alt="Untitled"></p>
+<p>根据阿里云告警提示的路径该文件创建的时间为 Dec 13 12:42</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%205.png" alt="Untitled"></p>
+<p>下载该路径文件获取矿池地址<a target="_blank" rel="noopener" href="http://j0llychic.com:9999/">j0llychic.com:9999</a></p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%206.png" alt="Untitled"></p>
+<p>获取该矿池的IP地址165.232.129.60定位为美国的一个矿池地址</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%207.png" alt="Untitled"></p>
+<p>用户名和密码：</p>
+<p>“user”: “47W42XBUVVm3Nwc1h6dqN9YJm8XiCR5yzBpeiWjpUdAdJdpxT4bHVnoczTDvdG1xtsF3YSD1hJviq5bLFNTPVMcj7sNKvs4”,<br>“pass”: “82b1ee75afa6”,</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%208.png" alt="Untitled"></p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%209.png" alt="Untitled"></p>
+<p>查看了一下目前恶意进程trace运行情况，该进程cpu占用率为15%，并未太高</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%2010.png" alt="Untitled"></p>
+<p>系统日志中目前并未发现其他的可疑连接及运行进程</p>
+<p>且confluence日志中也并未发现可疑的请求日志记录</p>
+<p>目前大概率怀疑黑产是通过CVE-2021-26084漏洞部署的远程挖矿程序，且清空了相应的请求记录</p>
+<h1 id="4、病毒清理"><a href="#4、病毒清理" class="headerlink" title="4、病毒清理"></a>4、病毒清理</h1><h2 id="杀死进程"><a href="#杀死进程" class="headerlink" title="杀死进程"></a>杀死进程</h2><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">ps</span> -ef <span class="token operator">|</span> <span class="token function">grep</span> trace
+<span class="token function">kill</span> -9 <span class="token number">14387</span></code></pre>
+
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%2011.png" alt="Untitled"></p>
+<h2 id="文件清理"><a href="#文件清理" class="headerlink" title="文件清理"></a>文件清理</h2><p>rm -rf /root/c3pool/</p>
+<p>恶意进程不存在</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%2012.png" alt="Untitled"></p>
+<p>矿池连接已不存在</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%2013.png" alt="Untitled"></p>
+<h1 id="5、漏洞复现"><a href="#5、漏洞复现" class="headerlink" title="5、漏洞复现"></a>5、漏洞复现</h1><p>漏洞验证，该系统存在<code>CVE-2021-26084</code></p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211217113141317.png" alt="image-20211217113141317"></p>
+<p>无虎盾收敛，应用面暴露，直接利用</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211217112917496.png" alt="image-20211217112917496"></p>
+<p>虎盾收敛应用暴露面，已知应用和版本漏洞的情况下，未达成利用</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211217112939883.png" alt="image-20211217112939883"></p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211217112948533.png" alt="image-20211217112948533"></p>
+<h1 id="6、总结分析"><a href="#6、总结分析" class="headerlink" title="6、总结分析"></a>6、总结分析</h1><p>该客户系统部署于虎盾零信任安全产品体系下，并未遭受任何攻击，很好的对应用在公网的访问权限进行了严格限制和收敛。由于系统的短暂公网暴露，且该系统存在较新的版本漏洞，而遭受了此次严重的攻击，被黑客部署了挖矿病毒。</p>
+<h1 id="7、防范措施"><a href="#7、防范措施" class="headerlink" title="7、防范措施"></a>7、防范措施</h1><h2 id="升级系统版本"><a href="#升级系统版本" class="headerlink" title="升级系统版本"></a>升级系统版本</h2><p>目前官方已在高版本中修复了该漏洞，请受影响的用户升级至安全版本。</p>
+<p><a target="_blank" rel="noopener" href="https://www.atlassian.com/software/confluence/download-archives">https://www.atlassian.com/software/confluence/download-archives</a></p>
+<p>安全版本列表</p>
+<ul>
+<li>Atlassian Confluence Server/Data Center 6.13.23</li>
+<li>Atlassian Confluence Server/Data Center 7.4.11</li>
+<li>Atlassian Confluence Server/Data Center 7.11.6</li>
+<li>Atlassian Confluence Server/Data Center 7.12.5</li>
+<li>Atlassian Confluence Server/Data Center 7.13.0</li>
+</ul>
+
+      
+      
     </div>
+    <footer class="article-footer">
+      <ul class="article-meta">
+        <li>
+          <span class="label">Published Date:</span>
+          <a href="/2021/12/17/web-security/%E8%AE%B0confluence%E7%9A%84%E4%B8%80%E6%AC%A1%E6%BA%AF%E6%BA%90/" class="article-date">
+  <time class="dt-published" datetime="2021-12-17T03:33:39.000Z" itemprop="datePublished">2021-12-17</time>
+</a>
+
+        </li>
+        
+          <li>
+            <span class="label">Category:</span>
+            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Security/">Security</a>
   </div>
-</footer>
-</div>
-</div>
-
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/TweenMax.min.js"></script>
-<script src="/js/resizeable.min.js"></script>
-<script src="/js/joinable.js"></script>
-<script src="/js/xenon-api.min.js"></script>
-<script src="/js/xenon-toggles.min.js"></script>
-<script src="/js/xenon-custom.min.js"></script>
 
 
-<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+          </li>
+        
+        
+          <li>
+            <span class="label">Tag:</span>
+            
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%BA%AF%E6%BA%90%E5%88%86%E6%9E%90/" rel="tag">溯源分析</a></li></ul>
+
+
+          </li>
+        
+        <hr/>
+      </ul>
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav" class="article-nav">
+  
+    <a href="/2021/12/24/vulfocus/jboss%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96-CVE-2015-7501/" id="article-nav-newer" class="article-nav-link-wrap newer">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          jboss反序列化(CVE-2015-7501)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/12/11/%E6%BC%8F%E6%B4%9E%E7%A0%94%E7%A9%B6/log4j2RCE-CVE-2021-44228/" id="article-nav-older" class="article-nav-link-wrap older">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">log4j2RCE(CVE-2021-44228)漏洞利用与分析</div>
+    </a>
+  
+</nav>
+
+
+  
+</article>
 
 
 
-<script src="/js/lozad.min.js"></script>
+
+
+
+
+
+
+
+      </div>
+      
+    <footer id="footer" class="post-footer footer">
+      
+      <hr/>
+      <div id="footerContent" class="footer-content">
+        <p>ipsum dolor sit amet, <strong>consectetur adipiscing elit.</strong> Fusce eget urna vitae velit <em>eleifend interdum at ac nisi. In nec ligula lacus. Cum sociis natoque</em> penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed eu cursus erat, ut dapibus quam. Post</p>
+
+
+      </div>
+    </footer>
+
+      
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 
 
 
   
-  <!-- 直接添加html内容即可 -->
-<!-- 可设置多行 -->
-  
-</body>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
 
+
+
+
+<script src="/js/typing.js"></script>
+
+<!--[if lt IE 9]>
+<script src="https://cdn.jsdelivr.net/npm/html5shiv@3/dist/html5shiv.min.js"></script>
+<![endif]-->
+
+
+
+
+
+
+
+    </div>
+  </body>
 </html>

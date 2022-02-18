@@ -1,114 +1,346 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
-  <head>
   <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="author" content="viggo" />
-  <title>greetdawn&#39;s Blog - The God love people</title>
-  <meta name="keywords" content="Web安全,Linux,Python,Life">
-  <meta name="description" content="Love coding,Love life!">
-  <link rel="shortcut icon" href="/favicon.ico">
   
-<link rel="stylesheet" href="/css/hclonely.css">
-<link rel="stylesheet" href="//fonts.loli.net/css?family=Arimo:400,700,400italic.css">
-<link rel="stylesheet" href="/css/fonts/linecons/css/linecons.min.css">
-<link rel="stylesheet" href="/css/fonts/fontawesome/css/all.min.css">
-<link rel="stylesheet" href="/css/bootstrap.min.css">
-<link rel="stylesheet" href="/css/xenon-core.min.css">
-<link rel="stylesheet" href="/css/xenon-components.min.css">
-<link rel="stylesheet" href="/css/xenon-skins.min.css">
-<link rel="stylesheet" href="/css/nav.min.css">
-
+  <title>记2021全国hvv演练的点点滴滴 | greetdawn&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一、前言2021年的全国hvv演练比以往来的稍微早了一些，由于网络安全在国家战略层面的显著提升，各类网安行动如火如荼，一股强烈的网安之风吹遍了整个中华大地。全国演练活动已经开展了几次，相比于往年来说，整个网络安全环境带来了显著提升和优化，这就意味着演练目标变的越来越难打。 本人有幸代表公安厅参与了此次2021年全国攻防演练的活动，此次活动历经18天左右，在公安部的严密部署下紧张有序的进行着。本">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记2021全国hvv演练的点点滴滴">
+<meta property="og:url" content="http://www.greetdawn.top/2021/04/25/%E7%BB%BC%E5%90%88%E6%B8%97%E9%80%8F/hvv/2021-hvv-country/index.html">
+<meta property="og:site_name" content="greetdawn&#39;s Blog">
+<meta property="og:description" content="一、前言2021年的全国hvv演练比以往来的稍微早了一些，由于网络安全在国家战略层面的显著提升，各类网安行动如火如荼，一股强烈的网安之风吹遍了整个中华大地。全国演练活动已经开展了几次，相比于往年来说，整个网络安全环境带来了显著提升和优化，这就意味着演练目标变的越来越难打。 本人有幸代表公安厅参与了此次2021年全国攻防演练的活动，此次活动历经18天左右，在公安部的严密部署下紧张有序的进行着。本">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-04-25T06:25:51.000Z">
+<meta property="article:modified_time" content="2021-04-29T11:59:17.127Z">
+<meta property="article:author" content="丨greetdawn丨">
+<meta property="article:tag" content="内网渗透">
+<meta property="article:tag" content="护网演练">
+<meta name="twitter:card" content="summary">
   
-<script src="/js/jquery-1.11.1.min.js"></script>
-
-  <script>
-    var userDefinedSearchData = {"custom":false,"thisSearch":"https://www.baidu.com/s?wd=","thisSearchIcon":"url(https://www.baidu.com/favicon.ico)","hotStatus":true,"data":[{"name":"百度","img":"url(https://www.baidu.com/favicon.ico)","url":"https://www.baidu.com/s?wd="}]};
-    var expandAll = false;
-  </script>
-  
-<script src="/js/header.js"></script>
-
-  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!--[if lt IE 9]>
-        
-<script src="/js/html5shiv.min.js"></script>
-
-        
-<script src="/js/respond.min.js"></script>
-
-    <![endif]-->
-  <!-- / FB Open Graph -->
-  <meta property="og:type" content="article">
-  <meta property="og:url" content="http://www.greetdawn.top/2021/04/25/%E7%BB%BC%E5%90%88%E6%B8%97%E9%80%8F/hvv/2021-hvv-country/index.html">
-  <meta property="og:title" content="greetdawn&#39;s Blog - The God love people">
-  <meta property="og:description" content="Love coding,Love life!">
-  <meta property="og:site_name" content="greetdawn&#39;s Blog - The God love people">
-  
-  <meta property="og:image" content="/images/webstack_banner_cn.png">
-  
-  <!-- / Twitter Cards -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="greetdawn&#39;s Blog - The God love people">
-  <meta name="twitter:description" content="Love coding,Love life!">
-  
-  <meta name="twitter:image" content="/images/webstack_banner_cn.png">
+    <link rel="alternate" href="/atom.xml" title="greetdawn's Blog" type="application/atom+xml">
   
   
-  <!-- 直接添加html内容即可 -->
-<!-- 可设置多行 -->
+    <link rel="shortcut icon" href="/favicon.ico">
   
-<meta name="generator" content="Hexo 5.4.0"><link rel="alternate" href="/atom.xml" title="greetdawn's Blog" type="application/atom+xml">
-</head>
+  
+<link rel="stylesheet" href="/css/typing.css">
 
-</head>
+  
+<link rel="stylesheet" href="/css/donate.css">
 
-
-
-
-  <footer class="main-footer sticky footer-type-1">
-  <div class="footer-inner">
-    <!-- Add your copyright text here -->
-    <p>
-      
-      &copy; 2020 - 2022
-      <a href="javascript:void(0);"><strong>丨greetdawn丨</strong></a> | Design by <a href="http://viggoz.com" target="_blank"><strong>Viggo</strong></a> | Power by <a href="https://hexo.io/" target="_blank"><strong>Hexo</strong></a> & <a href="https://github.com/HCLonely/hexo-theme-webstack/" target="_blank"><strong>hexo-theme-webstack</strong></a>
-    </p>
+  
+  
     
-    <div class="go-up">
-      <a href="#" rel="go-top">
-        <i class="fas fa-angle-up"></i>
-      </a>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+  
+    
+      <body>
+    
+  
+      <div id="container" class="container">
+        <article id="post-综合渗透/hvv/2021-hvv-country" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <header id="header" class="header">
+  <nav class="mobile-nav">
+    <h1 class="nickname">NickName</h1>
+    <ul class="mobile-nav-menu">
+      <label for="mobile-menu-toggle"><a id="menu-button">&#9776; Menu</a></label>
+      <input type="checkbox" id="mobile-menu-toggle"/>
+      <ul class="mobile-nav-link">
+        
+        <a href="/">Home</a>
+        
+        <a href="/archives">Archives</a>
+        
+        <a href="/about">About</a>
+        
+      </ul>
+    </ul>
+  </nav>
+	
+		<nav id="main-nav" class="main-nav nav-left">
+	
+	
+	  <a class="main-nav-link" href="/">Home</a>
+	
+	  <a class="main-nav-link" href="/archives">Archives</a>
+	
+	  <a class="main-nav-link" href="/about">About</a>
+	
+  </nav>
+</header>
+
+  <hr/>
+  <div class="article-inner">
+    
+
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      记2021全国hvv演练的点点滴滴
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry typo" itemprop="articleBody">
+      
+        <span id="more"></span>
+
+<h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>2021年的全国hvv演练比以往来的稍微早了一些，由于网络安全在国家战略层面的显著提升，各类网安行动如火如荼，一股强烈的网安之风吹遍了整个中华大地。全国演练活动已经开展了几次，相比于往年来说，整个网络安全环境带来了显著提升和优化，这就意味着演练目标变的越来越难打。</p>
+<p>本人有幸代表公安厅参与了此次2021年全国攻防演练的活动，此次活动历经18天左右，在公安部的严密部署下紧张有序的进行着。本人也是首次参加此类规模的攻防演练活动，整个参演团队也都第一次。大家的经验都不是太丰富，其次大家也都是抱着体验，交流，成长的目的来参与此次的攻防演练活动的。但是在最终成绩这一块还是比较满意。整个过程还是比较紧张刺激且富有挑战性的，这里想着花点时间详细整理一下此次攻防过程中的典型细节以及相关感悟，这边主要偏向于一些思路的展开讲解，不过多纠结于技术细节。对于许多的大佬来说，技术其实都是常见技术点，并没有太多的花头。而且就我此次的演练感悟来看，思路是决定最终成绩好坏的最关键因素。就想最终的APT攻击一样，最大程度上利用的人性本身的弱点。在此次的攻防演练中，也是如此。这边本人已将相应的敏感信息进行脱敏处理，并且不进行广泛传播。</p>
+<h2 id="二、过程"><a href="#二、过程" class="headerlink" title="二、过程"></a>二、过程</h2><h3 id="1-评分机制"><a href="#1-评分机制" class="headerlink" title="1 评分机制"></a>1 评分机制</h3><p>国家级攻防演练和省地市演练有所不同，主要收录和参与评分的漏洞主要为系统级权限漏洞，对于一般性不可利用的低危漏洞并不参与计分处理。并且可对内网资产进行渗透。涉及的相关评分机制主要如下:</p>
+<table>
+<thead>
+<tr>
+<th align="center">类型</th>
+<th align="center">评分</th>
+<th align="center">备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">参演单位域名控制权限</td>
+<td align="center">一级100、二级50</td>
+<td align="center">单个参演单位得分上限500</td>
+</tr>
+<tr>
+<td align="center">获取pc、移动端权限</td>
+<td align="center">pc：20/台、移动端：50/台</td>
+<td align="center">得分上线500、且pc权限必须为system、root</td>
+</tr>
+<tr>
+<td align="center">获取邮箱权限</td>
+<td align="center">邮箱账号口令：20、系统管理员权限：500-1000</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">办公自动化系统权限</td>
+<td align="center">200-500</td>
+<td align="center">OA、即时通讯、项目管理、财务系统管理员权限</td>
+</tr>
+<tr>
+<td align="center">身份、账户管理平台权限（SSO、4A）</td>
+<td align="center">系统管理权限300、能登陆的系统100</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">域控系统权限</td>
+<td align="center">管理员200、域内可控服务器10/台</td>
+<td align="center">上限4000</td>
+</tr>
+<tr>
+<td align="center">堡垒机、运维机权限</td>
+<td align="center">管理员200、托管的服务器10/台</td>
+<td align="center">上限4000</td>
+</tr>
+<tr>
+<td align="center">获取大数据系统权限</td>
+<td align="center"></td>
+<td align="center">根据数据量和重要程度给分，上限3000</td>
+</tr>
+<tr>
+<td align="center">获取数据库连接账号密码</td>
+<td align="center">普通50、管理员100</td>
+<td align="center">上限1000</td>
+</tr>
+<tr>
+<td align="center">获取网络设备权限</td>
+<td align="center">网络等级给分，大型300</td>
+<td align="center">需提供路由表及连接量上限2000</td>
+</tr>
+<tr>
+<td align="center">获取工业互联网系统权限</td>
+<td align="center"></td>
+<td align="center">指挥部研判给分</td>
+</tr>
+<tr>
+<td align="center">物联网设备管控平台权限</td>
+<td align="center">控制功能的平台200、连接数5/台</td>
+<td align="center">上限1000</td>
+</tr>
+<tr>
+<td align="center">安全设备权限</td>
+<td align="center">普通50、管理员200</td>
+<td align="center">ids、审计、waf上限1000</td>
+</tr>
+<tr>
+<td align="center">一般web应用、ftp权限</td>
+<td align="center">普通20、管理员100</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">获取服务器主权限</td>
+<td align="center">普通50、管理员100</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">突破网络边界</td>
+<td align="center">上限8000</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">进入逻辑隔离业务内网</td>
+<td align="center">1000</td>
+<td align="center">需提供防火墙vpn网络设备控制截图</td>
+</tr>
+<tr>
+<td align="center">核心生产网</td>
+<td align="center">10000</td>
+<td align="center">铁路调度、银行核心、电力生产等</td>
+</tr>
+<tr>
+<td align="center">发现已植入webshell木马、主机木马</td>
+<td align="center">100-500</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">发现黑客破解登录主机系统</td>
+<td align="center">100-500</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">发现主机异常新增账号</td>
+<td align="center">100-500</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">发现隐蔽控制通道</td>
+<td align="center">100-500</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">提交0day或未被正式公开N-day</td>
+<td align="center">0-10000</td>
+<td align="center"></td>
+</tr>
+</tbody></table>
+<h3 id="2-报告审核"><a href="#2-报告审核" class="headerlink" title="2 报告审核"></a>2 报告审核</h3><p>提交报告时，有专门的虚拟化软件平台，在此平台内进行报告提交。提交报告不仅要包含完整的攻击文档，且须对整个完整的攻击利用链进行梳理，形成完整的攻击流程图，且对获取的对应资产数量及权限进行逐一填写。反正整个报告的提交流程较为复杂。</p>
+<h3 id="3-资产靶标"><a href="#3-资产靶标" class="headerlink" title="3 资产靶标"></a>3 资产靶标</h3><p>提供的资产靶标主要为内网资产，且我们获取的资产系统主要为国家级政府门户网站及其内网核心系统。</p>
+<p>靶标不会提供具体的ip地址以及对应的url，需要在互联网收集对应靶标的系统入口及可能互联的系统环境及其网站。这样就会</p>
+
+      
+      
     </div>
+    <footer class="article-footer">
+      <ul class="article-meta">
+        <li>
+          <span class="label">Published Date:</span>
+          <a href="/2021/04/25/%E7%BB%BC%E5%90%88%E6%B8%97%E9%80%8F/hvv/2021-hvv-country/" class="article-date">
+  <time class="dt-published" datetime="2021-04-25T06:25:51.000Z" itemprop="datePublished">2021-04-25</time>
+</a>
+
+        </li>
+        
+          <li>
+            <span class="label">Category:</span>
+            
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E6%94%BB%E9%98%B2%E6%B8%97%E9%80%8F/">攻防渗透</a>
   </div>
-</footer>
-</div>
-</div>
-
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/TweenMax.min.js"></script>
-<script src="/js/resizeable.min.js"></script>
-<script src="/js/joinable.js"></script>
-<script src="/js/xenon-api.min.js"></script>
-<script src="/js/xenon-toggles.min.js"></script>
-<script src="/js/xenon-custom.min.js"></script>
 
 
-<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+          </li>
+        
+        
+          <li>
+            <span class="label">Tag:</span>
+            
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/" rel="tag">内网渗透</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E6%8A%A4%E7%BD%91%E6%BC%94%E7%BB%83/" rel="tag">护网演练</a></li></ul>
+
+
+          </li>
+        
+        <hr/>
+      </ul>
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav" class="article-nav">
+  
+    <a href="/2021/05/10/ctf/ctf-redhat2021/" id="article-nav-newer" class="article-nav-link-wrap newer">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          2021年红帽杯初赛ctf部分试题wp
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/03/25/web-security/security-transform-port/" id="article-nav-older" class="article-nav-link-wrap older">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">内网渗透之端口转发</div>
+    </a>
+  
+</nav>
+
+
+  
+</article>
 
 
 
-<script src="/js/lozad.min.js"></script>
+
+
+
+
+
+
+
+      </div>
+      
+    <footer id="footer" class="post-footer footer">
+      
+      <hr/>
+      <div id="footerContent" class="footer-content">
+        <p>ipsum dolor sit amet, <strong>consectetur adipiscing elit.</strong> Fusce eget urna vitae velit <em>eleifend interdum at ac nisi. In nec ligula lacus. Cum sociis natoque</em> penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed eu cursus erat, ut dapibus quam. Post</p>
+
+
+      </div>
+    </footer>
+
+      
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js"></script>
 
 
 
   
-  <!-- 直接添加html内容即可 -->
-<!-- 可设置多行 -->
-  
-</body>
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js"></script>
 
+
+
+
+<script src="/js/typing.js"></script>
+
+<!--[if lt IE 9]>
+<script src="https://cdn.jsdelivr.net/npm/html5shiv@3/dist/html5shiv.min.js"></script>
+<![endif]-->
+
+
+
+
+
+
+
+    </div>
+  </body>
 </html>
