@@ -58,8 +58,7 @@
 <p>系统日志中目前并未发现其他的可疑连接及运行进程</p>
 <p>且confluence日志中也并未发现可疑的请求日志记录</p>
 <p>目前大概率怀疑黑产是通过CVE-2021-26084漏洞部署的远程挖矿程序，且清空了相应的请求记录</p>
-<h1 id="4、病毒清理"><a href="#4、病毒清理" class="headerlink" title="4、病毒清理"></a>4、病毒清理</h1><h2 id="杀死进程"><a href="#杀死进程" class="headerlink" title="杀死进程"></a>杀死进程</h2><pre class="language-bash" data-language="bash"><code class="language-bash"><span class="token function">ps</span> -ef <span class="token operator">|</span> <span class="token function">grep</span> trace
-<span class="token function">kill</span> -9 <span class="token number">14387</span></code></pre>
+<h1 id="4、病毒清理"><a href="#4、病毒清理" class="headerlink" title="4、病毒清理"></a>4、病毒清理</h1><h2 id="杀死进程"><a href="#杀死进程" class="headerlink" title="杀死进程"></a>杀死进程</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ps -ef | grep trace</span><br><span class="line"><span class="built_in">kill</span> -9 14387</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/Untitled%2011.png" alt="Untitled"></p>
 <h2 id="文件清理"><a href="#文件清理" class="headerlink" title="文件清理"></a>文件清理</h2><p>rm -rf /root/c3pool/</p>

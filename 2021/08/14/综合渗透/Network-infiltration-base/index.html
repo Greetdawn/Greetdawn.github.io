@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>内网渗透信息收集 - greetdawn&#039;s Blog</title><link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#3273dc"><meta name="application-name" content="greetdawn&#039;s Site"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="msapplication-TileColor" content="#3273dc"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="greetdawn&#039;s Site"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="内网渗透信息收集0x01 基本命令 获取主机名  hostname   查询所有计算名称  dsquery computer   查看配置及补丁信息  systeminfo wmic qfe get description,installedOn &amp;#x2F;format:csv   系统版本  ver   进程信息  tasklist &amp;#x2F;svc wmic process get cap"><meta property="og:type" content="blog"><meta property="og:title" content="内网渗透信息收集"><meta property="og:url" content="http://www.greetdawn.top/2021/08/14/%E7%BB%BC%E5%90%88%E6%B8%97%E9%80%8F/Network-infiltration-base/"><meta property="og:site_name" content="greetdawn&#039;s Blog"><meta property="og:description" content="内网渗透信息收集0x01 基本命令 获取主机名  hostname   查询所有计算名称  dsquery computer   查看配置及补丁信息  systeminfo wmic qfe get description,installedOn &amp;#x2F;format:csv   系统版本  ver   进程信息  tasklist &amp;#x2F;svc wmic process get cap"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://www.greetdawn.top/img/og_image.png"><meta property="article:published_time" content="2021-08-14T05:46:21.000Z"><meta property="article:modified_time" content="2021-11-22T10:29:36.551Z"><meta property="article:author" content="丨greetdawn丨"><meta property="article:tag" content="信息收集"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://www.greetdawn.top/2021/08/14/%E7%BB%BC%E5%90%88%E6%B8%97%E9%80%8F/Network-infiltration-base/"},"headline":"内网渗透信息收集","image":["http://www.greetdawn.top/img/og_image.png"],"datePublished":"2021-08-14T05:46:21.000Z","dateModified":"2021-11-22T10:29:36.551Z","author":{"@type":"Person","name":"丨greetdawn丨"},"publisher":{"@type":"Organization","name":"greetdawn's Blog","logo":{"@type":"ImageObject","url":{"text":"greetdawn's Site"}}},"description":"内网渗透信息收集0x01 基本命令 获取主机名  hostname   查询所有计算名称  dsquery computer   查看配置及补丁信息  systeminfo wmic qfe get description,installedOn &#x2F;format:csv   系统版本  ver   进程信息  tasklist &#x2F;svc wmic process get cap"}</script><link rel="canonical" href="http://www.greetdawn.top/2021/08/14/%E7%BB%BC%E5%90%88%E6%B8%97%E9%80%8F/Network-infiltration-base/"><link rel="icon" href="/img/favicon.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/a11y-dark.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;600&amp;family=Roboto+Mono"><link rel="stylesheet" href="/css/cyberpunk.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><script>var _hmt = _hmt || [];
+<html lang="zh"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>内网渗透信息收集 - greetdawn&#039;s Blog</title><link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#3273dc"><meta name="application-name" content="greetdawn&#039;s Site"><meta name="msapplication-TileImage" content="/img/favicon.svg"><meta name="msapplication-TileColor" content="#3273dc"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="greetdawn&#039;s Site"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="内网渗透信息收集0x01 基本命令 获取主机名  1hostname   查询所有计算名称  1dsquery computer   查看配置及补丁信息  12systeminfowmic qfe get description,installedOn &amp;#x2F;format:csv   系统版本  1ver   进程信息  123tasklist &amp;#x2F;svcwmic process get caption"><meta property="og:type" content="blog"><meta property="og:title" content="内网渗透信息收集"><meta property="og:url" content="http://www.greetdawn.top/2021/08/14/%E7%BB%BC%E5%90%88%E6%B8%97%E9%80%8F/Network-infiltration-base/"><meta property="og:site_name" content="greetdawn&#039;s Blog"><meta property="og:description" content="内网渗透信息收集0x01 基本命令 获取主机名  1hostname   查询所有计算名称  1dsquery computer   查看配置及补丁信息  12systeminfowmic qfe get description,installedOn &amp;#x2F;format:csv   系统版本  1ver   进程信息  123tasklist &amp;#x2F;svcwmic process get caption"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="http://www.greetdawn.top/img/og_image.png"><meta property="article:published_time" content="2021-08-14T05:46:21.000Z"><meta property="article:modified_time" content="2021-11-22T10:29:36.551Z"><meta property="article:author" content="丨greetdawn丨"><meta property="article:tag" content="信息收集"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://www.greetdawn.top/2021/08/14/%E7%BB%BC%E5%90%88%E6%B8%97%E9%80%8F/Network-infiltration-base/"},"headline":"内网渗透信息收集","image":["http://www.greetdawn.top/img/og_image.png"],"datePublished":"2021-08-14T05:46:21.000Z","dateModified":"2021-11-22T10:29:36.551Z","author":{"@type":"Person","name":"丨greetdawn丨"},"publisher":{"@type":"Organization","name":"greetdawn's Blog","logo":{"@type":"ImageObject","url":{"text":"greetdawn's Site"}}},"description":"内网渗透信息收集0x01 基本命令 获取主机名  1hostname   查询所有计算名称  1dsquery computer   查看配置及补丁信息  12systeminfowmic qfe get description,installedOn &#x2F;format:csv   系统版本  1ver   进程信息  123tasklist &#x2F;svcwmic process get caption"}</script><link rel="canonical" href="http://www.greetdawn.top/2021/08/14/%E7%BB%BC%E5%90%88%E6%B8%97%E9%80%8F/Network-infiltration-base/"><link rel="icon" href="/img/favicon.svg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/a11y-dark.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oxanium:wght@300;400;600&amp;family=Roboto+Mono"><link rel="stylesheet" href="/css/cyberpunk.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><script>var _hmt = _hmt || [];
         (function() {
             var hm = document.createElement("script");
             hm.src = "//hm.baidu.com/hm.js?0504a401a4e9d23a231f260a409feec4";
@@ -37,51 +37,47 @@
 </head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/">greetdawn&#039;s Site</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">主页</a><a class="navbar-item" href="/archives">归档</a><a class="navbar-item" href="/categories">分类</a><a class="navbar-item" href="/tags">标签</a><a class="navbar-item" href="/about">关于</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/Greetdawn"><i class="fab fa-github"></i></a><a class="navbar-item search" title="搜索" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item"><time dateTime="2021-08-14T05:46:21.000Z" title="2021/8/14 下午1:46:21">2021-08-14</time>发表</span><span class="level-item"><time dateTime="2021-11-22T10:29:36.551Z" title="2021/11/22 下午6:29:36">2021-11-22</time>更新</span><span class="level-item"><a class="link-muted" href="/categories/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/">内网渗透</a></span><span class="level-item">1 分钟读完 (大约152个字)</span><span class="level-item" id="busuanzi_container_page_pv"><span id="busuanzi_value_page_pv">0</span>次访问</span></div></div><h1 class="title is-3 is-size-4-mobile">内网渗透信息收集</h1><div class="content"><h1 id="内网渗透信息收集"><a href="#内网渗透信息收集" class="headerlink" title="内网渗透信息收集"></a>内网渗透信息收集</h1><h2 id="0x01-基本命令"><a href="#0x01-基本命令" class="headerlink" title="0x01 基本命令"></a>0x01 基本命令</h2><ul>
 <li>获取主机名</li>
 </ul>
-<pre class="language-none"><code class="language-none">hostname</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hostname</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>查询所有计算名称</li>
 </ul>
-<pre class="language-none"><code class="language-none">dsquery computer</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dsquery computer</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>查看配置及补丁信息</li>
 </ul>
-<pre class="language-none"><code class="language-none">systeminfo
-wmic qfe get description,installedOn &#x2F;format:csv</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systeminfo</span><br><span class="line">wmic qfe get description,installedOn /format:csv</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>系统版本</li>
 </ul>
-<pre class="language-none"><code class="language-none">ver</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ver</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>进程信息</li>
 </ul>
-<pre class="language-none"><code class="language-none">tasklist &#x2F;svc
-wmic process get caption,executablepath,commandline &#x2F;format:csv
-get-process</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tasklist /svc</span><br><span class="line">wmic process get caption,executablepath,commandline /format:csv</span><br><span class="line">get-process</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>查看所有环境变量</li>
 </ul>
-<pre class="language-none"><code class="language-none">set</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">set</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>查看计划任务</li>
 </ul>
-<pre class="language-none"><code class="language-none">schtasks &#x2F;QUERY &#x2F;fo LIST &#x2F;v</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">schtasks /QUERY /fo LIST /v</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>查看安装驱动</li>
 </ul>
-<pre class="language-none"><code class="language-none">DRIVERQUERY</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DRIVERQUERY</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>操作系统信息</li>
 </ul>
-<pre class="language-none"><code class="language-none">架构 wmic os get osarchitecture
-系统名 wmic os get caption</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">架构 wmic os get osarchitecture</span><br><span class="line">系统名 wmic os get caption</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li><p>查看逻辑盘 <code>wmic logicaldisk get caption</code></p>

