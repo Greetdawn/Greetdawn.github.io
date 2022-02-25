@@ -411,7 +411,7 @@
     <link href="http://www.greetdawn.top/2021/03/25/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/security-transform-port/"/>
     <id>http://www.greetdawn.top/2021/03/25/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/security-transform-port/</id>
     <published>2021-03-25T02:05:26.000Z</published>
-    <updated>2021-03-26T01:04:34.164Z</updated>
+    <updated>2022-02-25T16:42:26.913Z</updated>
     
     <content type="html"><![CDATA[<p><img src="https://gitee.com/greetdawn/blogImages/raw/master/img/fog.jpg" alt="fog"></p><span id="more"></span><h1 id="lcx-端口转发应用"><a href="#lcx-端口转发应用" class="headerlink" title="lcx 端口转发应用"></a>lcx 端口转发应用</h1><h2 id="公网服务器开启端口监听"><a href="#公网服务器开启端口监听" class="headerlink" title="公网服务器开启端口监听"></a>公网服务器开启端口监听</h2><p><code>./portmap -m 2 -p1 3950 -h2 公网服务器IP -p2 3951</code></p><p>备注：</p><p>1 这里的3950端口和3951端口在公网IP上都是打开的</p><p>2 命令含义是将公网服务器监听的3950端口接收的数据转发至公网ip的3951端口</p><h2 id="被控制主机转发端口"><a href="#被控制主机转发端口" class="headerlink" title="被控制主机转发端口"></a>被控制主机转发端口</h2><p><code>lcx.exe -slave 公网服务器ip 3950 127.0.0.1</code></p><h2 id="同网段互通主机开启监听"><a href="#同网段互通主机开启监听" class="headerlink" title="同网段互通主机开启监听"></a>同网段互通主机开启监听</h2><p><code>Lcx.exe -listen 51 8888</code></p><p>监听本地的51端口将其转发到8888</p>]]></content>
     
@@ -420,12 +420,10 @@
     
     
     
-    <category term="Security" scheme="http://www.greetdawn.top/categories/Security/"/>
+    <category term="内网渗透" scheme="http://www.greetdawn.top/categories/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/"/>
     
     
-    <category term="内网渗透" scheme="http://www.greetdawn.top/tags/%E5%86%85%E7%BD%91%E6%B8%97%E9%80%8F/"/>
-    
-    <category term="端口转发" scheme="http://www.greetdawn.top/tags/%E7%AB%AF%E5%8F%A3%E8%BD%AC%E5%8F%91/"/>
+    <category term="代理转发" scheme="http://www.greetdawn.top/tags/%E4%BB%A3%E7%90%86%E8%BD%AC%E5%8F%91/"/>
     
   </entry>
   
